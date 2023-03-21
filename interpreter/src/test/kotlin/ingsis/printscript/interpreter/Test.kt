@@ -24,7 +24,7 @@ class Test {
                 ADD
             )
         )
-        val interpreter = Interpreter.Factory.create()
+        val interpreter = Interpreter.Factory.createDefault()
         interpreter.interpret(tree)
         assert((interpreter.getMemory().getValue("someNumber") as NumValue).value == 7.0)
     }
@@ -43,7 +43,7 @@ class Test {
                 ADD
             )
         )
-        val interpreter = Interpreter.Factory.create()
+        val interpreter = Interpreter.Factory.createDefault()
         interpreter.interpret(tree)
         assert((interpreter.getMemory().getValue("someString") as StrValue).value == "some1.0")
     }
@@ -75,7 +75,7 @@ class Test {
                 ADD
             )
         )
-        val interpreter = Interpreter.Factory.create()
+        val interpreter = Interpreter.Factory.createDefault()
         interpreter.interpret(tree1)
         interpreter.interpret(tree2)
         assert((interpreter.getMemory().getValue("someString") as StrValue).value == "some1.0")
@@ -85,6 +85,8 @@ class Test {
     @Test
     fun test4() {
         // let someString: String = "some" + "1";
+        //print(someString);
+
         val tree1 = AssignationAST(
             DeclarationAST(
                 "someString",
@@ -96,14 +98,15 @@ class Test {
                 ADD
             )
         )
-        //print(someString);
         val tree2 = UnaryOperationAST(
             PRINT,
             VariableAST("someString")
         )
-        val interpreter = Interpreter.Factory.create()
+        val printFunctionMock = PrintFunctionMock("")
+        val interpreter = Interpreter.Factory.createMock(printFunctionMock)
         interpreter.interpret(tree1)
         interpreter.interpret(tree2)
+        assert(printFunctionMock.printedValue == "some1.0")
     }
 
 }

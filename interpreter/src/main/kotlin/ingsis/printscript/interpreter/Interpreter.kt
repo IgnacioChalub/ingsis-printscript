@@ -7,7 +7,8 @@ class Interpreter(
 ) {
 
     companion object Factory {
-        fun create(): Interpreter = Interpreter(InterpreterVisitor(LocalMemory(mutableMapOf())))
+        fun createDefault(): Interpreter = Interpreter(InterpreterVisitor(LocalMemory(mutableMapOf()), PrintFunctionImpl))
+        fun createMock(printFunction: PrintFunction): Interpreter = Interpreter(InterpreterVisitor(LocalMemory(mutableMapOf()), printFunction))
     }
 
     fun interpret(ast: VisitableAST) = ast.accept(this.interpreterVisitor)

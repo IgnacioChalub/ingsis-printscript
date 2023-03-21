@@ -3,7 +3,8 @@ package ingsis.printscript.interpreter
 import ingsis.printscript.utilities.visitor.*
 
 class InterpreterVisitor(
-    val memory: LocalMemory
+    val memory: LocalMemory,
+    private val printFunction: PrintFunction
 ) : Visitor {
 
     override fun visitAssignationAST(ast: AssignationAST): EmptyAST {
@@ -86,10 +87,7 @@ class InterpreterVisitor(
     private fun printFunctionImpl(ast: VisitableAST): EmptyAST {
         return when(ast) {
             is LiteralAST -> {
-                when(val value = ast.value) {
-                    is StrValue -> println(value.value)
-                    is NumValue -> println(value.value)
-                }
+                printFunction.print(ast.value)
                 EmptyAST()
             }
             else -> throw Error("Can not print value")
