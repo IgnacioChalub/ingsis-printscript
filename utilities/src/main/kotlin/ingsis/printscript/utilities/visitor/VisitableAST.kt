@@ -6,14 +6,14 @@ interface VisitableAST {
 
 class AssignationAST(
     val declaration: VisitableAST,
-    val expression: VisitableAST
+    val expression: VisitableAST,
 ) : VisitableAST {
     override fun accept(visitor: Visitor) = visitor.visitAssignationAST(this)
 }
 
 class DeclarationAST(
     val variableName: String,
-    val variableType: Types
+    val variableType: Types,
 ) : VisitableAST {
     override fun accept(visitor: Visitor) = visitor.visitDeclarationAST(this)
 }
@@ -21,26 +21,26 @@ class DeclarationAST(
 class BinaryOperationAST(
     val left: VisitableAST,
     val right: VisitableAST,
-    val operation: Operation
+    val operation: Operation,
 ) : VisitableAST {
     override fun accept(visitor: Visitor) = visitor.visitBinaryOperationAST(this)
 }
 
 class UnaryOperationAST(
     val function: Function,
-    val args: VisitableAST
+    val args: VisitableAST,
 ) : VisitableAST {
     override fun accept(visitor: Visitor) = visitor.visitUnaryOperationAST(this)
 }
 
 class LiteralAST(
-    val value: Value
+    val value: Value,
 ) : VisitableAST {
     override fun accept(visitor: Visitor) = visitor.visitLiteralAST(this)
 }
 
 class VariableAST(
-    val variableName: String
+    val variableName: String,
 ) : VisitableAST {
     override fun accept(visitor: Visitor) = visitor.visitVariableAST(this)
 }
@@ -56,12 +56,12 @@ object DIV : Operation
 object MUL : Operation
 
 sealed interface Types
-object NUM: Types
-object STR: Types
+object NUM : Types
+object STR : Types
 
 sealed interface Value
-class StrValue(val value: String): Value
-class NumValue(val value: Double): Value
+class StrValue(val value: String) : Value
+class NumValue(val value: Double) : Value
 
 sealed interface Function
 object PRINT : Function

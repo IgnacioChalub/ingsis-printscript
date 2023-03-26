@@ -7,7 +7,7 @@ class Lexer2(private val input: String) {
     private var position = 0
     private var currentChar: Char? = null
 
-    //por tip de Tomi mejor usar mapa para hacerlo extensible a futura agregacion de nuevo token
+    // por tip de Tomi mejor usar mapa para hacerlo extensible a futura agregacion de nuevo token
     private val tokenMap: Map<Char, () -> Token> = mapOf(
         ';' to { Token(TokenType.SEMICOLON, ";").also { advance() } },
         ':' to { Token(TokenType.COLON, ":").also { advance() } },
@@ -19,10 +19,10 @@ class Lexer2(private val input: String) {
         '-' to { Token(TokenType.MINUS, "-").also { advance() } },
         '+' to { Token(TokenType.PLUS, "+").also { advance() } },
         '*' to { Token(TokenType.MULTIPLY, "*").also { advance() } },
-        '/' to { Token(TokenType.DIVIDE, "/").also { advance() } }
+        '/' to { Token(TokenType.DIVIDE, "/").also { advance() } },
     )
 
-    //lo mismo
+    // lo mismo
     private val keywordMap: Map<String, TokenType> = mapOf(
         "let" to TokenType.LET,
         "const" to TokenType.CONST,
@@ -30,7 +30,7 @@ class Lexer2(private val input: String) {
         "else" to TokenType.ELSE,
         "print" to TokenType.PRINT,
         "string" to TokenType.STRING_TYPE,
-        "number" to TokenType.STRING_TYPE
+        "number" to TokenType.STRING_TYPE,
     )
 
     init {
@@ -96,7 +96,7 @@ class Lexer2(private val input: String) {
         skipWhitespace()
 
         if (currentChar == null) {
-            //end of file
+            // end of file
             return Token(TokenType.EOF, "")
         }
 

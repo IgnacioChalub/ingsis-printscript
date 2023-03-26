@@ -1,10 +1,10 @@
 package ingsis.printscript.lexer
 
 import Token
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
-class Lexer2Test {
+class Test {
 
     @Test
     fun testSymbolTokens() {
@@ -24,7 +24,7 @@ class Lexer2Test {
             TokenType.DIVIDE,
             TokenType.GREATER,
             TokenType.LESS,
-            TokenType.EOF
+            TokenType.EOF,
         )
 
         expectedTokens.forEach { expectedTokenType ->
@@ -32,7 +32,6 @@ class Lexer2Test {
             assertEquals(expectedTokenType, token.type)
         }
     }
-
 
     @Test
     fun testNumberToken() {
@@ -74,7 +73,7 @@ class Lexer2Test {
             TokenType.MINUS,
             TokenType.MULTIPLY,
             TokenType.DIVIDE,
-            TokenType.EOF
+            TokenType.EOF,
         )
 
         expectedTokens.forEach { expectedTokenType ->
@@ -101,7 +100,7 @@ class Lexer2Test {
         val expectedTokens = listOf(
             Token(TokenType.NUMBER_TYPE, 42.0),
             Token(TokenType.NUMBER_TYPE, 3.14),
-            Token(TokenType.EOF, "")
+            Token(TokenType.EOF, ""),
         )
 
         expectedTokens.forEach { expectedToken ->
@@ -118,7 +117,7 @@ class Lexer2Test {
         val expectedTokens = listOf(
             Token(TokenType.IDENTIFIER, "foo "),
             Token(TokenType.IDENTIFIER, "bar_123"),
-            Token(TokenType.EOF, "")
+            Token(TokenType.EOF, ""),
         )
 
         expectedTokens.forEach { expectedToken ->
@@ -128,4 +127,3 @@ class Lexer2Test {
         }
     }
 }
-

@@ -76,7 +76,7 @@ class Lexer(private val input: String) {
         skipWhitespace()
 
         if (currentChar == null) {
-            //end of file
+            // end of file
             return Token(TokenType.EOF, "")
         }
 
@@ -95,7 +95,7 @@ class Lexer(private val input: String) {
             '>' -> {
                 advance()
                 if
-                        (currentChar == '=') {
+                    (currentChar == '=') {
                     Token(TokenType.GREATER_EQUAL, ">=").also { advance() }
                 } else {
                     Token(TokenType.GREATER, ">")

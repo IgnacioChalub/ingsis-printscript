@@ -24,5 +24,5 @@ enum class TokenType {
     ELSE,
     NUMBER_TYPE,
     STRING_TYPE,
-    EOF
+    EOF,
 }
