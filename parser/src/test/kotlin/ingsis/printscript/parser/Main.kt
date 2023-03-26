@@ -1,6 +1,11 @@
-import implementation.Parser // ktlint-disable filename
+package ingsis.printscript.parser
+
+import ingsis.printscript.parser.implementations.Parser
+import ingsis.printscript.utilities.enums.TokenType
+import ingsis.printscript.utilities.types.Token
+import ingsis.printscript.utilities.visitor.*
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
-import kotlin.test.assertTrue
 
 class MainTest {
 
@@ -9,26 +14,25 @@ class MainTest {
     @Test
     fun normalExpressionShouldReturnTree() {
         val tokenList = listOf(
-            UtilToken.LET_KEY_WORD,
-            LeafToken.IDENTIFIER("name"),
-            LeafToken.TYPE(Type.StringType),
-            NodeToken.ASSIGNATION,
-            LeafToken.LITERAL(AvailableTypes.String("Fede")),
-            UtilToken.SEMICOLON
+            Token(TokenType.LET),
+            Token(TokenType.IDENTIFIER, "name"),
+            Token(TokenType.COLON),
+            Token(TokenType.TYPE, "String"),
+            Token(TokenType.ASSIGNATION),
+            Token(TokenType.LITERAL, "Fede"),
+            Token(TokenType.SEMICOLON)
         )
 
-        val expectedTree = AST(
-            NodeToken.ASSIGNATION,
-            AST(
-                NodeToken.COLON,
-                Leaf(LeafToken.IDENTIFIER("name")),
-                Leaf(LeafToken.TYPE(Type.StringType))
+        val expectedTree = AssignationAST(
+            DeclarationAST(
+                "name",
+                STR
             ),
-            Leaf(
-                LeafToken.LITERAL(AvailableTypes.String("Fede"))
+            LiteralAST(
+                StrValue("Fede")
             )
         )
-
-        assertTrue { expectedTree.equalsTree(parser.parse(tokenList)) }
+        val res = (parser.parse(tokenList) as AssignationAST)
+        assertTrue { expectedTree == parser.parse(tokenList) }
     }
 }

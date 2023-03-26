@@ -2,13 +2,17 @@ package ingsis.printscript.utilities.visitor
 
 interface VisitableAST {
     fun accept(visitor: Visitor): VisitableAST
+    override fun equals(other: Any?): Boolean
 }
 
 class AssignationAST(
-    val declaration: VisitableAST,
-    val expression: VisitableAST
+    val declaration: DeclarationAST,
+    val expression: ExpressionAST
 ) : VisitableAST {
     override fun accept(visitor: Visitor) = visitor.visitAssignationAST(this)
+    override fun equals(other: Any?): Boolean {
+        return other is AssignationAST && declaration == other.declaration && expression == other.expression
+    }
 }
 
 class DeclarationAST(
@@ -16,14 +20,22 @@ class DeclarationAST(
     val variableType: Types
 ) : VisitableAST {
     override fun accept(visitor: Visitor) = visitor.visitDeclarationAST(this)
+    override fun equals(other: Any?): Boolean {
+        return other is DeclarationAST && variableName == other.variableName && variableType == other.variableType
+    }
 }
+
+sealed interface ExpressionAST : VisitableAST
 
 class BinaryOperationAST(
     val left: VisitableAST,
     val right: VisitableAST,
     val operation: Operation
-) : VisitableAST {
+) : ExpressionAST {
     override fun accept(visitor: Visitor) = visitor.visitBinaryOperationAST(this)
+    override fun equals(other: Any?): Boolean {
+        return other is BinaryOperationAST && left == other.left && right == other.right && operation == other.operation
+    }
 }
 
 class UnaryOperationAST(
@@ -31,22 +43,34 @@ class UnaryOperationAST(
     val args: VisitableAST
 ) : VisitableAST {
     override fun accept(visitor: Visitor) = visitor.visitUnaryOperationAST(this)
+    override fun equals(other: Any?): Boolean {
+        return other is UnaryOperationAST && function == other.function && args == other.args
+    }
 }
 
 class LiteralAST(
     val value: Value
-) : VisitableAST {
+) : ExpressionAST {
     override fun accept(visitor: Visitor) = visitor.visitLiteralAST(this)
+    override fun equals(other: Any?): Boolean {
+        return other is LiteralAST && value == other.value
+    }
 }
 
 class VariableAST(
     val variableName: String
-) : VisitableAST {
+) : ExpressionAST {
     override fun accept(visitor: Visitor) = visitor.visitVariableAST(this)
+    override fun equals(other: Any?): Boolean {
+        return other is VariableAST && variableName == other.variableName
+    }
 }
 
-class EmptyAST() : VisitableAST {
+class EmptyAST() : ExpressionAST {
     override fun accept(visitor: Visitor) = visitor.visitEmptyAST(this)
+    override fun equals(other: Any?): Boolean {
+        return other is ExpressionAST
+    }
 }
 
 sealed interface Operation
@@ -56,12 +80,20 @@ object DIV : Operation
 object MUL : Operation
 
 sealed interface Types
-object NUM: Types
-object STR: Types
+object NUM : Types
+object STR : Types
 
 sealed interface Value
-class StrValue(val value: String): Value
-class NumValue(val value: Double): Value
+class StrValue(val value: String) : Value {
+    override fun equals(other: Any?): Boolean {
+        return other is StrValue && value == other.value
+    }
+}
+class NumValue(val value: Double) : Value {
+    override fun equals(other: Any?): Boolean {
+        return other is NumValue && value == other.value
+    }
+}
 
 sealed interface Function
 object PRINT : Function

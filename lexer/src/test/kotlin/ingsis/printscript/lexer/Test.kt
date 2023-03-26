@@ -1,6 +1,7 @@
 package ingsis.printscript.lexer
 
-import Token
+import ingsis.printscript.utilities.types.Token
+import ingsis.printscript.utilities.enums.TokenType
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 

@@ -1,7 +1,7 @@
 package ingsis.printscript.lexer
 
-import Token
-import TokenType
+import ingsis.printscript.utilities.types.Token
+import ingsis.printscript.utilities.enums.TokenType
 
 class Lexer2(private val input: String) {
     private var position = 0

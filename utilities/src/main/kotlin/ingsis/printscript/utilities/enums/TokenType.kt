@@ -1,3 +1,5 @@
+package ingsis.printscript.utilities.enums
+
 enum class TokenType {
     SEMICOLON,
     COLON,
@@ -12,17 +14,22 @@ enum class TokenType {
     DIVIDE,
     GREATER_EQUAL,
     GREATER,
+    STRING,
+    NUMBER,
     LESS_EQUAL,
     LESS,
     IDENTIFIER,
-    STRING,
-    NUMBER,
-    PRINT,
     LET,
     CONST,
     IF,
     ELSE,
     NUMBER_TYPE,
     STRING_TYPE,
-    EOF
+    EOF,
+
+    // Added for parser
+    TYPE, // STRING, NUMBER
+    FUNCTION, // FUNCTION VAL
+    LITERAL,
+    OPERATOR,
 }
