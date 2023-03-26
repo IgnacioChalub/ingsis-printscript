@@ -1,10 +1,37 @@
 package ingsis.printscript.lexer
 
 import Token
+import TokenType
 
-class Lexer(private val input: String) {
+class Lexer2(private val input: String) {
     private var position = 0
     private var currentChar: Char? = null
+
+    //por tip de Tomi mejor usar mapa para hacerlo extensible a futura agregacion de nuevo token
+    private val tokenMap: Map<Char, () -> Token> = mapOf(
+        ';' to { Token(TokenType.SEMICOLON, ";").also { advance() } },
+        ':' to { Token(TokenType.COLON, ":").also { advance() } },
+        '=' to { Token(TokenType.ASSIGNATION, "=").also { advance() } },
+        '(' to { Token(TokenType.LEFT_PAREN, "(").also { advance() } },
+        ')' to { Token(TokenType.RIGHT_PAREN, ")").also { advance() } },
+        '{' to { Token(TokenType.LEFT_CURLY_BRACES, "{").also { advance() } },
+        '}' to { Token(TokenType.RIGHT_CURLY_BRACES, "}").also { advance() } },
+        '-' to { Token(TokenType.MINUS, "-").also { advance() } },
+        '+' to { Token(TokenType.PLUS, "+").also { advance() } },
+        '*' to { Token(TokenType.MULTIPLY, "*").also { advance() } },
+        '/' to { Token(TokenType.DIVIDE, "/").also { advance() } }
+    )
+
+    //lo mismo
+    private val keywordMap: Map<String, TokenType> = mapOf(
+        "let" to TokenType.LET,
+        "const" to TokenType.CONST,
+        "if" to TokenType.IF,
+        "else" to TokenType.ELSE,
+        "print" to TokenType.PRINT,
+        "string" to TokenType.STRING_TYPE,
+        "number" to TokenType.STRING_TYPE
+    )
 
     init {
         advance()
@@ -30,20 +57,13 @@ class Lexer(private val input: String) {
         while (currentChar?.let { it.isLetterOrDigit() || it == '_' } == true) {
             advance()
         }
-        val text = input.substring(startPos, position - 1)
-        return when (text) {
-            "let" -> Token(TokenType.LET, text)
-            "const" -> Token(TokenType.CONST, text)
-            "if" -> Token(TokenType.IF, text)
-            "else" -> Token(TokenType.ELSE, text)
-            "print" -> Token(TokenType.PRINT, text)
-            "string" -> Token(TokenType.STRING_TYPE, text)
-            "number" -> Token(TokenType.NUMBER_TYPE, text)
-            else -> Token(TokenType.IDENTIFIER, text)
-        }
+        val text = input.substring(startPos, position)
+        val tokenType = keywordMap[text] ?: TokenType.IDENTIFIER
+        return Token(tokenType, text)
     }
 
     private fun parseString(): Token {
+        advance() // Move past the opening double quote
         val startPos = position
         while (currentChar != null && currentChar != '"') {
             advance()
@@ -52,7 +72,7 @@ class Lexer(private val input: String) {
             throw Exception("Unterminated string")
         }
         val text = input.substring(startPos, position)
-        advance()
+        advance() // Move past the closing double quote
         return Token(TokenType.STRING, text)
     }
 
@@ -67,9 +87,9 @@ class Lexer(private val input: String) {
                 advance()
             }
         }
-        val text = input.substring(startPos, position - 1)
+        val text = input.substring(startPos, position)
         val value = text.toDoubleOrNull() ?: throw Exception("Invalid number format")
-        return Token(TokenType.NUMBER, value)
+        return Token(TokenType.NUMBER_TYPE, value)
     }
 
     fun getNextToken(): Token {
@@ -80,28 +100,17 @@ class Lexer(private val input: String) {
             return Token(TokenType.EOF, "")
         }
 
+        tokenMap[currentChar]?.let { return it() }
+
         return when (currentChar) {
-            ';' -> Token(TokenType.SEMICOLON, ";").also { advance() }
-            ':' -> Token(TokenType.COLON, ":").also { advance() }
-            '=' -> Token(TokenType.ASSIGNATION, "=").also { advance() }
-            '(' -> Token(TokenType.LEFT_PAREN, "(").also { advance() }
-            ')' -> Token(TokenType.RIGHT_PAREN, ")").also { advance() }
-            '{' -> Token(TokenType.LEFT_CURLY_BRACES, "{").also { advance() }
-            '}' -> Token(TokenType.RIGHT_CURLY_BRACES, "}").also { advance() }
-            '-' -> Token(TokenType.MINUS, "-").also { advance() }
-            '+' -> Token(TokenType.PLUS, "+").also { advance() }
-            '*' -> Token(TokenType.MULTIPLY, "*").also { advance() }
-            '/' -> Token(TokenType.DIVIDE, "/").also { advance() }
             '>' -> {
                 advance()
-                if
-                        (currentChar == '=') {
+                if (currentChar == '=') {
                     Token(TokenType.GREATER_EQUAL, ">=").also { advance() }
                 } else {
                     Token(TokenType.GREATER, ">")
                 }
             }
-
             '<' -> {
                 advance()
                 if (currentChar == '=') {
@@ -110,7 +119,6 @@ class Lexer(private val input: String) {
                     Token(TokenType.LESS, "<")
                 }
             }
-
             '"' -> parseString()
             in '0'..'9' -> parseNumber()
             in 'a'..'z', in 'A'..'Z', '_' -> parseIdentifierOrKeyword()
