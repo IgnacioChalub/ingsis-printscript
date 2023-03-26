@@ -3,7 +3,7 @@
  */
 
 plugins {
-    id 'ingsis.printscript.kotlin-library-conventions'
+    id 'ingsis.printscript.kotlin-common-conventions'
 }
 
 dependencies {

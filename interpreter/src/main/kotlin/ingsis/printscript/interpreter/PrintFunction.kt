@@ -18,7 +18,7 @@ object PrintFunctionImpl : PrintFunction {
 }
 
 class PrintFunctionMock(
-    var printedValue: String
+    var printedValue: String,
 ) : PrintFunction {
     override fun print(value: Value) {
         printedValue = when (value) {
