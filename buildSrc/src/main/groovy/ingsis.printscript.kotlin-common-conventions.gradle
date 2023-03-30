@@ -55,6 +55,7 @@ task installGitHooks(type: Copy) {
 }
 
 
+
 tasks.named('test') {
     // Use JUnit Platform for unit tests.
     useJUnitPlatform()
