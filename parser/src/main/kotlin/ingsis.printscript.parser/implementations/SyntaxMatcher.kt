@@ -2,8 +2,12 @@ package ingsis.printscript.parser.implementations
 
 import ingsis.printscript.utilities.enums.TokenType
 import ingsis.printscript.utilities.types.Token
-import ingsis.printscript.utilities.visitor.*
+import ingsis.printscript.utilities.visitor.AssignationAST
+import ingsis.printscript.utilities.visitor.DeclarationAST
 import ingsis.printscript.utilities.visitor.Function
+import ingsis.printscript.utilities.visitor.STR
+import ingsis.printscript.utilities.visitor.UnaryOperationAST
+import ingsis.printscript.utilities.visitor.VisitableAST
 
 interface SyntaxFormat
 
@@ -12,14 +16,14 @@ object AssignationFormat : SyntaxFormat {
         TokenType.LET,
         TokenType.IDENTIFIER,
         TokenType.COLON,
-        TokenType.TYPE
+        TokenType.TYPE,
     )
 }
 
 object FunctionFormat : SyntaxFormat {
     val format = listOf(
         // Include other functions
-        TokenType.FUNCTION
+        TokenType.FUNCTION,
     )
 }
 
@@ -55,9 +59,9 @@ class AssignationMatcher : SyntaxMatcher {
         return AssignationAST(
             DeclarationAST(
                 tokenList[1].value as String,
-                STR
+                STR,
             ), // Should be dynamic but WE NEED UNIFIED TOKENSSSSSSSSSSS CARAMBA
-            ExpressionProvider.parse(tokenList.slice(5 until tokenList.size))
+            ExpressionProvider.parse(tokenList.slice(5 until tokenList.size)),
         )
     }
 }

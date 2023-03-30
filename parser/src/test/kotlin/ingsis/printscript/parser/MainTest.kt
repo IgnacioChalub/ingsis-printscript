@@ -1,9 +1,13 @@
 package ingsis.printscript.parser
 
 import ingsis.printscript.parser.implementations.Parser
+import ingsis.printscript.utilities.enums.Token
 import ingsis.printscript.utilities.enums.TokenType
-import ingsis.printscript.utilities.types.Token
-import ingsis.printscript.utilities.visitor.*
+import ingsis.printscript.utilities.visitor.AssignationAST
+import ingsis.printscript.utilities.visitor.DeclarationAST
+import ingsis.printscript.utilities.visitor.LiteralAST
+import ingsis.printscript.utilities.visitor.STR
+import ingsis.printscript.utilities.visitor.StrValue
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 
@@ -20,17 +24,17 @@ class MainTest {
             Token(TokenType.TYPE, "String"),
             Token(TokenType.ASSIGNATION),
             Token(TokenType.LITERAL, "Fede"),
-            Token(TokenType.SEMICOLON)
+            Token(TokenType.SEMICOLON),
         )
 
         val expectedTree = AssignationAST(
             DeclarationAST(
                 "name",
-                STR
+                STR,
             ),
             LiteralAST(
-                StrValue("Fede")
-            )
+                StrValue("Fede"),
+            ),
         )
         val res = (parser.parse(tokenList) as AssignationAST)
         assertTrue { expectedTree == parser.parse(tokenList) }

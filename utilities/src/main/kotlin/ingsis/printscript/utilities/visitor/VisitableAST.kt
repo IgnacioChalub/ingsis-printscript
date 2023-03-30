@@ -7,7 +7,7 @@ interface VisitableAST {
 
 class AssignationAST(
     val declaration: DeclarationAST,
-    val expression: ExpressionAST
+    val expression: ExpressionAST,
 ) : VisitableAST {
     override fun accept(visitor: Visitor) = visitor.visitAssignationAST(this)
     override fun equals(other: Any?): Boolean {
@@ -17,7 +17,7 @@ class AssignationAST(
 
 class DeclarationAST(
     val variableName: String,
-    val variableType: Types
+    val variableType: Types,
 ) : VisitableAST {
     override fun accept(visitor: Visitor) = visitor.visitDeclarationAST(this)
     override fun equals(other: Any?): Boolean {
@@ -30,7 +30,7 @@ sealed interface ExpressionAST : VisitableAST
 class BinaryOperationAST(
     val left: VisitableAST,
     val right: VisitableAST,
-    val operation: Operation
+    val operation: Operation,
 ) : ExpressionAST {
     override fun accept(visitor: Visitor) = visitor.visitBinaryOperationAST(this)
     override fun equals(other: Any?): Boolean {
@@ -40,7 +40,7 @@ class BinaryOperationAST(
 
 class UnaryOperationAST(
     val function: Function,
-    val args: VisitableAST
+    val args: VisitableAST,
 ) : VisitableAST {
     override fun accept(visitor: Visitor) = visitor.visitUnaryOperationAST(this)
     override fun equals(other: Any?): Boolean {
@@ -49,7 +49,7 @@ class UnaryOperationAST(
 }
 
 class LiteralAST(
-    val value: Value
+    val value: Value,
 ) : ExpressionAST {
     override fun accept(visitor: Visitor) = visitor.visitLiteralAST(this)
     override fun equals(other: Any?): Boolean {
@@ -58,7 +58,7 @@ class LiteralAST(
 }
 
 class VariableAST(
-    val variableName: String
+    val variableName: String,
 ) : ExpressionAST {
     override fun accept(visitor: Visitor) = visitor.visitVariableAST(this)
     override fun equals(other: Any?): Boolean {
@@ -69,7 +69,7 @@ class VariableAST(
 class EmptyAST() : ExpressionAST {
     override fun accept(visitor: Visitor) = visitor.visitEmptyAST(this)
     override fun equals(other: Any?): Boolean {
-        return other is ExpressionAST
+        return other is EmptyAST
     }
 }
 

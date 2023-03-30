@@ -2,13 +2,15 @@ package ingsis.printscript.parser.implementations
 
 import ingsis.printscript.utilities.enums.TokenType
 import ingsis.printscript.utilities.types.Token
-import ingsis.printscript.utilities.visitor.*
+import ingsis.printscript.utilities.visitor.LiteralAST
+import ingsis.printscript.utilities.visitor.NumValue
+import ingsis.printscript.utilities.visitor.StrValue
 
 interface ExpressionFormat
 
 object LiteralFormat : SyntaxFormat {
     val format = listOf(
-        TokenType.LITERAL
+        TokenType.LITERAL,
     )
 }
 
@@ -16,7 +18,7 @@ object OperationFormat : SyntaxFormat {
     val format = listOf(
         TokenType.LITERAL,
         TokenType.OPERATOR,
-        TokenType.LITERAL
+        TokenType.LITERAL,
     )
 }
 
