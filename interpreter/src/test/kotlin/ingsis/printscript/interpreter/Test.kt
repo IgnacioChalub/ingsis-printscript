@@ -1,16 +1,10 @@
 package ingsis.printscript.interpreter
 
-import ingsis.printscript.utilities.visitor.ADD
+import ingsis.printscript.utilities.enums.*
 import ingsis.printscript.utilities.visitor.AssignationAST
 import ingsis.printscript.utilities.visitor.BinaryOperationAST
 import ingsis.printscript.utilities.visitor.DeclarationAST
 import ingsis.printscript.utilities.visitor.LiteralAST
-import ingsis.printscript.utilities.visitor.MUL
-import ingsis.printscript.utilities.visitor.NUM
-import ingsis.printscript.utilities.visitor.NumValue
-import ingsis.printscript.utilities.visitor.PRINT
-import ingsis.printscript.utilities.visitor.STR
-import ingsis.printscript.utilities.visitor.StrValue
 import ingsis.printscript.utilities.visitor.UnaryOperationAST
 import ingsis.printscript.utilities.visitor.VariableAST
 import org.junit.jupiter.api.Test
