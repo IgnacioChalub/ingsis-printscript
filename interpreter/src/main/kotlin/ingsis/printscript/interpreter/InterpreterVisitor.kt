@@ -1,6 +1,16 @@
 package ingsis.printscript.interpreter
 
-import ingsis.printscript.utilities.enums.*
+import ingsis.printscript.utilities.enums.ADD
+import ingsis.printscript.utilities.enums.DIV
+import ingsis.printscript.utilities.enums.MUL
+import ingsis.printscript.utilities.enums.NUM
+import ingsis.printscript.utilities.enums.NumValue
+import ingsis.printscript.utilities.enums.PRINT
+import ingsis.printscript.utilities.enums.STR
+import ingsis.printscript.utilities.enums.SUB
+import ingsis.printscript.utilities.enums.StrValue
+import ingsis.printscript.utilities.enums.Type
+import ingsis.printscript.utilities.enums.Value
 import ingsis.printscript.utilities.visitor.AssignationAST
 import ingsis.printscript.utilities.visitor.BinaryOperationAST
 import ingsis.printscript.utilities.visitor.DeclarationAST

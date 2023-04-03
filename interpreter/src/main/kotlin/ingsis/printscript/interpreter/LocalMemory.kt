@@ -2,7 +2,6 @@ package ingsis.printscript.interpreter
 
 import ingsis.printscript.utilities.enums.Value
 
-
 class LocalMemory(private val memory: MutableMap<String, Value>) {
 
     fun getValue(key: String): Value {

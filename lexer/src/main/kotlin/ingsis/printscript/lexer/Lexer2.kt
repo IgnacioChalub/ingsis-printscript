@@ -1,9 +1,9 @@
-//package ingsis.printscript.lexer
+// package ingsis.printscript.lexer
 //
-//import ingsis.printscript.utilities.enums.TokenType
-//import ingsis.printscript.utilities.types.Token
+// import ingsis.printscript.utilities.enums.TokenType
+// import ingsis.printscript.utilities.types.Token
 //
-//class Lexer2(private val input: String) {
+// class Lexer2(private val input: String) {
 //    private var position = 0
 //    private var currentChar: Char? = null
 //
@@ -125,4 +125,4 @@
 //            else -> throw Exception("Invalid character: $currentChar")
 //        }
 //    }
-//}
+// }

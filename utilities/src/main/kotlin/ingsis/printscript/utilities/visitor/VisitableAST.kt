@@ -45,7 +45,7 @@ class BinaryOperationAST(
 
 class UnaryOperationAST(
     val function: Function,
-    val args: VisitableAST
+    val args: VisitableAST,
 ) : VisitableAST {
     override fun accept(visitor: Visitor) = visitor.visitUnaryOperationAST(this)
     override fun equals(other: Any?): Boolean {

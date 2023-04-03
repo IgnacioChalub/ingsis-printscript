@@ -1,10 +1,10 @@
-//package ingsis.printscript.lexer
+// package ingsis.printscript.lexer
 //
-//import ingsis.printscript.utilities.enums.*
-//import org.junit.jupiter.api.Assertions.assertEquals
-//import org.junit.jupiter.api.Test
+// import ingsis.printscript.utilities.enums.*
+// import org.junit.jupiter.api.Assertions.assertEquals
+// import org.junit.jupiter.api.Test
 //
-//class Test {
+// class Test {
 //
 //    @Test
 //    fun testSymbolTokens() {
@@ -121,4 +121,4 @@
 //            assertEquals(expectedToken.value, token.value)
 //        }
 //    }
-//}
+// }

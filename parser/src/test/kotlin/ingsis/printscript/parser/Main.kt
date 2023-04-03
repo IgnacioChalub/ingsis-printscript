@@ -1,12 +1,29 @@
 package ingsis.printscript.parser
 
 import ingsis.printscript.parser.implementations.Parser
-import ingsis.printscript.utilities.enums.*
-import ingsis.printscript.utilities.visitor.*
+import ingsis.printscript.utilities.enums.ADD
+import ingsis.printscript.utilities.enums.ASSIGNATION
+import ingsis.printscript.utilities.enums.COLON
+import ingsis.printscript.utilities.enums.IDENTIFIER
+import ingsis.printscript.utilities.enums.LEFT_PAREN
+import ingsis.printscript.utilities.enums.LET
+import ingsis.printscript.utilities.enums.NUM
+import ingsis.printscript.utilities.enums.NumValue
+import ingsis.printscript.utilities.enums.PRINT
+import ingsis.printscript.utilities.enums.RIGHT_PAREN
+import ingsis.printscript.utilities.enums.SEMICOLON
+import ingsis.printscript.utilities.enums.STR
+import ingsis.printscript.utilities.enums.SUB
+import ingsis.printscript.utilities.enums.StrValue
+import ingsis.printscript.utilities.visitor.AssignationAST
+import ingsis.printscript.utilities.visitor.BinaryOperationAST
+import ingsis.printscript.utilities.visitor.DeclarationAST
+import ingsis.printscript.utilities.visitor.LiteralAST
+import ingsis.printscript.utilities.visitor.UnaryOperationAST
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 
-class MainTest {
+class Main {
 
     private val parser = Parser()
 
@@ -19,17 +36,17 @@ class MainTest {
             STR,
             ASSIGNATION,
             StrValue("Fede"),
-            SEMICOLON
+            SEMICOLON,
         )
 
         val expectedTree = AssignationAST(
             DeclarationAST(
                 "name",
-                STR
+                STR,
             ),
             LiteralAST(
-                StrValue("Fede")
-            )
+                StrValue("Fede"),
+            ),
         )
         assertTrue { expectedTree == parser.parse(tokenList) }
     }
@@ -45,19 +62,19 @@ class MainTest {
             NumValue(1.0),
             ADD,
             NumValue(3.0),
-            SEMICOLON
+            SEMICOLON,
         )
 
         val expectedTree = AssignationAST(
             DeclarationAST(
                 "sum",
-                NUM
+                NUM,
             ),
             BinaryOperationAST(
                 LiteralAST(NumValue(1.0)),
                 LiteralAST(NumValue(3.0)),
-                ADD
-            )
+                ADD,
+            ),
         )
         assertTrue { expectedTree == parser.parse(tokenList) }
     }
@@ -77,7 +94,7 @@ class MainTest {
             SUB,
             NumValue(1.0),
             RIGHT_PAREN,
-            SEMICOLON
+            SEMICOLON,
         )
 
         val expectedTree =
@@ -87,15 +104,15 @@ class MainTest {
                     BinaryOperationAST(
                         LiteralAST(NumValue(2.0)),
                         LiteralAST(NumValue(1.0)),
-                        SUB
+                        SUB,
                     ),
                     BinaryOperationAST(
                         LiteralAST(NumValue(3.0)),
                         LiteralAST(NumValue(1.0)),
-                        SUB
+                        SUB,
                     ),
-                    SUB
-                )
+                    SUB,
+                ),
             )
 
         assertTrue { expectedTree == parser.parse(tokenList) }

@@ -4,7 +4,6 @@ import ingsis.printscript.utilities.enums.NumValue
 import ingsis.printscript.utilities.enums.StrValue
 import ingsis.printscript.utilities.enums.Value
 
-
 sealed interface PrintFunction {
     fun print(value: Value)
 }

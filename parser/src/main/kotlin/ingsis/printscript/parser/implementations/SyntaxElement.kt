@@ -2,7 +2,19 @@ package ingsis.printscript.parser.implementations
 
 import ingsis.printscript.parser.interfaces.IStatement
 import ingsis.printscript.parser.interfaces.SyntaxElement
-import ingsis.printscript.utilities.enums.*
+import ingsis.printscript.utilities.enums.ADD
+import ingsis.printscript.utilities.enums.ASSIGNATION
+import ingsis.printscript.utilities.enums.COLON
+import ingsis.printscript.utilities.enums.DIV
+import ingsis.printscript.utilities.enums.IDENTIFIER
+import ingsis.printscript.utilities.enums.LET
+import ingsis.printscript.utilities.enums.MUL
+import ingsis.printscript.utilities.enums.NUM
+import ingsis.printscript.utilities.enums.PRINT
+import ingsis.printscript.utilities.enums.SEMICOLON
+import ingsis.printscript.utilities.enums.STR
+import ingsis.printscript.utilities.enums.SUB
+import ingsis.printscript.utilities.enums.Token
 
 enum class SyntaxElements(override val types: List<Token>) : SyntaxElement {
 
@@ -32,15 +44,15 @@ enum class Statement(override val elements: List<SyntaxElement>) : IStatement {
             SyntaxElements.VARIABLE,
             SyntaxElements.IDENTIFIER_SYNTAX,
             SyntaxElements.TYPEASSIGNMENT,
-            SyntaxElements.TYPE
-        )
+            SyntaxElements.TYPE,
+        ),
     ),
 
     // println("hello world")
     FUNCTION(
         listOf(
-            SyntaxElements.VOIDFUNCTION
-        )
+            SyntaxElements.VOIDFUNCTION,
+        ),
     ),
 }
 
@@ -49,7 +61,7 @@ object ExpressionProvider {
         IdentifierExpression::class,
         LiteralExpression::class,
         OperationExpression::class,
-        ParenthesisExpression::class
+        ParenthesisExpression::class,
 
     )
 }

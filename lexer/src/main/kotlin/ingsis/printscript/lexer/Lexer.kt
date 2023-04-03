@@ -1,6 +1,25 @@
 package ingsis.printscript.lexer
 
-import ingsis.printscript.utilities.enums.*
+import ingsis.printscript.utilities.enums.ADD
+import ingsis.printscript.utilities.enums.ASSIGNATION
+import ingsis.printscript.utilities.enums.COLON
+import ingsis.printscript.utilities.enums.CONST
+import ingsis.printscript.utilities.enums.DIV
+import ingsis.printscript.utilities.enums.ELSE
+import ingsis.printscript.utilities.enums.IDENTIFIER
+import ingsis.printscript.utilities.enums.IF
+import ingsis.printscript.utilities.enums.LEFT_PAREN
+import ingsis.printscript.utilities.enums.LET
+import ingsis.printscript.utilities.enums.MUL
+import ingsis.printscript.utilities.enums.NUM
+import ingsis.printscript.utilities.enums.NumValue
+import ingsis.printscript.utilities.enums.PRINT
+import ingsis.printscript.utilities.enums.RIGHT_PAREN
+import ingsis.printscript.utilities.enums.SEMICOLON
+import ingsis.printscript.utilities.enums.STR
+import ingsis.printscript.utilities.enums.SUB
+import ingsis.printscript.utilities.enums.StrValue
+import ingsis.printscript.utilities.enums.Token
 
 class Lexer(private val input: String) {
     private var position = 0
