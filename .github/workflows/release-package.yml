@@ -7,11 +7,8 @@ on:
     branches: [ "main" ]
 
 jobs:
-  publish-Fixgpr:
+  test:
     runs-on: ubuntu-latest
-    permissions:
-      packages: write
-      contents: read
     steps:
       - uses: actions/checkout@v2
       - name: Set up JDK 11
@@ -32,7 +29,20 @@ jobs:
       - name: Test sub-packages
         run: ./gradlew test
 
-#      - name: Publish
-#        run: ./gradlew publish
-#        env:
-#          GITHUB_TOKEN: ${{ secrets.TOKEN }}
+  publish:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          java-version: '11'
+      - name: Publish to GitHub Packages
+        uses: gradle/wrapper-action@v1
+        with:
+          args: publish
+        env:
+          GITHUB_USERNAME: ${{ secrets.GITHUB_USERNAME }}
+          GITHUB_TOKEN: ${{ secrets.TOKEN }
+

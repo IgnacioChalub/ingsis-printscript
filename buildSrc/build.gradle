@@ -5,13 +5,41 @@
 plugins {
     // Support convention plugins written in Groovy. Convention plugins are build scripts in 'src/main' that automatically become available as plugins in the main build.
     id 'groovy-gradle-plugin'
+    id 'maven-publish'
 }
 
 repositories {
     // Use the plugin portal to apply community plugins in convention plugins.
     gradlePluginPortal()
+    maven {
+        name = "GitHubPackages"
+        url = uri("https://maven.pkg.github.com/IgnacioChalub/ingsis-printscript")
+        credentials {
+            username = project.findProperty("gpr.user") ?: System.getenv("USERNAME")
+            password = project.findProperty("gpr.key") ?: System.getenv("GITHUB_TOKEN")
+        }
+    }
+}
+
+publishing {
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/IgnacioChalub/ingsis-printscript")
+            credentials {
+                username = project.findProperty("gpr.user") ?: System.getenv("USERNAME")
+                password = project.findProperty("gpr.key") ?: System.getenv("GITHUB_TOKEN")
+            }
+        }
+    }
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+        }
+    }
 }
 
 dependencies {
     implementation 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.10'
 }
+
