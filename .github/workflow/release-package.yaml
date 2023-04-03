@@ -1,8 +1,10 @@
 name: Release package
 
 on:
-  release:
-    branches: [main]
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
 
 jobs:
   publish-Fixgpr:
