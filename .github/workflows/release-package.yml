@@ -39,9 +39,9 @@ jobs:
         with:
           java-version: '11'
       - name: Publish to GitHub Packages
-        uses: gradle/wrapper-action@v1
+        uses: nebula/gradle-github-publish@v5.2.0
         with:
+          target: ingsis-printscript
           args: publish
         env:
-          GITHUB_USERNAME: ${{ secrets.GITHUB_USERNAME }}
-          GITHUB_TOKEN: ${{ secrets.TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
