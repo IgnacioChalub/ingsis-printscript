@@ -1,8 +1,7 @@
 package ingsis.printscript.interpreter
 
-import ingsis.printscript.utilities.visitor.NumValue
-import ingsis.printscript.utilities.visitor.StrValue
-import ingsis.printscript.utilities.visitor.Value
+import ingsis.printscript.utilities.enums.*
+
 
 sealed interface PrintFunction {
     fun print(value: Value)

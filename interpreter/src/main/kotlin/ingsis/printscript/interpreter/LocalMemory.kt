@@ -1,6 +1,7 @@
 package ingsis.printscript.interpreter
 
-import ingsis.printscript.utilities.visitor.Value
+import ingsis.printscript.utilities.enums.Value
+
 
 class LocalMemory(private val memory: MutableMap<String, Value>) {
 

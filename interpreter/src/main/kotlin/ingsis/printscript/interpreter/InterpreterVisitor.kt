@@ -1,22 +1,12 @@
 package ingsis.printscript.interpreter
 
-import ingsis.printscript.utilities.visitor.ADD
+import ingsis.printscript.utilities.enums.*
 import ingsis.printscript.utilities.visitor.AssignationAST
 import ingsis.printscript.utilities.visitor.BinaryOperationAST
-import ingsis.printscript.utilities.visitor.DIV
 import ingsis.printscript.utilities.visitor.DeclarationAST
 import ingsis.printscript.utilities.visitor.EmptyAST
 import ingsis.printscript.utilities.visitor.LiteralAST
-import ingsis.printscript.utilities.visitor.MUL
-import ingsis.printscript.utilities.visitor.NUM
-import ingsis.printscript.utilities.visitor.NumValue
-import ingsis.printscript.utilities.visitor.PRINT
-import ingsis.printscript.utilities.visitor.STR
-import ingsis.printscript.utilities.visitor.SUB
-import ingsis.printscript.utilities.visitor.StrValue
-import ingsis.printscript.utilities.visitor.Types
 import ingsis.printscript.utilities.visitor.UnaryOperationAST
-import ingsis.printscript.utilities.visitor.Value
 import ingsis.printscript.utilities.visitor.VariableAST
 import ingsis.printscript.utilities.visitor.VisitableAST
 import ingsis.printscript.utilities.visitor.Visitor
@@ -41,7 +31,7 @@ class InterpreterVisitor(
         return EmptyAST()
     }
 
-    private fun isSameType(declarationType: Types, value: Value): Boolean {
+    private fun isSameType(declarationType: Type, value: Value): Boolean {
         return if (declarationType is NUM && value is NumValue) {
             true
         } else {
