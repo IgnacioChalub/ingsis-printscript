@@ -1,8 +1,8 @@
-//import ingsis.printscript.parser.implementations.Parser
-//import org.junit.jupiter.api.Test
-//import kotlin.test.assertFailsWith
+// import ingsis.printscript.parser.implementations.Parser
+// import org.junit.jupiter.api.Test
+// import kotlin.test.assertFailsWith
 //
-//class ValidationTest {
+// class ValidationTest {
 //
 //    private val parser = Parser()
 //
@@ -29,4 +29,4 @@
 //            block = { parser.parse(errorList) }
 //        )
 //    }
-//}
+// }
