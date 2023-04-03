@@ -12,6 +12,9 @@ object COLON : TokenType
 object SEMICOLON : TokenType
 object ASSIGNATION : TokenType
 
+sealed interface UtilToken : Token
+class IDENTIFIER(val value: String) : UtilToken
+
 sealed interface Operation : Token
 
 object LEFT_PAREN : Operation
