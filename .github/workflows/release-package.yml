@@ -29,6 +29,9 @@ jobs:
       - name: Run build with Gradle Wrapper
         run: ./gradlew build
 
+      - name: Test sub-packages
+        run: ./gradlew test
+
       - name: Publish
         run: ./gradlew publish
         env:
