@@ -52,6 +52,7 @@ tasks.register("ktlintFormat", JavaExec) {
     args "-F", "src/**/*.kt", "**.kts", "!**/build/**"
 }
 
+System.out.println(System.getenv("GITHUB_ACTOR"))
 publishing {
     repositories {
         maven {
