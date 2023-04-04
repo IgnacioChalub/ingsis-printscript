@@ -8,6 +8,8 @@ plugins {
     id 'maven-publish'
 }
 
+version = "1.0.0-SNAPSHOT"
+
 repositories {
     // Use the plugin portal to apply community plugins in convention plugins.
     gradlePluginPortal()
@@ -42,4 +44,5 @@ publishing {
 dependencies {
     implementation 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.10'
 }
+
 

@@ -17,6 +17,8 @@ configurations {
     ktlint
 }
 
+version = "0.0.1-SNAPSHOT"
+
 dependencies {
     testImplementation 'org.jetbrains.kotlin:kotlin-test'
     testImplementation 'org.junit.jupiter:junit-jupiter:5.9.1'
@@ -56,8 +58,8 @@ publishing {
             name = "GitHubPackages"
             url = uri("https://maven.pkg.github.com/IgnacioChalub/ingsis-printscript")
             credentials {
-                username = project.findProperty("GITHUB_USERNAME") as String ?: System.getenv("GITHUB_USERNAME")
-                password = project.findProperty("GITHUB_TOKEN") as String ?: System.getenv("GITHUB_TOKEN")
+                username = "ignaciochalub"
+                password = "something"
             }
         }
     }
