@@ -58,8 +58,8 @@ publishing {
             name = "GitHubPackages"
             url = uri("https://maven.pkg.github.com/IgnacioChalub/ingsis-printscript")
             credentials {
-                username = "ignaciochalub"
-                password = "something"
+                username = project.findProperty("GITHUB_ACTOR") as String ?: System.getenv("GITHUB_ACTOR")
+                password = project.findProperty("GITHUB_TOKEN") as String ?: System.getenv("GITHUB_TOKEN")
             }
         }
     }
