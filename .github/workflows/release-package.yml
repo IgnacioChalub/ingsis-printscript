@@ -31,7 +31,7 @@ jobs:
         with:
           arguments: build
         env:
-          GITHUB_ACTORS: ${{ vars.GITHUB_ACTOR }}
+          GITHUB_ACTOR: ${{ vars.GITHUB_ACTOR }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       # The USERNAME and TOKEN need to correspond to the credentials environment variables used in
@@ -41,5 +41,5 @@ jobs:
         with:
           arguments: publish
         env:
-          GITHUB_ACTORS: ${{ vars.GITHUB_ACTOR }}
+          GITHUB_ACTOR: ${{ vars.GITHUB_ACTOR }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
