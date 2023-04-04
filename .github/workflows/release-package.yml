@@ -1,7 +1,7 @@
 name: Release package
 
 on:
-  release:
+  push:
     branches: [main]
     types: [created]
 
