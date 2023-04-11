@@ -21,7 +21,8 @@ import SUB
 import StrValue
 import Token
 
-class Lexer(private val input: String) {
+class Lexer() {
+
     private val tokens = mutableListOf<Token>()
     private var start = 0
     private var current = 0
@@ -31,15 +32,15 @@ class Lexer(private val input: String) {
         "const" to CONST,
         "if" to IF,
         "else" to ELSE,
-        "num" to NUM,
-        "str" to STR,
+        "Number" to NUM,
+        "String" to STR,
         "print" to PRINT
     )
 
-    fun tokenize(): List<Token> {
-        while (!isAtEnd()) {
+    fun tokenize(input: String): List<Token> {
+        while (!isAtEnd(input)) {
             start = current
-            val c = advance()
+            val c = advance(input)
             when (c) {
                 '(' -> tokens.add(LEFT_PAREN)
                 ')' -> tokens.add(RIGHT_PAREN)
@@ -50,20 +51,18 @@ class Lexer(private val input: String) {
                 ';' -> tokens.add(SEMICOLON)
                 ':' -> tokens.add(COLON)
                 '=' -> tokens.add(ASSIGNATION)
-                in '0'..'9' -> number()
-                in 'a'..'z', in 'A'..'Z', '_' -> identifier()
-                '"' -> string()
-                // ... other cases ...
+                in '0'..'9' -> number(input)
+                in 'a'..'z', in 'A'..'Z', '_' -> identifier(input)
+                '"' -> string(input)
             }
         }
         return tokens
     }
 
-    private fun identifier() {
-        while (isAlphaNumeric(peek())) {
-            advance()
+    private fun identifier(input: String) {
+        while (isAlphaNumeric(peek(input))) {
+            advance(input)
         }
-
         val text = input.substring(start, current)
         val token = keywords[text] ?: IDENTIFIER(text)
         tokens.add(token)
@@ -73,15 +72,15 @@ class Lexer(private val input: String) {
         return c.isLetterOrDigit() || c == '_'
     }
 
-    private fun number() {
-        while (peek().isDigit()) {
-            advance()
+    private fun number(input: String) {
+        while (peek(input).isDigit()) {
+            advance(input)
         }
 
-        if (peek() == '.' && peekNext().isDigit()) {
-            advance()
-            while (peek().isDigit()) {
-                advance()
+        if (peek(input) == '.' && peekNext(input).isDigit()) {
+            advance(input)
+            while (peek(input).isDigit()) {
+                advance(input)
             }
         }
 
@@ -89,34 +88,32 @@ class Lexer(private val input: String) {
         tokens.add(NumValue(value))
     }
 
-    private fun string() {
-        while (peek() != '"' && !isAtEnd()) {
-            advance()
+    private fun string(input: String) {
+        while (peek(input) != '"' && !isAtEnd(input)) {
+            advance(input)
         }
-
-        if (isAtEnd()) {
+        if (isAtEnd(input)) {
             throw RuntimeException("Unterminated string")
         }
-
-        advance()
+        advance(input)
         val value = input.substring(start + 1, current - 1)
         tokens.add(StrValue(value))
     }
 
-    private fun advance(): Char {
+    private fun advance(input: String): Char {
         current++
         return input[current - 1]
     }
 
-    private fun peek(): Char {
-        return if (isAtEnd()) '\u0000' else input[current]
+    private fun peek(input: String): Char {
+        return if (isAtEnd(input)) '\u0000' else input[current]
     }
 
-    private fun peekNext(): Char {
+    private fun peekNext(input: String): Char {
         return if (current + 1 >= input.length) '\u0000' else input[current + 1]
     }
 
-    private fun isAtEnd(): Boolean {
+    private fun isAtEnd(input: String): Boolean {
         return current >= input.length
     }
 }
