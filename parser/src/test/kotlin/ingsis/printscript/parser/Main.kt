@@ -15,11 +15,7 @@ import ingsis.printscript.utilities.enums.SEMICOLON
 import ingsis.printscript.utilities.enums.STR
 import ingsis.printscript.utilities.enums.SUB
 import ingsis.printscript.utilities.enums.StrValue
-import ingsis.printscript.utilities.visitor.AssignationAST
-import ingsis.printscript.utilities.visitor.BinaryOperationAST
-import ingsis.printscript.utilities.visitor.DeclarationAST
-import ingsis.printscript.utilities.visitor.LiteralAST
-import ingsis.printscript.utilities.visitor.UnaryOperationAST
+import ingsis.printscript.utilities.visitor.* // ktlint-disable no-wildcard-imports
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 
@@ -97,24 +93,40 @@ class Main {
             SEMICOLON,
         )
 
-        val expectedTree =
-            UnaryOperationAST(
-                PRINT,
+        val expectedTree = UnaryOperationAST(
+            PRINT,
+            BinaryOperationAST(
                 BinaryOperationAST(
-                    BinaryOperationAST(
-                        LiteralAST(NumValue(2.0)),
-                        LiteralAST(NumValue(1.0)),
-                        SUB,
-                    ),
-                    BinaryOperationAST(
-                        LiteralAST(NumValue(3.0)),
-                        LiteralAST(NumValue(1.0)),
-                        SUB,
-                    ),
+                    LiteralAST(NumValue(2.0)),
+                    LiteralAST(NumValue(1.0)),
                     SUB,
                 ),
-            )
+                BinaryOperationAST(
+                    LiteralAST(NumValue(3.0)),
+                    LiteralAST(NumValue(1.0)),
+                    SUB,
+                ),
+                SUB,
+            ),
+        )
+        assertTrue { expectedTree == parser.parse(tokenList) }
+    }
 
+    @Test
+    fun reassignExpressionShouldReturnTree() {
+        val tokenList = listOf(
+            IDENTIFIER("name"),
+            ASSIGNATION,
+            StrValue("Fede"),
+            SEMICOLON,
+        )
+
+        val expectedTree = ReAssignationAST(
+            "name",
+            LiteralAST(
+                StrValue("Fede"),
+            ),
+        )
         assertTrue { expectedTree == parser.parse(tokenList) }
     }
 }

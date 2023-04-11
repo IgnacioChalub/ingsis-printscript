@@ -45,6 +45,14 @@ enum class Statement(override val elements: List<SyntaxElement>) : IStatement {
             SyntaxElements.IDENTIFIER_SYNTAX,
             SyntaxElements.TYPEASSIGNMENT,
             SyntaxElements.TYPE,
+            SyntaxElements.ASSIGNATION_SYNTAX,
+        ),
+    ),
+
+    RE_ASSIGNATION(
+        listOf(
+            SyntaxElements.IDENTIFIER_SYNTAX,
+            SyntaxElements.ASSIGNATION_SYNTAX,
         ),
     ),
 

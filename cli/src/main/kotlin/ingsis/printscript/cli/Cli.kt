@@ -23,11 +23,18 @@ fun runCLI(operation: MenuOptions, input: String, version: String, config: Strin
 
 fun executeProgram(input: String, version: String) {
     val file = File(input)
-    val tokenList = Lexer(file.readText()).tokenize()
+
+    val lexer = Lexer()
     val parser = Parser()
     val interpreter = Interpreter.Factory.createDefault()
-    val asTree = parser.parse(tokenList)
-    interpreter.interpret(asTree)
+
+    val content = file.readText().replace("\n", "")
+    val sentences = if (content.last() == ';') { content.split(";").dropLast(1) } else {
+        content.split(";")
+    }
+    val tokenLists = sentences.map { lexer.tokenize(it) }
+    val asTrees = tokenLists.map { parser.parse(it) }
+    asTrees.forEach { interpreter.interpret(it) }
 }
 
 fun main(args: Array<String>) {

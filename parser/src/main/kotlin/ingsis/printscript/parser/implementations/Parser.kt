@@ -5,6 +5,6 @@ import ingsis.printscript.utilities.visitor.VisitableAST
 
 class Parser : IParser {
     override fun parse(tokenList: List<Token>): VisitableAST {
-        return SyntaxProvider(tokenList).parse()
+        return SyntaxProvider().parse(tokenList)
     }
 }

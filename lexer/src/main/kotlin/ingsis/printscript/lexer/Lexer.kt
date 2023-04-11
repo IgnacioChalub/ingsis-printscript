@@ -4,7 +4,6 @@ import ingsis.printscript.utilities.enums.* // ktlint-disable no-wildcard-import
 
 class Lexer() {
 
-    private val tokens = mutableListOf<Token>()
     private var start = 0
     private var current = 0
 
@@ -19,6 +18,7 @@ class Lexer() {
     )
 
     fun tokenize(input: String): List<Token> {
+        val tokens = mutableListOf<Token>()
         while (!isAtEnd(input)) {
             start = current
             val c = advance(input)
@@ -32,15 +32,17 @@ class Lexer() {
                 ';' -> tokens.add(SEMICOLON)
                 ':' -> tokens.add(COLON)
                 '=' -> tokens.add(ASSIGNATION)
-                in '0'..'9' -> number(input)
-                in 'a'..'z', in 'A'..'Z', '_' -> identifier(input)
-                '"' -> string(input)
+                in '0'..'9' -> number(input, tokens)
+                in 'a'..'z', in 'A'..'Z', '_' -> identifier(input, tokens)
+                '"' -> string(input, tokens)
             }
         }
+        start = 0
+        current = 0
         return tokens
     }
 
-    private fun identifier(input: String) {
+    private fun identifier(input: String, tokens: MutableList<Token>) {
         while (isAlphaNumeric(peek(input))) {
             advance(input)
         }
@@ -53,7 +55,7 @@ class Lexer() {
         return c.isLetterOrDigit() || c == '_'
     }
 
-    private fun number(input: String) {
+    private fun number(input: String, tokens: MutableList<Token>) {
         while (peek(input).isDigit()) {
             advance(input)
         }
@@ -69,7 +71,7 @@ class Lexer() {
         tokens.add(NumValue(value))
     }
 
-    private fun string(input: String) {
+    private fun string(input: String, tokens: MutableList<Token>) {
         while (peek(input) != '"' && !isAtEnd(input)) {
             advance(input)
         }
