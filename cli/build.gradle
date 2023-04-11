@@ -1,0 +1,44 @@
+plugins {
+    id 'ingsis.printscript.kotlin-common-conventions'
+    id 'application'
+}
+
+repositories {
+    mavenCentral()
+}
+
+application {
+    mainClass = 'ingsis.printscript.cli.CliKt'
+}
+
+jar {
+    manifest {
+        attributes("Main-Class": "ingsis.printscript.cli.CliKt")
+    }
+    from {
+        configurations.runtimeClasspath.getAsFileTree().collect {
+            it.isDirectory() ? it : zipTree(it)
+        }
+    }
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    exclude("META-INF/*.RSA", "META-INF/*.SF", "META-INF/*.DSA")
+}
+
+task packageDistribution(type: Copy) {
+    dependsOn jar
+    from "${project.rootDir}/scripts/cli"
+    from("${project.buildDir}/libs/${project.name}-0.0.2.jar") {
+        into("lib")
+    }
+    into "${project.rootDir}/dist"
+}
+
+
+dependencies {
+    implementation project(':parser')
+    implementation project(':lexer')
+    implementation project(':interpreter')
+    implementation project(':utilities')
+    implementation("org.jetbrains.kotlinx:kotlinx-cli:0.3.5")
+}
+version "0.0.2"

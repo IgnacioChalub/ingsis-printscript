@@ -1,36 +1,36 @@
 package ingsis.printscript.lexer// package ingsis.printscript.lexer
 //
-// import ingsis.printscript.utilities.enums.TokenType
-// import ingsis.printscript.utilities.types.Token
+// import ingsis.printscript.utilities.enums.ingsis.printscript.lexer.TokenType
+// import ingsis.printscript.utilities.types.ingsis.printscript.lexer.ingsis.printscript.utilities.enums.Token
 //
 // class Lexer2(private val input: String) {
 //    private var position = 0
 //    private var currentChar: Char? = null
 //
 //    // por tip de Tomi mejor usar mapa para hacerlo extensible a futura agregacion de nuevo token
-//    private val tokenMap: Map<Char, () -> Token> = mapOf(
-//        ';' to { Token(TokenType.SEMICOLON, ";").also { advance() } },
-//        ':' to { Token(TokenType.COLON, ":").also { advance() } },
-//        '=' to { Token(TokenType.ASSIGNATION, "=").also { advance() } },
-//        '(' to { Token(TokenType.LEFT_PAREN, "(").also { advance() } },
-//        ')' to { Token(TokenType.RIGHT_PAREN, ")").also { advance() } },
-//        '{' to { Token(TokenType.LEFT_CURLY_BRACES, "{").also { advance() } },
-//        '}' to { Token(TokenType.RIGHT_CURLY_BRACES, "}").also { advance() } },
-//        '-' to { Token(TokenType.MINUS, "-").also { advance() } },
-//        '+' to { Token(TokenType.PLUS, "+").also { advance() } },
-//        '*' to { Token(TokenType.MULTIPLY, "*").also { advance() } },
-//        '/' to { Token(TokenType.DIVIDE, "/").also { advance() } },
+//    private val tokenMap: Map<Char, () -> ingsis.printscript.lexer.ingsis.printscript.utilities.enums.Token> = mapOf(
+//        ';' to { ingsis.printscript.lexer.ingsis.printscript.utilities.enums.Token(ingsis.printscript.lexer.TokenType.ingsis.printscript.lexer.ingsis.printscript.utilities.enums.SEMICOLON, ";").also { advance() } },
+//        ':' to { ingsis.printscript.lexer.ingsis.printscript.utilities.enums.Token(ingsis.printscript.lexer.TokenType.ingsis.printscript.lexer.ingsis.printscript.utilities.enums.COLON, ":").also { advance() } },
+//        '=' to { ingsis.printscript.lexer.ingsis.printscript.utilities.enums.Token(ingsis.printscript.lexer.TokenType.ingsis.printscript.lexer.ingsis.printscript.utilities.enums.ASSIGNATION, "=").also { advance() } },
+//        '(' to { ingsis.printscript.lexer.ingsis.printscript.utilities.enums.Token(ingsis.printscript.lexer.TokenType.ingsis.printscript.lexer.ingsis.printscript.utilities.enums.LEFT_PAREN, "(").also { advance() } },
+//        ')' to { ingsis.printscript.lexer.ingsis.printscript.utilities.enums.Token(ingsis.printscript.lexer.TokenType.ingsis.printscript.lexer.ingsis.printscript.utilities.enums.RIGHT_PAREN, ")").also { advance() } },
+//        '{' to { ingsis.printscript.lexer.ingsis.printscript.utilities.enums.Token(ingsis.printscript.lexer.TokenType.LEFT_CURLY_BRACES, "{").also { advance() } },
+//        '}' to { ingsis.printscript.lexer.ingsis.printscript.utilities.enums.Token(ingsis.printscript.lexer.TokenType.RIGHT_CURLY_BRACES, "}").also { advance() } },
+//        '-' to { ingsis.printscript.lexer.ingsis.printscript.utilities.enums.Token(ingsis.printscript.lexer.TokenType.MINUS, "-").also { advance() } },
+//        '+' to { ingsis.printscript.lexer.ingsis.printscript.utilities.enums.Token(ingsis.printscript.lexer.TokenType.PLUS, "+").also { advance() } },
+//        '*' to { ingsis.printscript.lexer.ingsis.printscript.utilities.enums.Token(ingsis.printscript.lexer.TokenType.MULTIPLY, "*").also { advance() } },
+//        '/' to { ingsis.printscript.lexer.ingsis.printscript.utilities.enums.Token(ingsis.printscript.lexer.TokenType.DIVIDE, "/").also { advance() } },
 //    )
 //
 //    // lo mismo
-//    private val keywordMap: Map<String, TokenType> = mapOf(
-//        "let" to TokenType.LET,
-//        "const" to TokenType.CONST,
-//        "if" to TokenType.IF,
-//        "else" to TokenType.ELSE,
-//        "print" to TokenType.PRINT,
-//        "string" to TokenType.STRING_TYPE,
-//        "number" to TokenType.STRING_TYPE,
+//    private val keywordMap: Map<String, ingsis.printscript.lexer.TokenType> = mapOf(
+//        "let" to ingsis.printscript.lexer.TokenType.ingsis.printscript.lexer.ingsis.printscript.utilities.enums.LET,
+//        "const" to ingsis.printscript.lexer.TokenType.ingsis.printscript.lexer.ingsis.printscript.utilities.enums.CONST,
+//        "if" to ingsis.printscript.lexer.TokenType.ingsis.printscript.lexer.ingsis.printscript.utilities.enums.IF,
+//        "else" to ingsis.printscript.lexer.TokenType.ingsis.printscript.lexer.ingsis.printscript.utilities.enums.ELSE,
+//        "print" to ingsis.printscript.lexer.TokenType.ingsis.printscript.lexer.ingsis.printscript.utilities.enums.PRINT,
+//        "string" to ingsis.printscript.lexer.TokenType.STRING_TYPE,
+//        "number" to ingsis.printscript.lexer.TokenType.STRING_TYPE,
 //    )
 //
 //    init {
@@ -52,17 +52,17 @@ package ingsis.printscript.lexer// package ingsis.printscript.lexer
 //        }
 //    }
 //
-//    private fun parseIdentifierOrKeyword(): Token {
+//    private fun parseIdentifierOrKeyword(): ingsis.printscript.lexer.ingsis.printscript.utilities.enums.Token {
 //        val startPos = position - 1
 //        while (currentChar?.let { it.isLetterOrDigit() || it == '_' } == true) {
 //            advance()
 //        }
 //        val text = input.substring(startPos, position)
-//        val tokenType = keywordMap[text] ?: TokenType.IDENTIFIER
-//        return Token(tokenType, text)
+//        val tokenType = keywordMap[text] ?: ingsis.printscript.lexer.TokenType.ingsis.printscript.lexer.ingsis.printscript.utilities.enums.IDENTIFIER
+//        return ingsis.printscript.lexer.ingsis.printscript.utilities.enums.Token(tokenType, text)
 //    }
 //
-//    private fun parseString(): Token {
+//    private fun parseString(): ingsis.printscript.lexer.ingsis.printscript.utilities.enums.Token {
 //        advance() // Move past the opening double quote
 //        val startPos = position
 //        while (currentChar != null && currentChar != '"') {
@@ -73,10 +73,10 @@ package ingsis.printscript.lexer// package ingsis.printscript.lexer
 //        }
 //        val text = input.substring(startPos, position)
 //        advance() // Move past the closing double quote
-//        return Token(TokenType.STRING, text)
+//        return ingsis.printscript.lexer.ingsis.printscript.utilities.enums.Token(ingsis.printscript.lexer.TokenType.STRING, text)
 //    }
 //
-//    private fun parseNumber(): Token {
+//    private fun parseNumber(): ingsis.printscript.lexer.ingsis.printscript.utilities.enums.Token {
 //        val startPos = position - 1
 //        while (currentChar?.isDigit() == true) {
 //            advance()
@@ -89,15 +89,15 @@ package ingsis.printscript.lexer// package ingsis.printscript.lexer
 //        }
 //        val text = input.substring(startPos, position)
 //        val value = text.toDoubleOrNull() ?: throw Exception("Invalid number format")
-//        return Token(TokenType.NUMBER_TYPE, value)
+//        return ingsis.printscript.lexer.ingsis.printscript.utilities.enums.Token(ingsis.printscript.lexer.TokenType.NUMBER_TYPE, value)
 //    }
 //
-//    fun getNextToken(): Token {
+//    fun getNextToken(): ingsis.printscript.lexer.ingsis.printscript.utilities.enums.Token {
 //        skipWhitespace()
 //
 //        if (currentChar == null) {
 //            // end of file
-//            return Token(TokenType.EOF, "")
+//            return ingsis.printscript.lexer.ingsis.printscript.utilities.enums.Token(ingsis.printscript.lexer.TokenType.EOF, "")
 //        }
 //
 //        tokenMap[currentChar]?.let { return it() }
@@ -106,17 +106,17 @@ package ingsis.printscript.lexer// package ingsis.printscript.lexer
 //            '>' -> {
 //                advance()
 //                if (currentChar == '=') {
-//                    Token(TokenType.GREATER_EQUAL, ">=").also { advance() }
+//                    ingsis.printscript.lexer.ingsis.printscript.utilities.enums.Token(ingsis.printscript.lexer.TokenType.GREATER_EQUAL, ">=").also { advance() }
 //                } else {
-//                    Token(TokenType.GREATER, ">")
+//                    ingsis.printscript.lexer.ingsis.printscript.utilities.enums.Token(ingsis.printscript.lexer.TokenType.GREATER, ">")
 //                }
 //            }
 //            '<' -> {
 //                advance()
 //                if (currentChar == '=') {
-//                    Token(TokenType.LESS_EQUAL, "<=").also { advance() }
+//                    ingsis.printscript.lexer.ingsis.printscript.utilities.enums.Token(ingsis.printscript.lexer.TokenType.LESS_EQUAL, "<=").also { advance() }
 //                } else {
-//                    Token(TokenType.LESS, "<")
+//                    ingsis.printscript.lexer.ingsis.printscript.utilities.enums.Token(ingsis.printscript.lexer.TokenType.LESS, "<")
 //                }
 //            }
 //            '"' -> parseString()

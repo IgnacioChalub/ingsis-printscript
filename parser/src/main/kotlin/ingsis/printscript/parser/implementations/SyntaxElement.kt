@@ -38,7 +38,7 @@ enum class SyntaxElements(override val types: List<Token>) : SyntaxElement {
 }
 
 enum class Statement(override val elements: List<SyntaxElement>) : IStatement {
-    // LET id: String = "name"
+    // ingsis.printscript.utilities.enums.LET id: String = "name"
     ASSIGNATION(
         listOf(
             SyntaxElements.VARIABLE,

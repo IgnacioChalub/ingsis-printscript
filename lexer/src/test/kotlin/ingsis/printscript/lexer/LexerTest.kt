@@ -1,19 +1,5 @@
 package ingsis.printscript.lexer
 
-import ADD
-import ASSIGNATION
-import CONST
-import DIV
-import IDENTIFIER
-import LEFT_PAREN
-import LET
-import MUL
-import NumValue
-import PRINT
-import RIGHT_PAREN
-import SEMICOLON
-import SUB
-import StrValue
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 

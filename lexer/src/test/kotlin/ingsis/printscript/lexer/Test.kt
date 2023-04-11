@@ -11,15 +11,15 @@
 //        val input = ";:=(){}-+*/><"
 //        val lexer = Lexer(input)
 //        val expectedTokens = listOf(
-//            SEMICOLON,
-//            COLON,
-//            ASSIGNATION,
-//            LEFT_PAREN,
-//            RIGHT_PAREN,
-//            SUB,
-//            ADD,
-//            MUL,
-//            DIV,
+//            ingsis.printscript.lexer.ingsis.printscript.utilities.enums.SEMICOLON,
+//            ingsis.printscript.lexer.ingsis.printscript.utilities.enums.COLON,
+//            ingsis.printscript.lexer.ingsis.printscript.utilities.enums.ASSIGNATION,
+//            ingsis.printscript.lexer.ingsis.printscript.utilities.enums.LEFT_PAREN,
+//            ingsis.printscript.lexer.ingsis.printscript.utilities.enums.RIGHT_PAREN,
+//            ingsis.printscript.lexer.ingsis.printscript.utilities.enums.SUB,
+//            ingsis.printscript.lexer.ingsis.printscript.utilities.enums.ADD,
+//            ingsis.printscript.lexer.ingsis.printscript.utilities.enums.MUL,
+//            ingsis.printscript.lexer.ingsis.printscript.utilities.enums.DIV,
 //        )
 //
 //        expectedTokens.forEach { expectedTokenType ->
@@ -47,7 +47,7 @@
 //        val lexer = Lexer2(input)
 //        val identifierToken = lexer.getNextToken()
 //
-//        assertEquals(IDENTIFIER, identifierToken.type)
+//        assertEquals(ingsis.printscript.lexer.ingsis.printscript.utilities.enums.IDENTIFIER, identifierToken.type)
 //        assertEquals("testIdentifier", identifierToken.value)
 //
 //        val eofToken = lexer.getNextToken()
@@ -63,7 +63,7 @@
 //            LESS_EQUAL,
 //            LESS,
 //            GREATER,
-//            ASSIGNATION,
+//            ingsis.printscript.lexer.ingsis.printscript.utilities.enums.ASSIGNATION,
 //            PLUS,
 //            MINUS,
 //            MULTIPLY,
@@ -93,9 +93,9 @@
 //        val input = "42 3.14"
 //        val lexer = Lexer2(input)
 //        val expectedTokens = listOf(
-//            Token(NUMBER_TYPE, 42.0),
-//            Token(NUMBER_TYPE, 3.14),
-//            Token(EOF, ""),
+//            ingsis.printscript.lexer.ingsis.printscript.utilities.enums.Token(NUMBER_TYPE, 42.0),
+//            ingsis.printscript.lexer.ingsis.printscript.utilities.enums.Token(NUMBER_TYPE, 3.14),
+//            ingsis.printscript.lexer.ingsis.printscript.utilities.enums.Token(EOF, ""),
 //        )
 //
 //        expectedTokens.forEach { expectedToken ->
@@ -110,9 +110,9 @@
 //        val input = "foo bar_123"
 //        val lexer = Lexer2(input)
 //        val expectedTokens = listOf(
-//            Token(IDENTIFIER, "foo "),
-//            Token(IDENTIFIER, "bar_123"),
-//            Token(EOF, ""),
+//            ingsis.printscript.lexer.ingsis.printscript.utilities.enums.Token(ingsis.printscript.lexer.ingsis.printscript.utilities.enums.IDENTIFIER, "foo "),
+//            ingsis.printscript.lexer.ingsis.printscript.utilities.enums.Token(ingsis.printscript.lexer.ingsis.printscript.utilities.enums.IDENTIFIER, "bar_123"),
+//            ingsis.printscript.lexer.ingsis.printscript.utilities.enums.Token(EOF, ""),
 //        )
 //
 //        expectedTokens.forEach { expectedToken ->

@@ -8,4 +8,4 @@
  */
 
 rootProject.name = 'ingsis-printscript'
-include('utilities', 'interpreter', 'lexer', 'parser', 'analyser')
+include('utilities', 'interpreter', 'lexer', 'parser', 'cli', 'analyser')
