@@ -1,19 +1,19 @@
 package ingsis.printscript.lexer
 
-import ADD
-import ASSIGNATION
-import CONST
-import DIV
-import IDENTIFIER
-import LEFT_PAREN
-import LET
-import MUL
-import NumValue
-import PRINT
-import RIGHT_PAREN
-import SEMICOLON
-import SUB
-import StrValue
+import ingsis.printscript.utilities.enums.ASSIGNATION
+import ingsis.printscript.utilities.enums.IDENTIFIER
+import ingsis.printscript.utilities.enums.LET
+import ingsis.printscript.utilities.enums.NumValue
+import ingsis.printscript.utilities.enums.SEMICOLON
+import ingsis.printscript.utilities.enums.CONST
+import ingsis.printscript.utilities.enums.ADD
+import ingsis.printscript.utilities.enums.StrValue
+import ingsis.printscript.utilities.enums.PRINT
+import ingsis.printscript.utilities.enums.LEFT_PAREN
+import ingsis.printscript.utilities.enums.RIGHT_PAREN
+import ingsis.printscript.utilities.enums.MUL
+import ingsis.printscript.utilities.enums.DIV
+import ingsis.printscript.utilities.enums.SUB
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
