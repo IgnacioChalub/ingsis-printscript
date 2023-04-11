@@ -34,7 +34,7 @@ class Lexer() {
         "else" to ELSE,
         "Number" to NUM,
         "String" to STR,
-        "print" to PRINT
+        "print" to PRINT,
     )
 
     fun tokenize(input: String): List<Token> {
