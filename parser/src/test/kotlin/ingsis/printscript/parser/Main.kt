@@ -39,15 +39,17 @@ class Main {
             SEMICOLON,
         )
 
-        val expectedTree = listOf(AssignationAST(
-            DeclarationAST(
-                "name",
-                STR,
+        val expectedTree = listOf(
+            AssignationAST(
+                DeclarationAST(
+                    "name",
+                    STR,
+                ),
+                LiteralAST(
+                    StrValue("Fede"),
+                ),
             ),
-            LiteralAST(
-                StrValue("Fede"),
-            ),
-        ))
+        )
         assertTrue { expectedTree == parser.parse(listOf(tokenList)) }
     }
 
@@ -65,17 +67,19 @@ class Main {
             SEMICOLON,
         )
 
-        val expectedTree = listOf(AssignationAST(
-            DeclarationAST(
-                "sum",
-                NUM,
+        val expectedTree = listOf(
+            AssignationAST(
+                DeclarationAST(
+                    "sum",
+                    NUM,
+                ),
+                BinaryOperationAST(
+                    LiteralAST(NumValue(1.0)),
+                    LiteralAST(NumValue(3.0)),
+                    ADD,
+                ),
             ),
-            BinaryOperationAST(
-                LiteralAST(NumValue(1.0)),
-                LiteralAST(NumValue(3.0)),
-                ADD,
-            ),
-        ))
+        )
         assertTrue { expectedTree == parser.parse(listOf(tokenList)) }
     }
 
@@ -113,7 +117,7 @@ class Main {
                     ),
                     SUB,
                 ),
-            )
+            ),
         )
         assertTrue { expectedTree == parser.parse(listOf(tokenList)) }
     }
@@ -183,8 +187,8 @@ class Main {
                     ),
                     SUB,
                 ),
-            )
+            ),
         )
-        assertTrue { expectedTree == parser.parse(listOf(tokenList1 , tokenList2)) }
+        assertTrue { expectedTree == parser.parse(listOf(tokenList1, tokenList2)) }
     }
 }

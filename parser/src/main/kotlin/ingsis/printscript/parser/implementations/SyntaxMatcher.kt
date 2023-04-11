@@ -35,13 +35,13 @@ class AssignationParser : SyntaxParser {
         return AssignationAST(
             DeclarationAST(
                 (tokenList[1] as IDENTIFIER).value,
-                tokenList[3] as Type
+                tokenList[3] as Type,
             ),
             if (tokenList.size > 5) {
                 ExpressionMatcher(ExpressionProvider.expressions).match(tokenList.slice(5 until tokenList.size - 1)) as ExpressionAST
             } else {
                 EmptyAST()
-            }
+            },
         )
     }
 }
@@ -50,7 +50,7 @@ class FunctionParser : SyntaxParser {
     override fun parse(tokenList: List<Token>): VisitableAST {
         return UnaryOperationAST(
             tokenList[0] as Function,
-            ExpressionMatcher(ExpressionProvider.expressions).match(tokenList.slice(1 until tokenList.size - 1)) as ExpressionAST
+            ExpressionMatcher(ExpressionProvider.expressions).match(tokenList.slice(1 until tokenList.size - 1)) as ExpressionAST,
         )
     }
 }
