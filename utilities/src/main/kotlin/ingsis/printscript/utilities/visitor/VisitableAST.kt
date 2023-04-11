@@ -13,7 +13,7 @@ interface VisitableAST {
 class ReAssignationAST(
     val variableName: String,
     private val expression: ExpressionAST,
-): VisitableAST {
+) : VisitableAST {
     override fun accept(visitor: Visitor) = visitor.visitReAssignationAST(this)
     override fun equals(other: Any?): Boolean {
         return other is ReAssignationAST && variableName == other.variableName && expression == other.expression

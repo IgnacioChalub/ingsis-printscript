@@ -15,7 +15,7 @@ import ingsis.printscript.utilities.enums.SEMICOLON
 import ingsis.printscript.utilities.enums.STR
 import ingsis.printscript.utilities.enums.SUB
 import ingsis.printscript.utilities.enums.StrValue
-import ingsis.printscript.utilities.visitor.*
+import ingsis.printscript.utilities.visitor.* // ktlint-disable no-wildcard-imports
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 

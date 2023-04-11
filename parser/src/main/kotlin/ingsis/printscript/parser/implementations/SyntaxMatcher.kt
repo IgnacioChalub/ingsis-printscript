@@ -6,7 +6,7 @@ import ingsis.printscript.utilities.enums.Function
 import ingsis.printscript.utilities.enums.IDENTIFIER
 import ingsis.printscript.utilities.enums.Token
 import ingsis.printscript.utilities.enums.Type
-import ingsis.printscript.utilities.visitor.*
+import ingsis.printscript.utilities.visitor.* // ktlint-disable no-wildcard-imports
 
 class SyntaxProvider {
     fun parse(tokenList: List<Token>): VisitableAST {
