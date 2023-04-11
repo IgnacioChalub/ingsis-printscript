@@ -11,15 +11,7 @@ import ingsis.printscript.utilities.enums.SUB
 import ingsis.printscript.utilities.enums.StrValue
 import ingsis.printscript.utilities.enums.Type
 import ingsis.printscript.utilities.enums.Value
-import ingsis.printscript.utilities.visitor.AssignationAST
-import ingsis.printscript.utilities.visitor.BinaryOperationAST
-import ingsis.printscript.utilities.visitor.DeclarationAST
-import ingsis.printscript.utilities.visitor.EmptyAST
-import ingsis.printscript.utilities.visitor.LiteralAST
-import ingsis.printscript.utilities.visitor.UnaryOperationAST
-import ingsis.printscript.utilities.visitor.VariableAST
-import ingsis.printscript.utilities.visitor.VisitableAST
-import ingsis.printscript.utilities.visitor.Visitor
+import ingsis.printscript.utilities.visitor.* // ktlint-disable no-wildcard-imports
 
 class InterpreterVisitor(
     val memory: LocalMemory,
@@ -37,6 +29,17 @@ class InterpreterVisitor(
             }
         } else {
             throw Error("Invalid tree")
+        }
+        return EmptyAST()
+    }
+
+    override fun visitReAssignationAST(ast: ReAssignationAST): VisitableAST {
+        val literalAST = ast.expression.accept(this)
+        val oldValue = memory.getValue(ast.variableName)
+        if (literalAST is LiteralAST) {
+            if (oldValue::class == literalAST.value::class) {
+                memory.put(ast.variableName, literalAST.value)
+            }
         }
         return EmptyAST()
     }

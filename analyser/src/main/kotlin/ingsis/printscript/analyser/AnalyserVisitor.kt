@@ -22,6 +22,10 @@ class AnalyserVisitor(
         return EmptyAST()
     }
 
+    override fun visitReAssignationAST(ast: ReAssignationAST): VisitableAST {
+        TODO("Not yet implemented")
+    }
+
     override fun visitDeclarationAST(ast: DeclarationAST): VisitableAST {
         rules.map {
             it.validate(ast)
