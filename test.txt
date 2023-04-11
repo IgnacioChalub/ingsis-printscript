@@ -1,1 +1,1 @@
-let a: str = "Hello World";
+let a: str = "Hello World";print(a);

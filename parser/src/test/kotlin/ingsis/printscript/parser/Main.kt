@@ -39,16 +39,18 @@ class Main {
             SEMICOLON,
         )
 
-        val expectedTree = AssignationAST(
-            DeclarationAST(
-                "name",
-                STR,
-            ),
-            LiteralAST(
-                StrValue("Fede"),
+        val expectedTree = listOf(
+            AssignationAST(
+                DeclarationAST(
+                    "name",
+                    STR,
+                ),
+                LiteralAST(
+                    StrValue("Fede"),
+                ),
             ),
         )
-        assertTrue { expectedTree == parser.parse(tokenList) }
+        assertTrue { expectedTree == parser.parse(listOf(tokenList)) }
     }
 
     @Test
@@ -65,18 +67,20 @@ class Main {
             SEMICOLON,
         )
 
-        val expectedTree = AssignationAST(
-            DeclarationAST(
-                "sum",
-                NUM,
-            ),
-            BinaryOperationAST(
-                LiteralAST(NumValue(1.0)),
-                LiteralAST(NumValue(3.0)),
-                ADD,
+        val expectedTree = listOf(
+            AssignationAST(
+                DeclarationAST(
+                    "sum",
+                    NUM,
+                ),
+                BinaryOperationAST(
+                    LiteralAST(NumValue(1.0)),
+                    LiteralAST(NumValue(3.0)),
+                    ADD,
+                ),
             ),
         )
-        assertTrue { expectedTree == parser.parse(tokenList) }
+        assertTrue { expectedTree == parser.parse(listOf(tokenList)) }
     }
 
     @Test
@@ -97,7 +101,7 @@ class Main {
             SEMICOLON,
         )
 
-        val expectedTree =
+        val expectedTree = listOf(
             UnaryOperationAST(
                 PRINT,
                 BinaryOperationAST(
@@ -113,8 +117,78 @@ class Main {
                     ),
                     SUB,
                 ),
-            )
+            ),
+        )
+        assertTrue { expectedTree == parser.parse(listOf(tokenList)) }
+    }
 
-        assertTrue { expectedTree == parser.parse(tokenList) }
+    @Test
+    fun listFunctionSubtExpressionShouldReturnTrees() {
+        val tokenList1 = listOf(
+            PRINT,
+            LEFT_PAREN,
+            NumValue(2.0),
+            SUB,
+            NumValue(1.0),
+            RIGHT_PAREN,
+            SUB,
+            LEFT_PAREN,
+            NumValue(3.0),
+            SUB,
+            NumValue(1.0),
+            RIGHT_PAREN,
+            SEMICOLON,
+        )
+        val tokenList2 = listOf(
+            PRINT,
+            LEFT_PAREN,
+            NumValue(2.0),
+            SUB,
+            NumValue(1.0),
+            RIGHT_PAREN,
+            SUB,
+            LEFT_PAREN,
+            NumValue(3.0),
+            SUB,
+            NumValue(1.0),
+            RIGHT_PAREN,
+            SEMICOLON,
+        )
+
+        val expectedTree = listOf(
+            UnaryOperationAST(
+                PRINT,
+                BinaryOperationAST(
+                    BinaryOperationAST(
+                        LiteralAST(NumValue(2.0)),
+                        LiteralAST(NumValue(1.0)),
+                        SUB,
+                    ),
+                    BinaryOperationAST(
+                        LiteralAST(NumValue(3.0)),
+                        LiteralAST(NumValue(1.0)),
+                        SUB,
+                    ),
+                    SUB,
+                ),
+            ),
+            UnaryOperationAST(
+                PRINT,
+                BinaryOperationAST(
+                    BinaryOperationAST(
+                        LiteralAST(NumValue(2.0)),
+                        LiteralAST(NumValue(1.0)),
+                        SUB,
+                    ),
+                    BinaryOperationAST(
+                        LiteralAST(NumValue(3.0)),
+                        LiteralAST(NumValue(1.0)),
+                        SUB,
+                    ),
+                    SUB,
+                ),
+            ),
+        )
+        assertTrue { expectedTree == parser.parse(listOf(tokenList1, tokenList2)) }
     }
 }

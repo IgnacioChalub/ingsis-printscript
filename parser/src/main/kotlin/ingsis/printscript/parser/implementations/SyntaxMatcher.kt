@@ -13,8 +13,8 @@ import ingsis.printscript.utilities.visitor.ExpressionAST
 import ingsis.printscript.utilities.visitor.UnaryOperationAST
 import ingsis.printscript.utilities.visitor.VisitableAST
 
-class SyntaxProvider(private val tokenList: List<Token>) {
-    fun parse(): VisitableAST {
+class SyntaxProvider {
+    fun parse(tokenList: List<Token>): VisitableAST {
         return if (matches(tokenList, Statement.ASSIGNATION)) {
             AssignationParser().parse(tokenList)
         } else if (matches(tokenList, Statement.FUNCTION)) {
