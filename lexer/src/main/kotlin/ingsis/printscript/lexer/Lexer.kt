@@ -33,7 +33,7 @@ class Lexer(private val input: String) {
         "else" to ELSE,
         "num" to NUM,
         "str" to STR,
-        "print" to PRINT
+        "print" to PRINT,
     )
 
     fun tokenize(): List<Token> {
