@@ -15,11 +15,7 @@ import ingsis.printscript.utilities.enums.SEMICOLON
 import ingsis.printscript.utilities.enums.STR
 import ingsis.printscript.utilities.enums.SUB
 import ingsis.printscript.utilities.enums.StrValue
-import ingsis.printscript.utilities.visitor.AssignationAST
-import ingsis.printscript.utilities.visitor.BinaryOperationAST
-import ingsis.printscript.utilities.visitor.DeclarationAST
-import ingsis.printscript.utilities.visitor.LiteralAST
-import ingsis.printscript.utilities.visitor.UnaryOperationAST
+import ingsis.printscript.utilities.visitor.*
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 
@@ -39,18 +35,16 @@ class Main {
             SEMICOLON,
         )
 
-        val expectedTree = listOf(
-            AssignationAST(
-                DeclarationAST(
-                    "name",
-                    STR,
-                ),
-                LiteralAST(
-                    StrValue("Fede"),
-                ),
+        val expectedTree = AssignationAST(
+            DeclarationAST(
+                "name",
+                STR,
+            ),
+            LiteralAST(
+                StrValue("Fede"),
             ),
         )
-        assertTrue { expectedTree == parser.parse(listOf(tokenList)) }
+        assertTrue { expectedTree == parser.parse(tokenList) }
     }
 
     @Test
@@ -67,20 +61,18 @@ class Main {
             SEMICOLON,
         )
 
-        val expectedTree = listOf(
-            AssignationAST(
-                DeclarationAST(
-                    "sum",
-                    NUM,
-                ),
-                BinaryOperationAST(
-                    LiteralAST(NumValue(1.0)),
-                    LiteralAST(NumValue(3.0)),
-                    ADD,
-                ),
+        val expectedTree = AssignationAST(
+            DeclarationAST(
+                "sum",
+                NUM,
+            ),
+            BinaryOperationAST(
+                LiteralAST(NumValue(1.0)),
+                LiteralAST(NumValue(3.0)),
+                ADD,
             ),
         )
-        assertTrue { expectedTree == parser.parse(listOf(tokenList)) }
+        assertTrue { expectedTree == parser.parse(tokenList) }
     }
 
     @Test
@@ -101,94 +93,40 @@ class Main {
             SEMICOLON,
         )
 
-        val expectedTree = listOf(
-            UnaryOperationAST(
-                PRINT,
+        val expectedTree = UnaryOperationAST(
+            PRINT,
+            BinaryOperationAST(
                 BinaryOperationAST(
-                    BinaryOperationAST(
-                        LiteralAST(NumValue(2.0)),
-                        LiteralAST(NumValue(1.0)),
-                        SUB,
-                    ),
-                    BinaryOperationAST(
-                        LiteralAST(NumValue(3.0)),
-                        LiteralAST(NumValue(1.0)),
-                        SUB,
-                    ),
+                    LiteralAST(NumValue(2.0)),
+                    LiteralAST(NumValue(1.0)),
                     SUB,
                 ),
+                BinaryOperationAST(
+                    LiteralAST(NumValue(3.0)),
+                    LiteralAST(NumValue(1.0)),
+                    SUB,
+                ),
+                SUB,
             ),
         )
-        assertTrue { expectedTree == parser.parse(listOf(tokenList)) }
+        assertTrue { expectedTree == parser.parse(tokenList) }
     }
 
     @Test
-    fun listFunctionSubtExpressionShouldReturnTrees() {
-        val tokenList1 = listOf(
-            PRINT,
-            LEFT_PAREN,
-            NumValue(2.0),
-            SUB,
-            NumValue(1.0),
-            RIGHT_PAREN,
-            SUB,
-            LEFT_PAREN,
-            NumValue(3.0),
-            SUB,
-            NumValue(1.0),
-            RIGHT_PAREN,
-            SEMICOLON,
-        )
-        val tokenList2 = listOf(
-            PRINT,
-            LEFT_PAREN,
-            NumValue(2.0),
-            SUB,
-            NumValue(1.0),
-            RIGHT_PAREN,
-            SUB,
-            LEFT_PAREN,
-            NumValue(3.0),
-            SUB,
-            NumValue(1.0),
-            RIGHT_PAREN,
+    fun reassignExpressionShouldReturnTree() {
+        val tokenList = listOf(
+            IDENTIFIER("name"),
+            ASSIGNATION,
+            StrValue("Fede"),
             SEMICOLON,
         )
 
-        val expectedTree = listOf(
-            UnaryOperationAST(
-                PRINT,
-                BinaryOperationAST(
-                    BinaryOperationAST(
-                        LiteralAST(NumValue(2.0)),
-                        LiteralAST(NumValue(1.0)),
-                        SUB,
-                    ),
-                    BinaryOperationAST(
-                        LiteralAST(NumValue(3.0)),
-                        LiteralAST(NumValue(1.0)),
-                        SUB,
-                    ),
-                    SUB,
-                ),
-            ),
-            UnaryOperationAST(
-                PRINT,
-                BinaryOperationAST(
-                    BinaryOperationAST(
-                        LiteralAST(NumValue(2.0)),
-                        LiteralAST(NumValue(1.0)),
-                        SUB,
-                    ),
-                    BinaryOperationAST(
-                        LiteralAST(NumValue(3.0)),
-                        LiteralAST(NumValue(1.0)),
-                        SUB,
-                    ),
-                    SUB,
-                ),
+        val expectedTree = ReAssignationAST(
+            "name",
+            LiteralAST(
+                StrValue("Fede"),
             ),
         )
-        assertTrue { expectedTree == parser.parse(listOf(tokenList1, tokenList2)) }
+        assertTrue { expectedTree == parser.parse(tokenList) }
     }
 }

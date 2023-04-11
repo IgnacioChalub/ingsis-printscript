@@ -2,6 +2,8 @@ package ingsis.printscript.utilities.visitor
 
 interface Visitor {
     fun visitAssignationAST(ast: AssignationAST): VisitableAST
+
+    fun visitReAssignationAST(ast: ReAssignationAST): VisitableAST
     fun visitDeclarationAST(ast: DeclarationAST): VisitableAST
     fun visitBinaryOperationAST(ast: BinaryOperationAST): VisitableAST
     fun visitUnaryOperationAST(ast: UnaryOperationAST): VisitableAST
