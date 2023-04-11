@@ -2,7 +2,6 @@ package ingsis.printscript.lexer
 
 import ingsis.printscript.utilities.enums.* // ktlint-disable no-wildcard-imports
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Test
 
 class LexerTest {
