@@ -1,4 +1,4 @@
-package ingsis.printscript.lexer// package ingsis.printscript.lexer
+package ingsis.printscript.lexer // package ingsis.printscript.lexer
 //
 // import ingsis.printscript.utilities.enums.ingsis.printscript.lexer.TokenType
 // import ingsis.printscript.utilities.types.ingsis.printscript.lexer.ingsis.printscript.utilities.enums.Token
