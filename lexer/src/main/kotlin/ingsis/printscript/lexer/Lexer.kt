@@ -1,25 +1,6 @@
 package ingsis.printscript.lexer
 
-import ADD
-import ASSIGNATION
-import COLON
-import CONST
-import DIV
-import ELSE
-import IDENTIFIER
-import IF
-import LEFT_PAREN
-import LET
-import MUL
-import NUM
-import NumValue
-import PRINT
-import RIGHT_PAREN
-import SEMICOLON
-import STR
-import SUB
-import StrValue
-import Token
+import ingsis.printscript.utilities.enums.* // ktlint-disable no-wildcard-imports
 
 class Lexer() {
 

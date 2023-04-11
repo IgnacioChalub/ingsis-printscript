@@ -2,18 +2,31 @@ package ingsis.printscript.utilities.enums
 
 sealed interface Token
 
-sealed interface TokenType : Token
-
-object LET : TokenType
-object CONST : TokenType
-object IF : TokenType
-object ELSE : TokenType
-object COLON : TokenType
-object SEMICOLON : TokenType
-object ASSIGNATION : TokenType
+object LET : Token
+object CONST : Token
+object IF : Token
+object ELSE : Token
+object COLON : Token
+object SEMICOLON : Token
+object ASSIGNATION : Token
 
 sealed interface UtilToken : Token
-class IDENTIFIER(val value: String) : UtilToken
+data class IDENTIFIER(val value: String) : UtilToken {
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other == null || this::class != other::class) return false
+
+        other as IDENTIFIER
+
+        if (value != other.value) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        return value.hashCode()
+    }
+}
 
 sealed interface Operation : Token
 
@@ -29,15 +42,37 @@ object NUM : Type
 object STR : Type
 
 sealed interface Value : Token
-class StrValue(val value: String) : Value {
+data class StrValue(val value: String) : Value {
     override fun equals(other: Any?): Boolean {
-        return other is StrValue && value == other.value
+        if (this === other) return true
+        if (other == null || this::class != other::class) return false
+
+        other as StrValue
+
+        if (value != other.value) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        return value.hashCode()
     }
 }
 
-class NumValue(val value: Double) : Value {
+data class NumValue(val value: Double) : Value {
     override fun equals(other: Any?): Boolean {
-        return other is NumValue && value == other.value
+        if (this === other) return true
+        if (other == null || this::class != other::class) return false
+
+        other as NumValue
+
+        if (value != other.value) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        return value.hashCode()
     }
 }
 

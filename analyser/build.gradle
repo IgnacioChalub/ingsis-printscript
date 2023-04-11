@@ -7,4 +7,6 @@ plugins {
 
 dependencies {
     implementation project(':utilities')
+    implementation project(':lexer')
+    implementation project(':parser')
 }
