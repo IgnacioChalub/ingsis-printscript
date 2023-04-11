@@ -1,13 +1,27 @@
 package ingsis.printscript.lexer
 
+import ingsis.printscript.utilities.enums.ADD
+import ingsis.printscript.utilities.enums.ASSIGNATION
+import ingsis.printscript.utilities.enums.CONST
+import ingsis.printscript.utilities.enums.DIV
+import ingsis.printscript.utilities.enums.IDENTIFIER
+import ingsis.printscript.utilities.enums.LEFT_PAREN
+import ingsis.printscript.utilities.enums.LET
+import ingsis.printscript.utilities.enums.MUL
+import ingsis.printscript.utilities.enums.NumValue
+import ingsis.printscript.utilities.enums.PRINT
+import ingsis.printscript.utilities.enums.RIGHT_PAREN
+import ingsis.printscript.utilities.enums.SEMICOLON
+import ingsis.printscript.utilities.enums.SUB
+import ingsis.printscript.utilities.enums.StrValue
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
 class LexerTest {
     @Test
     fun testBasicKeywords() {
-        val lexer = Lexer("let x = 5; const y = 10;")
-        val tokens = lexer.tokenize()
+        val lexer = Lexer()
+        val tokens = lexer.tokenize("let x = 5; const y = 10;")
         val expected = listOf(
             LET, IDENTIFIER("x"), ASSIGNATION, NumValue(5.0), SEMICOLON,
             CONST, IDENTIFIER("y"), ASSIGNATION, NumValue(10.0), SEMICOLON,
@@ -17,8 +31,8 @@ class LexerTest {
 
     @Test
     fun testOperations() {
-        val lexer = Lexer("x = x + 5;")
-        val tokens = lexer.tokenize()
+        val lexer = Lexer()
+        val tokens = lexer.tokenize("x = x + 5;")
         val expected = listOf(
             IDENTIFIER("x"),
             ASSIGNATION,
@@ -32,8 +46,8 @@ class LexerTest {
 
     @Test
     fun testStrings() {
-        val lexer = Lexer("""let s = "Hello, World!";""")
-        val tokens = lexer.tokenize()
+        val lexer = Lexer()
+        val tokens = lexer.tokenize("""let s = "Hello, World!";""")
         val expected = listOf(
             LET,
             IDENTIFIER("s"),
@@ -46,8 +60,8 @@ class LexerTest {
 
     @Test
     fun testComplexOperations() {
-        val lexer = Lexer("let result = (x * 5) / (y - 3);")
-        val tokens = lexer.tokenize()
+        val lexer = Lexer()
+        val tokens = lexer.tokenize("let result = (x * 5) / (y - 3);")
         val expected = listOf(
             LET, IDENTIFIER("result"), ASSIGNATION, LEFT_PAREN, IDENTIFIER("x"), MUL, NumValue(5.0), RIGHT_PAREN, DIV, LEFT_PAREN, IDENTIFIER("y"), SUB, NumValue(3.0), RIGHT_PAREN, SEMICOLON,
         )
@@ -56,14 +70,14 @@ class LexerTest {
 
     @Test
     fun testMultipleLines() {
-        val lexer = Lexer(
+        val lexer = Lexer()
+        val tokens = lexer.tokenize(
             """
             let x = 5;
             let y = 10;
             let z = x + y;
             """.trimIndent(),
         )
-        val tokens = lexer.tokenize()
         val expected = listOf(
             LET, IDENTIFIER("x"), ASSIGNATION, NumValue(5.0), SEMICOLON,
             LET, IDENTIFIER("y"), ASSIGNATION, NumValue(10.0), SEMICOLON,
@@ -74,8 +88,8 @@ class LexerTest {
 
     @Test
     fun testFunction() {
-        val lexer = Lexer("print(x);")
-        val tokens = lexer.tokenize()
+        val lexer = Lexer()
+        val tokens = lexer.tokenize("print(x);")
         val expected = listOf(
             PRINT,
             LEFT_PAREN,
