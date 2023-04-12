@@ -35,28 +35,28 @@ class Analyser(
     private fun visit(ast: VisitableAST, rules: List<Rule>): List<String> {
         return when (ast) {
             is ReAssignationAST -> {
-                return this.visit(ast.expression, rules) + validateRules(ast, rules)
+                this.visit(ast.expression, rules) + validateRules(ast, rules)
             }
             is AssignationAST -> {
-                return this.visit(ast.expression, rules) + this.visit(ast.declaration, rules) + validateRules(ast, rules)
+                this.visit(ast.expression, rules) + this.visit(ast.declaration, rules) + validateRules(ast, rules)
             }
             is DeclarationAST -> {
-                return validateRules(ast, rules)
+                validateRules(ast, rules)
             }
             is BinaryOperationAST -> {
-                return this.visit(ast.left, rules) + this.visit(ast.right, rules) + validateRules(ast, rules)
+                this.visit(ast.left, rules) + this.visit(ast.right, rules) + validateRules(ast, rules)
             }
             is UnaryOperationAST -> {
-                return this.visit(ast.args, rules) + validateRules(ast, rules)
+                this.visit(ast.args, rules) + validateRules(ast, rules)
             }
             is LiteralAST -> {
-                return validateRules(ast, rules)
+                validateRules(ast, rules)
             }
             is VariableAST -> {
-                return validateRules(ast, rules)
+                validateRules(ast, rules)
             }
             is EmptyAST -> {
-                return validateRules(ast, rules)
+                validateRules(ast, rules)
             }
         }
     }
