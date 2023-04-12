@@ -6,7 +6,7 @@ import ingsis.printscript.utilities.enums.Type
 import ingsis.printscript.utilities.enums.Value
 import java.util.concurrent.locks.Condition
 
-interface VisitableAST {
+sealed interface VisitableAST {
     fun accept(visitor: Visitor): VisitableAST
     override fun equals(other: Any?): Boolean
 }

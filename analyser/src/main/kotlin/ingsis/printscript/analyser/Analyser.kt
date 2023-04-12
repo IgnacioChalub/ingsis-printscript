@@ -3,6 +3,7 @@ package ingsis.printscript.analyser
 import ingsis.printscript.lexer.Lexer
 import ingsis.printscript.parser.implementations.Parser
 import ingsis.printscript.utilities.interfaces.IParser
+import ingsis.printscript.utilities.visitor.* // ktlint-disable no-wildcard-imports
 
 enum class Configs {
     CAMEL_CASE,
@@ -14,31 +15,76 @@ enum class Configs {
 class Analyser(
     private val lexer: Lexer,
     private val parser: IParser,
+    private val rules: List<Rule>,
 ) {
 
     object Factory {
-        fun getDefault(): Analyser {
+        fun getDefault(config: List<Configs>): Analyser {
             return Analyser(
                 Lexer(),
                 Parser(),
+                generateRules(config),
             )
+        }
+        private fun generateRules(config: List<Configs>): List<Rule> {
+            if (config.contains(Configs.SNAKE_CASE) && config.contains(Configs.CAMEL_CASE)) {
+                throw Error("Variable names can not be snake case and camel case")
+            }
+            return config.map {
+                when (it) {
+                    Configs.CAMEL_CASE -> CamelCaseRule
+                    Configs.SNAKE_CASE -> SnakeCaseRule
+                    Configs.LIMIT_PRINTLN -> LimitPrint
+                    Configs.LIMIT_READ_INPUT -> LimitRead
+                }
+            }
         }
     }
 
-    fun analyse(input: String, config: List<Configs>): List<String> {
-        val ast = parser.parse(lexer.tokenize(input))
-        val visitor = AnalyserVisitor(generateRules(config), mutableListOf())
-        ast.accept(visitor)
-        return visitor.messages
+    fun analyse(inputs: List<String>): List<String> {
+        return inputs.fold(listOf()) { acc, input -> acc + analyse(input) }
     }
 
-    private fun generateRules(config: List<Configs>): List<Rule> {
-        return config.map {
-            when (it) {
-                Configs.CAMEL_CASE -> CamelCaseRule
-                Configs.SNAKE_CASE -> SnakeCaseRule
-                Configs.LIMIT_PRINTLN -> LimitPrint
-                Configs.LIMIT_READ_INPUT -> LimitRead
+    fun analyse(input: String): List<String> {
+        val ast = parser.parse(lexer.tokenize(input))
+        val msg = visit(ast)
+        return msg
+    }
+
+    private fun visit(ast: VisitableAST): List<String> {
+        return when (ast) {
+            is ReAssignationAST -> {
+                this.visit(ast.expression) + validateRules(ast)
+            }
+            is AssignationAST -> {
+                this.visit(ast.expression) + this.visit(ast.declaration) + validateRules(ast)
+            }
+            is DeclarationAST -> {
+                validateRules(ast)
+            }
+            is BinaryOperationAST -> {
+                this.visit(ast.left) + this.visit(ast.right) + validateRules(ast)
+            }
+            is UnaryOperationAST -> {
+                this.visit(ast.args) + validateRules(ast)
+            }
+            is LiteralAST -> {
+                validateRules(ast)
+            }
+            is VariableAST -> {
+                validateRules(ast)
+            }
+            is EmptyAST -> {
+                validateRules(ast)
+            }
+        }
+    }
+
+    private fun validateRules(ast: VisitableAST): List<String> {
+        return rules.mapNotNull { rule ->
+            when (val result = rule.validate(ast)) {
+                is InvalidResult -> result.message
+                is ValidResult -> null
             }
         }
     }
