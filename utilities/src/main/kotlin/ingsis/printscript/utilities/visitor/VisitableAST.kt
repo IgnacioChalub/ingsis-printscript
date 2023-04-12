@@ -4,6 +4,7 @@ import ingsis.printscript.utilities.enums.Function
 import ingsis.printscript.utilities.enums.Operation
 import ingsis.printscript.utilities.enums.Type
 import ingsis.printscript.utilities.enums.Value
+import java.util.concurrent.locks.Condition
 
 interface VisitableAST {
     fun accept(visitor: Visitor): VisitableAST
@@ -41,6 +42,7 @@ class DeclarationAST(
 }
 
 sealed interface ExpressionAST : VisitableAST
+sealed interface ConditionAST : VisitableAST
 
 class BinaryOperationAST(
     val left: VisitableAST,
@@ -55,7 +57,7 @@ class BinaryOperationAST(
 
 class UnaryOperationAST(
     val function: Function,
-    val args: VisitableAST,
+    val args: ExpressionAST,
 ) : VisitableAST {
     override fun accept(visitor: Visitor) = visitor.visitUnaryOperationAST(this)
     override fun equals(other: Any?): Boolean {
@@ -65,7 +67,7 @@ class UnaryOperationAST(
 
 class LiteralAST(
     val value: Value,
-) : ExpressionAST {
+) : ExpressionAST, ConditionAST {
     override fun accept(visitor: Visitor) = visitor.visitLiteralAST(this)
     override fun equals(other: Any?): Boolean {
         return other is LiteralAST && value == other.value
@@ -74,16 +76,38 @@ class LiteralAST(
 
 class VariableAST(
     val variableName: String,
-) : ExpressionAST {
+) : ExpressionAST, ConditionAST {
     override fun accept(visitor: Visitor) = visitor.visitVariableAST(this)
     override fun equals(other: Any?): Boolean {
         return other is VariableAST && variableName == other.variableName
     }
 }
 
-class EmptyAST() : ExpressionAST {
+class EmptyAST : ExpressionAST {
     override fun accept(visitor: Visitor) = visitor.visitEmptyAST(this)
     override fun equals(other: Any?): Boolean {
         return other is EmptyAST
     }
 }
+
+class IfAST(
+    val condition: ConditionAST,
+    val truthBlock: List<VisitableAST>
+) : VisitableAST {
+    override fun accept(visitor: Visitor): VisitableAST = visitor.visitIfAST(this)
+    override fun equals(other: Any?): Boolean {
+        return other is IfAST && other.condition == condition && other.truthBlock == truthBlock
+    }
+}
+
+class IfElseAST(
+    val condition: ConditionAST,
+    val truthBlock: List<VisitableAST>,
+    val falseBlock: List<VisitableAST>,
+) : VisitableAST {
+    override fun accept(visitor: Visitor): VisitableAST = visitor.visitIfElseAST(this)
+    override fun equals(other: Any?): Boolean {
+        return other is IfElseAST && other.condition == condition && other.truthBlock == truthBlock && other.falseBlock == falseBlock
+    }
+}
+

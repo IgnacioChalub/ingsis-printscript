@@ -32,6 +32,9 @@ sealed interface Operation : Token
 
 object LEFT_PAREN : Operation
 object RIGHT_PAREN : Operation
+
+object LEFT_CURLY_BRACES: Operation
+object RIGHT_CURLY_BRACES: Operation
 object ADD : Operation
 object SUB : Operation
 object DIV : Operation
@@ -40,6 +43,8 @@ object MUL : Operation
 sealed interface Type : Token
 object NUM : Type
 object STR : Type
+
+object BOOL : Type
 
 sealed interface Value : Token
 data class StrValue(val value: String) : Value {
@@ -76,5 +81,22 @@ data class NumValue(val value: Double) : Value {
     }
 }
 
+data class BoolValue(val value: Boolean) : Value {
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other == null || this::class != other::class) return false
+
+        other as BoolValue
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        return value.hashCode()
+    }
+}
+
 sealed interface Function : Token
 object PRINT : Function
+
+object READINPUT: Function

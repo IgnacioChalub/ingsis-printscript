@@ -2,25 +2,16 @@ package ingsis.printscript.parser.implementations
 
 import ingsis.printscript.parser.interfaces.IStatement
 import ingsis.printscript.parser.interfaces.SyntaxElement
-import ingsis.printscript.utilities.enums.ADD
-import ingsis.printscript.utilities.enums.ASSIGNATION
-import ingsis.printscript.utilities.enums.COLON
-import ingsis.printscript.utilities.enums.DIV
-import ingsis.printscript.utilities.enums.IDENTIFIER
-import ingsis.printscript.utilities.enums.LET
-import ingsis.printscript.utilities.enums.MUL
-import ingsis.printscript.utilities.enums.NUM
-import ingsis.printscript.utilities.enums.PRINT
-import ingsis.printscript.utilities.enums.SEMICOLON
-import ingsis.printscript.utilities.enums.STR
-import ingsis.printscript.utilities.enums.SUB
-import ingsis.printscript.utilities.enums.Token
+import ingsis.printscript.parser.interfaces.SyntaxParser
+import ingsis.printscript.utilities.enums.*
+import ingsis.printscript.utilities.enums.Function
+import kotlin.reflect.KClass
 
 enum class SyntaxElements(override val types: List<Token>) : SyntaxElement {
 
     TYPE(listOf(STR, NUM)),
 
-    VARIABLE(listOf(LET)),
+    VARIABLE(listOf(LET, CONST)),
 
     OPERATION(listOf(ADD, SUB, DIV, MUL)),
 
@@ -32,36 +23,40 @@ enum class SyntaxElements(override val types: List<Token>) : SyntaxElement {
 
     VOIDFUNCTION(listOf(PRINT)),
 
-    LITERAL(listOf(STR, NUM)),
+    LEFT_PAREN_SYNTAX(listOf(LEFT_PAREN)),
+    RIGHT_PAREN_SYNTAX(listOf(RIGHT_PAREN)),
+
+    LITERAL(listOf(StrValue(""), NumValue(0.0))),
 
     END(listOf(SEMICOLON)),
+
+    IF_SYNTAX(listOf(IF)),
+
+    ELSE_SYNTAX(listOf(ELSE)),
+
+    ANY(listOf()),
 }
 
-enum class Statement(override val elements: List<SyntaxElement>) : IStatement {
-    // ingsis.printscript.utilities.enums.LET id: String = "name"
-    ASSIGNATION(
-        listOf(
-            SyntaxElements.VARIABLE,
-            SyntaxElements.IDENTIFIER_SYNTAX,
-            SyntaxElements.TYPEASSIGNMENT,
-            SyntaxElements.TYPE,
-            SyntaxElements.ASSIGNATION_SYNTAX,
-        ),
-    ),
+object StatementsProvider {
+    fun getStatements(version: Version): List<Pair<KClass<out SyntaxParser>,List<Any>>> {
+        return when (version) {
+            Version.VERSION_1_0 -> listOf(
+                DeclarationParser::class to listOf(),
+                AssignationParser::class to listOf(),
+                AssignationDeclarationParser::class to listOf(),
+                FunctionParser::class  to listOf(),
+            )
 
-    RE_ASSIGNATION(
-        listOf(
-            SyntaxElements.IDENTIFIER_SYNTAX,
-            SyntaxElements.ASSIGNATION_SYNTAX,
-        ),
-    ),
-
-    // println("hello world")
-    FUNCTION(
-        listOf(
-            SyntaxElements.VOIDFUNCTION,
-        ),
-    ),
+            Version.VERSION_1_1 -> listOf(
+                DeclarationParser::class to listOf(),
+                AssignationParser::class to listOf(),
+                AssignationDeclarationParser::class to listOf(),
+                FunctionParser::class to listOf(),
+                IfStatementParser(version)::class to listOf(version),
+                IfElseStatementParser(version)::class to listOf(version)
+            )
+        }
+    }
 }
 
 object ExpressionProvider {
@@ -70,6 +65,5 @@ object ExpressionProvider {
         LiteralExpression::class,
         OperationExpression::class,
         ParenthesisExpression::class,
-
     )
 }

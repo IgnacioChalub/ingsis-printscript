@@ -3,6 +3,7 @@ package ingsis.printscript.cli
 import ingsis.printscript.interpreter.Interpreter
 import ingsis.printscript.lexer.Lexer
 import ingsis.printscript.parser.implementations.Parser
+import ingsis.printscript.utilities.enums.Version
 import kotlinx.cli.* // ktlint-disable no-wildcard-imports
 import java.io.File
 
@@ -25,14 +26,18 @@ fun executeProgram(input: String, version: String) {
     val file = File(input)
 
     val lexer = Lexer()
-    val parser = Parser()
+    val parser = Parser(when(version){
+        "1.0" -> Version.VERSION_1_0
+        "1.1" -> Version.VERSION_1_1
+        else -> throw Exception("Version not found")
+    })
     val interpreter = Interpreter.Factory.createDefault()
 
     val content = file.readText().replace("\n", "")
     val sentences = if (content.last() == ';') { content.split(";").dropLast(1) } else {
         content.split(";")
     }
-    val tokenLists = sentences.map { lexer.tokenize(it) }
+    val tokenLists = sentences.map { lexer.tokenize("$it;") }
     val asTrees = tokenLists.map { parser.parse(it) }
     asTrees.forEach { interpreter.interpret(it) }
 }
@@ -46,7 +51,7 @@ fun main(args: Array<String>) {
     ).default(MenuOptions.Execution)
     val input by parser.option(ArgType.String, shortName = "i", description = "Input file").required()
     val version by parser.option(
-        ArgType.Choice(listOf("1.0"), { it }),
+        ArgType.Choice(listOf("1.0", "1.1"), { it }),
         shortName = "v",
         description = "Version of program",
     ).default("1.0")

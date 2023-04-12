@@ -33,8 +33,8 @@ class ExpressionMatcher(matchers: List<KClass<out Expression>>) : SyntaxMatcher 
 
     private val expressions: List<Expression> = matchers.mapNotNull { it.primaryConstructor?.call(this) }
 
-    override fun match(content: List<Token>): VisitableAST? =
-        expressions.firstNotNullOfOrNull { it.parse(content) }
+    override fun match(tokenList: List<Token>): VisitableAST? =
+        expressions.firstNotNullOfOrNull { it.parse(tokenList) }
 }
 
 // (identifier)

@@ -1,27 +1,14 @@
 package ingsis.printscript.parser
 
 import ingsis.printscript.parser.implementations.Parser
-import ingsis.printscript.utilities.enums.ADD
-import ingsis.printscript.utilities.enums.ASSIGNATION
-import ingsis.printscript.utilities.enums.COLON
-import ingsis.printscript.utilities.enums.IDENTIFIER
-import ingsis.printscript.utilities.enums.LEFT_PAREN
-import ingsis.printscript.utilities.enums.LET
-import ingsis.printscript.utilities.enums.NUM
-import ingsis.printscript.utilities.enums.NumValue
-import ingsis.printscript.utilities.enums.PRINT
-import ingsis.printscript.utilities.enums.RIGHT_PAREN
-import ingsis.printscript.utilities.enums.SEMICOLON
-import ingsis.printscript.utilities.enums.STR
-import ingsis.printscript.utilities.enums.SUB
-import ingsis.printscript.utilities.enums.StrValue
+import ingsis.printscript.utilities.enums.*
 import ingsis.printscript.utilities.visitor.* // ktlint-disable no-wildcard-imports
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 
 class Main {
 
-    private val parser = Parser()
+    private val parser = Parser(Version.VERSION_1_1)
 
     @Test
     fun normalExpressionShouldReturnTree() {
@@ -125,6 +112,86 @@ class Main {
             "name",
             LiteralAST(
                 StrValue("Fede"),
+            ),
+        )
+        assertTrue { expectedTree == parser.parse(tokenList) }
+    }
+
+    // if(true) { print("Hello"); }
+    @Test
+    fun ifExpressionShouldReturnTree() {
+        val tokenList = listOf(
+            IF,
+            LEFT_PAREN,
+            BoolValue(true),
+            RIGHT_PAREN,
+            LEFT_CURLY_BRACES,
+            PRINT,
+            LEFT_PAREN,
+            StrValue("Hello"),
+            RIGHT_PAREN,
+            SEMICOLON,
+            RIGHT_CURLY_BRACES,
+            SEMICOLON
+        )
+
+        val expectedTree = IfAST(
+            condition = LiteralAST(BoolValue(true)),
+            truthBlock = listOf(
+                UnaryOperationAST(
+                    PRINT,
+                    LiteralAST(
+                        StrValue("Hello")
+                    )
+                )
+            )
+        )
+        assertTrue { expectedTree == parser.parse(tokenList) }
+    }
+
+    // if(true) { print("Hello"); }
+    @Test
+    fun ifElseExpressionShouldReturnTree() {
+        val tokenList = listOf(
+            IF,
+            LEFT_PAREN,
+            BoolValue(true),
+            RIGHT_PAREN,
+            LEFT_CURLY_BRACES,
+            PRINT,
+            LEFT_PAREN,
+            StrValue("Hello"),
+            RIGHT_PAREN,
+            SEMICOLON,
+            RIGHT_CURLY_BRACES,
+            ELSE,
+            LEFT_CURLY_BRACES,
+            PRINT,
+            LEFT_PAREN,
+            StrValue("Bye"),
+            RIGHT_PAREN,
+            SEMICOLON,
+            RIGHT_CURLY_BRACES,
+            SEMICOLON
+        )
+
+        val expectedTree = IfElseAST(
+            condition = LiteralAST(BoolValue(true)),
+            truthBlock = listOf(
+                UnaryOperationAST(
+                    PRINT,
+                    LiteralAST(
+                        StrValue("Hello")
+                    )
+                )
+            ),
+            falseBlock = listOf(
+                UnaryOperationAST(
+                    PRINT,
+                    LiteralAST(
+                        StrValue("Bye")
+                    )
+                )
             ),
         )
         assertTrue { expectedTree == parser.parse(tokenList) }

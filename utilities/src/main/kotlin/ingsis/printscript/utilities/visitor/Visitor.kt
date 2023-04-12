@@ -10,4 +10,6 @@ interface Visitor {
     fun visitLiteralAST(ast: LiteralAST): VisitableAST
     fun visitVariableAST(ast: VariableAST): VisitableAST
     fun visitEmptyAST(ast: EmptyAST): VisitableAST
+    fun visitIfAST(ast: IfAST): VisitableAST
+    fun visitIfElseAST(ast: IfElseAST): VisitableAST
 }
