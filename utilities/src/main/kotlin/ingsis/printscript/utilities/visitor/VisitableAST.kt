@@ -10,7 +10,7 @@ sealed interface VisitableAST {
     override fun equals(other: Any?): Boolean
 }
 
-class   ReAssignationAST(
+class ReAssignationAST(
     val variableName: String,
     val expression: ExpressionAST,
 ) : VisitableAST {

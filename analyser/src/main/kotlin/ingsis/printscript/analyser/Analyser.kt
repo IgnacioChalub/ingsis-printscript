@@ -28,9 +28,6 @@ class Analyser(
 
     fun analyse(input: String, config: List<Configs>): List<String> {
         val ast = parser.parse(lexer.tokenize(input))
-//        val visitor = AnalyserVisitor(generateRules(config), mutableListOf())
-//        ast.accept(visitor)
-//        return visitor.messages
         val rules = generateRules(config)
         return visit(ast, rules)
     }
