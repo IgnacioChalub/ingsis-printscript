@@ -54,5 +54,4 @@ class Test {
         assert(messages[0] == "Print can only be invoked with a variable or literal")
         assert(messages[1] == "Variable name with snake case required")
     }
-
 }
