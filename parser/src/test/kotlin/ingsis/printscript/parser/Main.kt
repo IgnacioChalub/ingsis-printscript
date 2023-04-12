@@ -67,6 +67,7 @@ class Main {
         val tokenList = listOf(
             PRINT,
             LEFT_PAREN,
+            LEFT_PAREN,
             NumValue(2.0),
             SUB,
             NumValue(1.0),
@@ -76,6 +77,7 @@ class Main {
             NumValue(3.0),
             SUB,
             NumValue(1.0),
+            RIGHT_PAREN,
             RIGHT_PAREN,
             SEMICOLON,
         )

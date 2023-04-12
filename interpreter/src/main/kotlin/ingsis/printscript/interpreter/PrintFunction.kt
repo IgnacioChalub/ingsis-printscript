@@ -1,5 +1,6 @@
 package ingsis.printscript.interpreter
 
+import ingsis.printscript.utilities.enums.BoolValue
 import ingsis.printscript.utilities.enums.NumValue
 import ingsis.printscript.utilities.enums.StrValue
 import ingsis.printscript.utilities.enums.Value
@@ -13,6 +14,7 @@ object PrintFunctionImpl : PrintFunction {
         when (value) {
             is StrValue -> println(value.value)
             is NumValue -> println(value.value)
+            is BoolValue -> println(value.value)
         }
     }
 }
@@ -24,6 +26,7 @@ class PrintFunctionMock(
         printedValue = when (value) {
             is StrValue -> value.value
             is NumValue -> value.value.toString()
+            is BoolValue -> value.value.toString()
         }
     }
 }

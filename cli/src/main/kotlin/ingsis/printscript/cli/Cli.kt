@@ -14,16 +14,18 @@ object App {
 
 enum class MenuOptions {
     Execution,
+    REPL,
 }
 
-fun runCLI(operation: MenuOptions, input: String, version: String, config: String?) {
+fun runCLI(operation: MenuOptions, input: String?, version: String, config: String?) {
     return when (operation) {
         MenuOptions.Execution -> executeProgram(input, version)
+        MenuOptions.REPL -> executeREPL(version)
     }
 }
 
-fun executeProgram(input: String, version: String) {
-    val file = File(input)
+fun executeProgram(input: String?, version: String) {
+    val file = File(input!!)
 
     val lexer = Lexer()
     val parser = Parser(
@@ -44,6 +46,29 @@ fun executeProgram(input: String, version: String) {
     asTrees.forEach { interpreter.interpret(it) }
 }
 
+fun executeREPL(version: String) {
+    val lexer = Lexer()
+    val parser = Parser(
+        when (version) {
+            "1.0" -> Version.VERSION_1_0
+            "1.1" -> Version.VERSION_1_1
+            else -> throw Exception("Version not found")
+        },
+    )
+    val interpreter = Interpreter.Factory.createDefault()
+    var content = ""
+    while (true){
+        print(">> ")
+        content = readLine()!!
+        if (content == "quit") break
+        try {
+            interpreter.interpret(parser.parse(lexer.tokenize(content)))
+        } catch (e: Exception) {
+            println("ERROR: " + e.message)
+        }
+    }
+}
+
 fun main(args: Array<String>) {
     val parser = ArgParser("printscript")
     val operation by parser.option(
@@ -51,7 +76,7 @@ fun main(args: Array<String>) {
         shortName = "o",
         description = "Operation to run",
     ).default(MenuOptions.Execution)
-    val input by parser.option(ArgType.String, shortName = "i", description = "Input file").required()
+    val input by parser.option(ArgType.String, shortName = "i", description = "Input file")
     val version by parser.option(
         ArgType.Choice(listOf("1.0", "1.1"), { it }),
         shortName = "v",

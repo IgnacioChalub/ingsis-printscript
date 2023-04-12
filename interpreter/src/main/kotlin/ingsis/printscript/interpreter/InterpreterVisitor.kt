@@ -105,6 +105,7 @@ class InterpreterVisitor(
     override fun visitUnaryOperationAST(ast: UnaryOperationAST): VisitableAST {
         return when (ast.function) {
             is PRINT -> printFunctionImpl(ast.args.accept(this))
+            else -> throw Exception("Todo")
         }
     }
 
@@ -128,5 +129,13 @@ class InterpreterVisitor(
 
     override fun visitEmptyAST(ast: EmptyAST): EmptyAST {
         return ast
+    }
+
+    override fun visitIfAST(ast: IfAST): VisitableAST {
+        TODO("Not yet implemented")
+    }
+
+    override fun visitIfElseAST(ast: IfElseAST): VisitableAST {
+        TODO("Not yet implemented")
     }
 }
