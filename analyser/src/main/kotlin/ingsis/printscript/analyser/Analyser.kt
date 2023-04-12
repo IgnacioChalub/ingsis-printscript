@@ -15,72 +15,80 @@ enum class Configs {
 class Analyser(
     private val lexer: Lexer,
     private val parser: IParser,
+    private val rules: List<Rule>
 ) {
 
     object Factory {
-        fun getDefault(): Analyser {
+        fun getDefault(config: List<Configs>): Analyser {
             return Analyser(
                 Lexer(),
                 Parser(),
+                generateRules(config)
             )
         }
+        private fun generateRules(config: List<Configs>): List<Rule> {
+            if (config.contains(Configs.SNAKE_CASE) && config.contains(Configs.CAMEL_CASE)) {
+                throw Error("Variable names can not be snake case and camel case")
+            }
+            return config.map {
+                when (it) {
+                    Configs.CAMEL_CASE -> CamelCaseRule
+                    Configs.SNAKE_CASE -> SnakeCaseRule
+                    Configs.LIMIT_PRINTLN -> LimitPrint
+                    Configs.LIMIT_READ_INPUT -> LimitRead
+                }
+            }
+        }
     }
 
-    fun analyse(input: String, config: List<Configs>): List<String> {
+    fun analyse(inputs: List<String>): List<String> {
+        return inputs.fold(listOf()) { acc, input -> acc + analyse(input)}
+    }
+
+    fun analyse(input: String): List<String> {
         val ast = parser.parse(lexer.tokenize(input))
-        val rules = generateRules(config)
-        return visit(ast, rules)
+        val msg = visit(ast)
+        return msg
     }
 
-    private fun visit(ast: VisitableAST, rules: List<Rule>): List<String> {
+    private fun visit(ast: VisitableAST): List<String> {
         return when (ast) {
             is ReAssignationAST -> {
-                this.visit(ast.expression, rules) + validateRules(ast, rules)
+                this.visit(ast.expression) + validateRules(ast)
             }
             is AssignationAST -> {
-                this.visit(ast.expression, rules) + this.visit(ast.declaration, rules) + validateRules(ast, rules)
+                this.visit(ast.expression) + this.visit(ast.declaration) + validateRules(ast)
             }
             is DeclarationAST -> {
-                validateRules(ast, rules)
+                validateRules(ast)
             }
             is BinaryOperationAST -> {
-                this.visit(ast.left, rules) + this.visit(ast.right, rules) + validateRules(ast, rules)
+                this.visit(ast.left) + this.visit(ast.right) + validateRules(ast)
             }
             is UnaryOperationAST -> {
-                this.visit(ast.args, rules) + validateRules(ast, rules)
+                this.visit(ast.args) + validateRules(ast)
             }
             is LiteralAST -> {
-                validateRules(ast, rules)
+                validateRules(ast)
             }
             is VariableAST -> {
-                validateRules(ast, rules)
+                validateRules(ast)
             }
             is EmptyAST -> {
-                validateRules(ast, rules)
+                validateRules(ast)
             }
         }
     }
 
-    private fun validateRules(ast: VisitableAST, rules: List<Rule>): List<String> {
-        return rules.map {
-            return when (val result = it.validate(ast)) {
-                is InvalidResult -> listOf(result.message)
-                is ValidResult -> listOf()
+    private fun validateRules(ast: VisitableAST): List<String> {
+        val messages = mutableListOf<String>()
+        for (rule in rules) {
+            when (val result = rule.validate(ast)) {
+                is InvalidResult -> messages.add(result.message)
+                is ValidResult -> {}
             }
         }
+        return messages
     }
 
-    private fun generateRules(config: List<Configs>): List<Rule> {
-        if (config.contains(Configs.SNAKE_CASE) && config.contains(Configs.CAMEL_CASE)) {
-            throw Error("Variable names can not be snake case and camel case")
-        }
-        return config.map {
-            when (it) {
-                Configs.CAMEL_CASE -> CamelCaseRule
-                Configs.SNAKE_CASE -> SnakeCaseRule
-                Configs.LIMIT_PRINTLN -> LimitPrint
-                Configs.LIMIT_READ_INPUT -> LimitRead
-            }
-        }
-    }
 }
