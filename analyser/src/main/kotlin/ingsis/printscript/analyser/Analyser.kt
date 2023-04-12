@@ -62,12 +62,12 @@ class Analyser(
     }
 
     private fun validateRules(ast: VisitableAST, rules: List<Rule>): List<String> {
-        val messages = mutableListOf<String>()
-        for (rule in rules) {
-            val message = rule.validate(ast)
-            if (message !== null) messages.add(message)
+        return rules.map {
+            return when (val result = it.validate(ast)) {
+                is InvalidResult -> listOf(result.message)
+                is ValidResult -> listOf()
+            }
         }
-        return messages
     }
 
     private fun generateRules(config: List<Configs>): List<Rule> {
