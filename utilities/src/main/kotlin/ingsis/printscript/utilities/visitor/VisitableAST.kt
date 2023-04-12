@@ -4,7 +4,6 @@ import ingsis.printscript.utilities.enums.Function
 import ingsis.printscript.utilities.enums.Operation
 import ingsis.printscript.utilities.enums.Type
 import ingsis.printscript.utilities.enums.Value
-import java.util.concurrent.locks.Condition
 
 sealed interface VisitableAST {
     fun accept(visitor: Visitor): VisitableAST
@@ -92,7 +91,7 @@ class EmptyAST : ExpressionAST {
 
 class IfAST(
     val condition: ConditionAST,
-    val truthBlock: List<VisitableAST>
+    val truthBlock: List<VisitableAST>,
 ) : VisitableAST {
     override fun accept(visitor: Visitor): VisitableAST = visitor.visitIfAST(this)
     override fun equals(other: Any?): Boolean {
@@ -110,4 +109,3 @@ class IfElseAST(
         return other is IfElseAST && other.condition == condition && other.truthBlock == truthBlock && other.falseBlock == falseBlock
     }
 }
-

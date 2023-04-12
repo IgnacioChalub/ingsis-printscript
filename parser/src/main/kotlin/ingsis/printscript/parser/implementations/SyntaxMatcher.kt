@@ -2,12 +2,11 @@ package ingsis.printscript.parser.implementations
 
 import ingsis.printscript.parser.interfaces.SyntaxMatcher
 import ingsis.printscript.parser.interfaces.SyntaxParser
-import ingsis.printscript.utilities.enums.*
+import ingsis.printscript.utilities.enums.* // ktlint-disable no-wildcard-imports
 import ingsis.printscript.utilities.enums.Function
 import ingsis.printscript.utilities.visitor.* // ktlint-disable no-wildcard-imports
 import kotlin.reflect.KClass
 import kotlin.reflect.full.primaryConstructor
-
 
 class StatementMatcher(matchers: List<Pair<KClass<out SyntaxParser>, List<Any>>>) : SyntaxMatcher {
     private val statements = matchers.mapNotNull { it.first.primaryConstructor?.call(*it.second.toTypedArray()) }
@@ -26,14 +25,16 @@ class DeclarationParser : SyntaxParser {
         val colon = SyntaxElements.TYPEASSIGNMENT.contains(tokenList[2])
         val type = if (SyntaxElements.TYPE.contains(tokenList[3])) tokenList[3] else null
 
-        return if (variable != null && identifier != null && colon && type != null) DeclarationAST(
-            (identifier as IDENTIFIER).value,
-            type as Type
-        )
-        else null
+        return if (variable != null && identifier != null && colon && type != null) {
+            DeclarationAST(
+                (identifier as IDENTIFIER).value,
+                type as Type,
+            )
+        } else {
+            null
+        }
     }
 }
-
 
 // a = "Hola";
 class AssignationParser : SyntaxParser {
@@ -44,11 +45,14 @@ class AssignationParser : SyntaxParser {
         val assignation = if (SyntaxElements.ASSIGNATION_SYNTAX.contains(tokenList[1])) tokenList[1] else null
         val semicolon =
             if (SyntaxElements.END.contains(tokenList[tokenList.size - 1])) tokenList[tokenList.size - 1] else null
-        return if (assignation != null && identifier != null && semicolon != null) ReAssignationAST(
-            (identifier as IDENTIFIER).value,
-            ExpressionMatcher(ExpressionProvider.expressions).match(tokenList.slice(2 until tokenList.size - 1)) as ExpressionAST,
-        )
-        else null
+        return if (assignation != null && identifier != null && semicolon != null) {
+            ReAssignationAST(
+                (identifier as IDENTIFIER).value,
+                ExpressionMatcher(ExpressionProvider.expressions).match(tokenList.slice(2 until tokenList.size - 1)) as ExpressionAST,
+            )
+        } else {
+            null
+        }
     }
 }
 
@@ -64,14 +68,17 @@ class AssignationDeclarationParser : SyntaxParser {
         val semicolon =
             if (SyntaxElements.END.contains(tokenList[tokenList.size - 1])) tokenList[tokenList.size - 1] else null
 
-        return if (variable != null && identifier != null && colon && type != null && assignation != null && semicolon != null) AssignationAST(
-            DeclarationAST(
-                (identifier as IDENTIFIER).value,
-                type as Type
-            ),
-            ExpressionMatcher(ExpressionProvider.expressions).match(tokenList.slice(5 until tokenList.size - 1)) as ExpressionAST
-        )
-        else null
+        return if (variable != null && identifier != null && colon && type != null && assignation != null && semicolon != null) {
+            AssignationAST(
+                DeclarationAST(
+                    (identifier as IDENTIFIER).value,
+                    type as Type,
+                ),
+                ExpressionMatcher(ExpressionProvider.expressions).match(tokenList.slice(5 until tokenList.size - 1)) as ExpressionAST,
+            )
+        } else {
+            null
+        }
     }
 }
 
@@ -86,11 +93,14 @@ class FunctionParser : SyntaxParser {
             if (SyntaxElements.RIGHT_PAREN_SYNTAX.contains(tokenList[tokenList.size - 2])) tokenList[tokenList.size - 2] else null
         val semicolon =
             if (SyntaxElements.END.contains(tokenList[tokenList.size - 1])) tokenList[tokenList.size - 1] else null
-        return if (function != null && leftparen != null && rightparen != null && semicolon != null) UnaryOperationAST(
-            function as Function,
-            ExpressionMatcher(ExpressionProvider.expressions).match(tokenList.slice(2 until tokenList.size - 2)) as ExpressionAST,
-        )
-        else null
+        return if (function != null && leftparen != null && rightparen != null && semicolon != null) {
+            UnaryOperationAST(
+                function as Function,
+                ExpressionMatcher(ExpressionProvider.expressions).match(tokenList.slice(2 until tokenList.size - 2)) as ExpressionAST,
+            )
+        } else {
+            null
+        }
     }
 }
 
@@ -126,15 +136,25 @@ class IfStatementParser(private val version: Version) : SyntaxParser {
         val semicolon =
             if (SyntaxElements.END.contains(tokenList[tokenList.size - 1])) tokenList[tokenList.size - 1] else null
         val blockParser = Parser(version)
-        return if (ifsyntax != null && leftparen != null && semicolon != null && rightparen < leftCurlyBrace && leftCurlyBrace < rightCurlyBrace && !tokenList.contains(ELSE)) IfAST(
-            condition = when (tokenList[2]) {
-                is BoolValue -> LiteralAST(tokenList[2] as BoolValue)
-                is IDENTIFIER -> VariableAST((tokenList[2] as IDENTIFIER).value)
-                else -> throw Exception("Condition not supported")
-            },
-            truthBlock = splitList(tokenList.slice(leftCurlyBrace + 1 until rightCurlyBrace)).map { blockParser.parse(it) }
-        )
-        else null
+        return if (ifsyntax != null && leftparen != null && semicolon != null && rightparen < leftCurlyBrace && leftCurlyBrace < rightCurlyBrace && !tokenList.contains(
+                ELSE,
+            )
+        ) {
+            IfAST(
+                condition = when (tokenList[2]) {
+                    is BoolValue -> LiteralAST(tokenList[2] as BoolValue)
+                    is IDENTIFIER -> VariableAST((tokenList[2] as IDENTIFIER).value)
+                    else -> throw Exception("Condition not supported")
+                },
+                truthBlock = splitList(tokenList.slice(leftCurlyBrace + 1 until rightCurlyBrace)).map {
+                    blockParser.parse(
+                        it,
+                    )
+                },
+            )
+        } else {
+            null
+        }
     }
 }
 
@@ -154,15 +174,26 @@ class IfElseStatementParser(private val version: Version) : SyntaxParser {
         val semicolon =
             if (SyntaxElements.END.contains(tokenList[tokenList.size - 1])) tokenList[tokenList.size - 1] else null
         val blockParser = Parser(version)
-        return if (ifsyntax != null && leftparen != null && semicolon != null && rightparen < leftCurlyBrace && leftCurlyBrace < rightCurlyBrace && leftCurlyBrace < elseLeftCurlyBrace && rightCurlyBrace < elseRightCurlyBrace) IfElseAST(
-            condition = when (tokenList[2]) {
-                is BoolValue -> LiteralAST(tokenList[2] as BoolValue)
-                is IDENTIFIER -> VariableAST((tokenList[2] as IDENTIFIER).value)
-                else -> throw Exception("Condition not supported")
-            },
-            truthBlock = splitList(tokenList.slice(leftCurlyBrace + 1 until rightCurlyBrace)).map { blockParser.parse(it) },
-            falseBlock = splitList(tokenList.slice(elseSyntax + 2 until elseRightCurlyBrace)).map { blockParser.parse(it) }
-        )
-        else null
+        return if (ifsyntax != null && leftparen != null && semicolon != null && rightparen < leftCurlyBrace && leftCurlyBrace < rightCurlyBrace && leftCurlyBrace < elseLeftCurlyBrace && rightCurlyBrace < elseRightCurlyBrace) {
+            IfElseAST(
+                condition = when (tokenList[2]) {
+                    is BoolValue -> LiteralAST(tokenList[2] as BoolValue)
+                    is IDENTIFIER -> VariableAST((tokenList[2] as IDENTIFIER).value)
+                    else -> throw Exception("Condition not supported")
+                },
+                truthBlock = splitList(tokenList.slice(leftCurlyBrace + 1 until rightCurlyBrace)).map {
+                    blockParser.parse(
+                        it,
+                    )
+                },
+                falseBlock = splitList(tokenList.slice(elseSyntax + 2 until elseRightCurlyBrace)).map {
+                    blockParser.parse(
+                        it,
+                    )
+                },
+            )
+        } else {
+            null
+        }
     }
 }

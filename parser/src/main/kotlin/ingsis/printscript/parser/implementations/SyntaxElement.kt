@@ -1,10 +1,8 @@
 package ingsis.printscript.parser.implementations
 
-import ingsis.printscript.parser.interfaces.IStatement
 import ingsis.printscript.parser.interfaces.SyntaxElement
 import ingsis.printscript.parser.interfaces.SyntaxParser
-import ingsis.printscript.utilities.enums.*
-import ingsis.printscript.utilities.enums.Function
+import ingsis.printscript.utilities.enums.* // ktlint-disable no-wildcard-imports
 import kotlin.reflect.KClass
 
 enum class SyntaxElements(override val types: List<Token>) : SyntaxElement {
@@ -38,13 +36,13 @@ enum class SyntaxElements(override val types: List<Token>) : SyntaxElement {
 }
 
 object StatementsProvider {
-    fun getStatements(version: Version): List<Pair<KClass<out SyntaxParser>,List<Any>>> {
+    fun getStatements(version: Version): List<Pair<KClass<out SyntaxParser>, List<Any>>> {
         return when (version) {
             Version.VERSION_1_0 -> listOf(
                 DeclarationParser::class to listOf(),
                 AssignationParser::class to listOf(),
                 AssignationDeclarationParser::class to listOf(),
-                FunctionParser::class  to listOf(),
+                FunctionParser::class to listOf(),
             )
 
             Version.VERSION_1_1 -> listOf(
@@ -53,7 +51,7 @@ object StatementsProvider {
                 AssignationDeclarationParser::class to listOf(),
                 FunctionParser::class to listOf(),
                 IfStatementParser(version)::class to listOf(version),
-                IfElseStatementParser(version)::class to listOf(version)
+                IfElseStatementParser(version)::class to listOf(version),
             )
         }
     }

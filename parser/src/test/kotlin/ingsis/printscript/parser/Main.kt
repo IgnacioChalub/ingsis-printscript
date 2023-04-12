@@ -1,7 +1,7 @@
 package ingsis.printscript.parser
 
 import ingsis.printscript.parser.implementations.Parser
-import ingsis.printscript.utilities.enums.*
+import ingsis.printscript.utilities.enums.* // ktlint-disable no-wildcard-imports
 import ingsis.printscript.utilities.visitor.* // ktlint-disable no-wildcard-imports
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
@@ -132,7 +132,7 @@ class Main {
             RIGHT_PAREN,
             SEMICOLON,
             RIGHT_CURLY_BRACES,
-            SEMICOLON
+            SEMICOLON,
         )
 
         val expectedTree = IfAST(
@@ -141,10 +141,10 @@ class Main {
                 UnaryOperationAST(
                     PRINT,
                     LiteralAST(
-                        StrValue("Hello")
-                    )
-                )
-            )
+                        StrValue("Hello"),
+                    ),
+                ),
+            ),
         )
         assertTrue { expectedTree == parser.parse(tokenList) }
     }
@@ -172,7 +172,7 @@ class Main {
             RIGHT_PAREN,
             SEMICOLON,
             RIGHT_CURLY_BRACES,
-            SEMICOLON
+            SEMICOLON,
         )
 
         val expectedTree = IfElseAST(
@@ -181,17 +181,17 @@ class Main {
                 UnaryOperationAST(
                     PRINT,
                     LiteralAST(
-                        StrValue("Hello")
-                    )
-                )
+                        StrValue("Hello"),
+                    ),
+                ),
             ),
             falseBlock = listOf(
                 UnaryOperationAST(
                     PRINT,
                     LiteralAST(
-                        StrValue("Bye")
-                    )
-                )
+                        StrValue("Bye"),
+                    ),
+                ),
             ),
         )
         assertTrue { expectedTree == parser.parse(tokenList) }

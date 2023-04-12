@@ -33,8 +33,8 @@ sealed interface Operation : Token
 object LEFT_PAREN : Operation
 object RIGHT_PAREN : Operation
 
-object LEFT_CURLY_BRACES: Operation
-object RIGHT_CURLY_BRACES: Operation
+object LEFT_CURLY_BRACES : Operation
+object RIGHT_CURLY_BRACES : Operation
 object ADD : Operation
 object SUB : Operation
 object DIV : Operation
@@ -99,4 +99,4 @@ data class BoolValue(val value: Boolean) : Value {
 sealed interface Function : Token
 object PRINT : Function
 
-object READINPUT: Function
+object READINPUT : Function

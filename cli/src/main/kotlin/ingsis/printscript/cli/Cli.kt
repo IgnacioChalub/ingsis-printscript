@@ -26,11 +26,13 @@ fun executeProgram(input: String, version: String) {
     val file = File(input)
 
     val lexer = Lexer()
-    val parser = Parser(when(version){
-        "1.0" -> Version.VERSION_1_0
-        "1.1" -> Version.VERSION_1_1
-        else -> throw Exception("Version not found")
-    })
+    val parser = Parser(
+        when (version) {
+            "1.0" -> Version.VERSION_1_0
+            "1.1" -> Version.VERSION_1_1
+            else -> throw Exception("Version not found")
+        },
+    )
     val interpreter = Interpreter.Factory.createDefault()
 
     val content = file.readText().replace("\n", "")
