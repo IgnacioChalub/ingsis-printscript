@@ -15,7 +15,7 @@ enum class Configs {
 class Analyser(
     private val lexer: Lexer,
     private val parser: IParser,
-    private val rules: List<Rule>
+    private val rules: List<Rule>,
 ) {
 
     object Factory {
@@ -23,7 +23,7 @@ class Analyser(
             return Analyser(
                 Lexer(),
                 Parser(),
-                generateRules(config)
+                generateRules(config),
             )
         }
         private fun generateRules(config: List<Configs>): List<Rule> {
@@ -42,7 +42,7 @@ class Analyser(
     }
 
     fun analyse(inputs: List<String>): List<String> {
-        return inputs.fold(listOf()) { acc, input -> acc + analyse(input)}
+        return inputs.fold(listOf()) { acc, input -> acc + analyse(input) }
     }
 
     fun analyse(input: String): List<String> {
@@ -81,14 +81,12 @@ class Analyser(
     }
 
     private fun validateRules(ast: VisitableAST): List<String> {
-        val messages = mutableListOf<String>()
-        for (rule in rules) {
+        return rules.mapNotNull { rule ->
             when (val result = rule.validate(ast)) {
-                is InvalidResult -> messages.add(result.message)
-                is ValidResult -> {}
+                is InvalidResult -> result.message
+                is ValidResult -> null
             }
         }
-        return messages
     }
 
 }
