@@ -5,12 +5,12 @@ import ingsis.printscript.utilities.enums.Operation
 import ingsis.printscript.utilities.enums.Type
 import ingsis.printscript.utilities.enums.Value
 
-interface VisitableAST {
+sealed interface VisitableAST {
     fun accept(visitor: Visitor): VisitableAST
     override fun equals(other: Any?): Boolean
 }
 
-class ReAssignationAST(
+class   ReAssignationAST(
     val variableName: String,
     val expression: ExpressionAST,
 ) : VisitableAST {
