@@ -1,5 +1,5 @@
 package ingsis.printscript.lexer
-
+//        Los bloques siempre deben abrir y cerrar con “{” y “}”, respectivamente.
 import ingsis.printscript.utilities.enums.* // ktlint-disable no-wildcard-imports
 
 class Lexer() {
@@ -15,6 +15,8 @@ class Lexer() {
         "Number" to NUM,
         "String" to STR,
         "print" to PRINT,
+        "Boolean" to BOOL,
+
     )
 
     fun tokenize(input: String): List<Token> {
@@ -47,7 +49,11 @@ class Lexer() {
             advance(input)
         }
         val text = input.substring(start, current)
-        val token = keywords[text] ?: IDENTIFIER(text)
+        val token = when (text) {
+            "true" -> BoolValue(true)
+            "false" -> BoolValue(false)
+            else -> keywords[text] ?: IDENTIFIER(text)
+        }
         tokens.add(token)
     }
 
