@@ -112,7 +112,7 @@ class LexerTest {
             IDENTIFIER("b"),
             ASSIGNATION,
             BoolValue(false),
-            SEMICOLON
+            SEMICOLON,
         )
         assertEquals(expectedTokens3, lexer.tokenize(input3))
 
@@ -137,7 +137,7 @@ class LexerTest {
             IDENTIFIER("c"),
             ASSIGNATION,
             StrValue("Hello"),
-            SEMICOLON
+            SEMICOLON,
         )
         assertEquals(expectedTokens4, lexer.tokenize(input4))
     }

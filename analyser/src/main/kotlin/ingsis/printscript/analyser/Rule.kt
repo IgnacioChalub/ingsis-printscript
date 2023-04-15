@@ -63,7 +63,7 @@ object LimitRead : Rule {
             is UnaryOperationAST -> {
                 if (ast.function !is READINPUT) return ValidResult
                 if (ast.args !is VariableAST && ast.args !is LiteralAST) {
-                    return InvalidResult("Print can only be invoked with a variable or literal")
+                    return InvalidResult("Read input can only be invoked with a variable or literal")
                 }
                 return ValidResult
             }
