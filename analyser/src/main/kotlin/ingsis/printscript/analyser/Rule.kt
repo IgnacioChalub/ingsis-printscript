@@ -1,6 +1,7 @@
 package ingsis.printscript.analyser
 
 import ingsis.printscript.utilities.enums.PRINT
+import ingsis.printscript.utilities.enums.READINPUT
 import ingsis.printscript.utilities.visitor.* // ktlint-disable no-wildcard-imports
 
 sealed interface Rule {
@@ -58,6 +59,15 @@ object LimitPrint : Rule {
 
 object LimitRead : Rule {
     override fun validate(ast: VisitableAST): RuleResult {
-        TODO("Not yet implemented")
+        return when (ast) {
+            is UnaryOperationAST -> {
+                if (ast.function !is READINPUT) return ValidResult
+                if (ast.args !is VariableAST && ast.args !is LiteralAST) {
+                    return InvalidResult("Print can only be invoked with a variable or literal")
+                }
+                return ValidResult
+            }
+            else -> ValidResult
+        }
     }
 }

@@ -2,6 +2,7 @@ package ingsis.printscript.analyser
 
 import ingsis.printscript.lexer.Lexer
 import ingsis.printscript.parser.implementations.Parser
+import ingsis.printscript.utilities.enums.Version
 import ingsis.printscript.utilities.interfaces.IParser
 import ingsis.printscript.utilities.visitor.* // ktlint-disable no-wildcard-imports
 
@@ -22,7 +23,7 @@ class Analyser(
         fun getDefault(config: List<Configs>): Analyser {
             return Analyser(
                 Lexer(),
-                Parser(),
+                Parser(Version.VERSION_1_1),
                 generateRules(config),
             )
         }
@@ -46,7 +47,8 @@ class Analyser(
     }
 
     fun analyse(input: String): List<String> {
-        val ast = parser.parse(lexer.tokenize(input))
+        val tokens = lexer.tokenize(input)
+        val ast = parser.parse(tokens)
         val msg = visit(ast)
         return msg
     }
@@ -75,6 +77,12 @@ class Analyser(
                 validateRules(ast)
             }
             is EmptyAST -> {
+                validateRules(ast)
+            }
+            is IfAST -> {
+                validateRules(ast)
+            }
+            is IfElseAST -> {
                 validateRules(ast)
             }
         }
