@@ -86,4 +86,59 @@ class LexerTest {
         )
         assertEquals(expected, tokens)
     }
+
+    @Test
+    fun `test boolean literals`() {
+        val lexer = Lexer()
+
+        // Test boolean literals
+        val input1 = "true"
+        val expectedTokens1 = listOf(BoolValue(true))
+        assertEquals(expectedTokens1, lexer.tokenize(input1))
+
+        val input2 = "false"
+        val expectedTokens2 = listOf(BoolValue(false))
+        assertEquals(expectedTokens2, lexer.tokenize(input2))
+
+        // Test boolean literals in an expression
+        val input3 = "let a = true; let b = false;"
+        val expectedTokens3 = listOf(
+            LET,
+            IDENTIFIER("a"),
+            ASSIGNATION,
+            BoolValue(true),
+            SEMICOLON,
+            LET,
+            IDENTIFIER("b"),
+            ASSIGNATION,
+            BoolValue(false),
+            SEMICOLON
+        )
+        assertEquals(expectedTokens3, lexer.tokenize(input3))
+
+        // Test boolean literals with other data types
+        val input4 = """
+            let a = true;
+            let b = 42;
+            let c = "Hello";
+        """.trimIndent()
+        val expectedTokens4 = listOf(
+            LET,
+            IDENTIFIER("a"),
+            ASSIGNATION,
+            BoolValue(true),
+            SEMICOLON,
+            LET,
+            IDENTIFIER("b"),
+            ASSIGNATION,
+            NumValue(42.0),
+            SEMICOLON,
+            LET,
+            IDENTIFIER("c"),
+            ASSIGNATION,
+            StrValue("Hello"),
+            SEMICOLON
+        )
+        assertEquals(expectedTokens4, lexer.tokenize(input4))
+    }
 }
