@@ -26,7 +26,7 @@ class Main {
             DeclarationAST(
                 "name",
                 STR,
-                true
+                true,
             ),
             LiteralAST(
                 StrValue("Fede"),
@@ -53,7 +53,7 @@ class Main {
             DeclarationAST(
                 "sum",
                 NUM,
-                false
+                false,
             ),
             BinaryOperationAST(
                 LiteralAST(NumValue(1.0)),

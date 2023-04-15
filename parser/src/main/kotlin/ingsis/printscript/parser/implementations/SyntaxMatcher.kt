@@ -29,7 +29,7 @@ class DeclarationParser : SyntaxParser {
             DeclarationAST(
                 (identifier as IDENTIFIER).value,
                 type as Type,
-                isMutable = variable is LET
+                isMutable = variable is LET,
             )
         } else {
             null
@@ -74,7 +74,7 @@ class AssignationDeclarationParser : SyntaxParser {
                 DeclarationAST(
                     (identifier as IDENTIFIER).value,
                     type as Type,
-                    isMutable = variable is LET
+                    isMutable = variable is LET,
                 ),
                 ExpressionMatcher(ExpressionProvider.expressions).match(tokenList.slice(5 until tokenList.size - 1)) as ExpressionAST,
             )
