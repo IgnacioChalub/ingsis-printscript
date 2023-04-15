@@ -26,6 +26,7 @@ class Main {
             DeclarationAST(
                 "name",
                 STR,
+                true
             ),
             LiteralAST(
                 StrValue("Fede"),
@@ -37,7 +38,7 @@ class Main {
     @Test
     fun sumExpressionShouldReturnTree() {
         val tokenList = listOf(
-            LET,
+            CONST,
             IDENTIFIER("sum"),
             COLON,
             NUM,
@@ -52,6 +53,7 @@ class Main {
             DeclarationAST(
                 "sum",
                 NUM,
+                false
             ),
             BinaryOperationAST(
                 LiteralAST(NumValue(1.0)),

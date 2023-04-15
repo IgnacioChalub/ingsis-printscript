@@ -33,10 +33,11 @@ class AssignationAST(
 class DeclarationAST(
     val variableName: String,
     val variableType: Type,
+    val isMutable: Boolean,
 ) : VisitableAST {
     override fun accept(visitor: Visitor) = visitor.visitDeclarationAST(this)
     override fun equals(other: Any?): Boolean {
-        return other is DeclarationAST && variableName == other.variableName && variableType == other.variableType
+        return other is DeclarationAST && variableName == other.variableName && variableType == other.variableType && isMutable == other.isMutable
     }
 }
 

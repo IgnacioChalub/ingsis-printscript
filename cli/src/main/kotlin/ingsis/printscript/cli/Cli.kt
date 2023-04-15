@@ -57,7 +57,7 @@ fun executeREPL(version: String) {
     )
     val interpreter = Interpreter.Factory.createDefault()
     var content = ""
-    while (true){
+    while (true) {
         print(">> ")
         content = readLine()!!
         if (content == "quit") break
