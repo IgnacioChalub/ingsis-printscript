@@ -12,7 +12,7 @@ class LocalMemory(
         if (memory.containsKey(key)) {
             return memory[key]!!.first
         }
-        if(fatherMemory.isEmpty) {
+        if (fatherMemory.isEmpty) {
             throw Error("Variable " + key + "not found")
         } else {
             return fatherMemory.get().getValue(key)
@@ -34,7 +34,7 @@ class LocalMemory(
             memory[key] = Pair(value, true)
             return
         }
-        if(fatherMemory.isEmpty) {
+        if (fatherMemory.isEmpty) {
             return
         } else {
             return fatherMemory.get().replaceVariable(key, value)
@@ -42,7 +42,7 @@ class LocalMemory(
     }
 
     private fun keyIsUsed(key: String): Boolean {
-        return if(fatherMemory.isEmpty) {
+        return if (fatherMemory.isEmpty) {
             memory.containsKey(key)
         } else {
             fatherMemory.get().keyIsUsed(key)

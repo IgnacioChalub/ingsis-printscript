@@ -41,7 +41,7 @@ class InterpreterVisitor(
     private fun isSameType(declarationType: Type, value: Value): Boolean {
         return if (declarationType is NUM && value is NumValue) {
             true
-        } else if(declarationType is STR && value is StrValue){
+        } else if (declarationType is STR && value is StrValue) {
             true
         } else {
             declarationType is BOOL && value is BoolValue

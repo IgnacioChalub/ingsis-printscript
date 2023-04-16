@@ -157,29 +157,27 @@ class Test {
                 BOOL,
                 true,
             ),
-            LiteralAST(BoolValue(true))
+            LiteralAST(BoolValue(true)),
         )
         interpreter.interpret(tree1)
         interpreter.interpret(tree2)
         val tree4 = ReAssignationAST(
             "someString",
-            LiteralAST(StrValue("newSomeString"))
+            LiteralAST(StrValue("newSomeString")),
         )
         val tree5 = ReAssignationAST(
             "bool",
-            LiteralAST(BoolValue(false))
+            LiteralAST(BoolValue(false)),
         )
         val ifTree = IfAST(
             VariableAST("bool"),
             listOf(
                 tree4,
-                tree5
+                tree5,
             ),
         )
         interpreter.interpret(ifTree)
         assert((interpreter.getMemory().getValue("someString") as StrValue).value == "newSomeString")
         assert((interpreter.getMemory().getValue("bool") as BoolValue).value == false)
-
     }
-
 }
