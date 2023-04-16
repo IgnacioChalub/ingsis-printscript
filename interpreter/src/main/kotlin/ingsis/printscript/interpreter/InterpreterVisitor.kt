@@ -51,7 +51,7 @@ class InterpreterVisitor(
             is LiteralAST -> {
                 if (oldValue::class == newValueAst.value::class) {
                     memory.replaceVariable(ast.variableName, newValueAst.value)
-                }
+                } else throw Error("New value should have the same type")
             }
             is InputAST -> {
                 when (oldValue) {

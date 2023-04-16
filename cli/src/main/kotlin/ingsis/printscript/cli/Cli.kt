@@ -63,7 +63,7 @@ fun executeREPL(version: String) {
         if (content == "quit") break
         try {
             interpreter.interpret(parser.parse(lexer.tokenize(content)))
-        } catch (e: Exception) {
+        } catch (e: Throwable) {
             println("ERROR: " + e.message)
         }
     }
@@ -85,5 +85,5 @@ fun main(args: Array<String>) {
     val config by parser.option(ArgType.String, shortName = "c", description = "Config File")
 
     parser.parse(args)
-    runCLI(operation, input, version, config)
+    runCLI(MenuOptions.REPL, input, "1.1", config)
 }
