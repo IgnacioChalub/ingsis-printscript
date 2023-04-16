@@ -99,7 +99,7 @@ class Lexer() {
         return if (isAtEnd(input)) '\u0000' else input[current]
     }
 
-        private fun peekNext(input: String): Char {
+    private fun peekNext(input: String): Char {
         return if (current + 1 >= input.length) '\u0000' else input[current + 1]
     }
 

@@ -90,8 +90,9 @@ class LexerTest {
             Pair(ASSIGNATION, 2),
             Pair(
                 NumValue(
-                    10.0
-                ), 2
+                    10.0,
+                ),
+                2,
             ),
             Pair(SEMICOLON, 2),
             Pair(LET, 3),
@@ -153,7 +154,7 @@ class LexerTest {
         let a = true;
         let b = 42;
         let c = "Hello";
-    """.trimIndent()
+        """.trimIndent()
         val expectedTokens4 = listOf(
             Pair(LET, 1),
             Pair(IDENTIFIER("a"), 1),
@@ -174,5 +175,3 @@ class LexerTest {
         assertEquals(expectedTokens4, lexer.tokenize(input4))
     }
 }
-
-
