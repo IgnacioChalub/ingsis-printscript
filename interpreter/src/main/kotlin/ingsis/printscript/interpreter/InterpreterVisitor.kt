@@ -16,7 +16,7 @@ class InterpreterVisitor(
         val literalAST = ast.expression.accept(this)
         val declarationAST = ast.declaration.accept(this)
         if (declarationAST is DeclarationAST && literalAST is LiteralAST) {
-            if(memory.keyIsUsed(declarationAST.variableName)) throw Error("Variable already declared")
+            if (memory.keyIsUsed(declarationAST.variableName)) throw Error("Variable already declared")
             if (isSameType(declarationAST.variableType, literalAST.value)) {
                 memory.put(declarationAST.variableName, literalAST.value, declarationAST.isMutable)
             } else {
