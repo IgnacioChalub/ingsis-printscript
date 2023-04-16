@@ -1,5 +1,7 @@
 package ingsis.printscript.analyser
 
+import ingsis.printscript.utilities.enums.* // ktlint-disable no-wildcard-imports
+import ingsis.printscript.utilities.visitor.* // ktlint-disable no-wildcard-imports
 import org.junit.jupiter.api.Test
 
 class Test {
@@ -53,5 +55,93 @@ class Test {
         assert(messages.size == 2)
         assert(messages[0] == "Print can only be invoked with a variable or literal")
         assert(messages[1] == "Variable name with snake case required")
+    }
+
+    @Test
+    fun test8() {
+        val tree = IfAST(
+            LiteralAST(BoolValue(true)),
+            listOf(
+                UnaryOperationAST(
+                    PRINT,
+                    BinaryOperationAST(LiteralAST(NumValue(1.0)), LiteralAST(NumValue(1.0)), MUL),
+                ),
+                UnaryOperationAST(
+                    PRINT,
+                    BinaryOperationAST(LiteralAST(NumValue(3.0)), LiteralAST(NumValue(2.0)), SUB),
+                ),
+            ),
+        )
+        val tree2 = IfAST(
+            LiteralAST(BoolValue(true)),
+            listOf(
+                UnaryOperationAST(
+                    PRINT,
+                    BinaryOperationAST(LiteralAST(NumValue(1.0)), LiteralAST(NumValue(1.0)), MUL),
+                ),
+                UnaryOperationAST(
+                    PRINT,
+                    BinaryOperationAST(LiteralAST(NumValue(3.0)), LiteralAST(NumValue(2.0)), SUB),
+                ),
+                tree,
+            ),
+        )
+        val analyser = Analyser.Factory.getDefault(listOf(Configs.SNAKE_CASE, Configs.LIMIT_PRINTLN))
+        val messages = analyser.analyseTree(tree2)
+        assert(messages.size == 4)
+        assert(messages[0] == "Print can only be invoked with a variable or literal")
+        assert(messages[1] == "Print can only be invoked with a variable or literal")
+        assert(messages[2] == "Print can only be invoked with a variable or literal")
+        assert(messages[3] == "Print can only be invoked with a variable or literal")
+    }
+
+    @Test
+    fun test9() {
+        val tree = IfElseAST(
+            LiteralAST(BoolValue(true)),
+            listOf(
+                UnaryOperationAST(
+                    PRINT,
+                    BinaryOperationAST(LiteralAST(NumValue(1.0)), LiteralAST(NumValue(1.0)), MUL),
+                ),
+                UnaryOperationAST(
+                    PRINT,
+                    BinaryOperationAST(LiteralAST(NumValue(3.0)), LiteralAST(NumValue(2.0)), SUB),
+                ),
+            ),
+            listOf(
+                UnaryOperationAST(
+                    PRINT,
+                    BinaryOperationAST(LiteralAST(NumValue(1.0)), LiteralAST(NumValue(1.0)), MUL),
+                ),
+                UnaryOperationAST(
+                    PRINT,
+                    BinaryOperationAST(LiteralAST(NumValue(3.0)), LiteralAST(NumValue(2.0)), SUB),
+                ),
+            ),
+        )
+        val tree2 = IfAST(
+            LiteralAST(BoolValue(true)),
+            listOf(
+                UnaryOperationAST(
+                    PRINT,
+                    BinaryOperationAST(LiteralAST(NumValue(1.0)), LiteralAST(NumValue(1.0)), MUL),
+                ),
+                UnaryOperationAST(
+                    PRINT,
+                    BinaryOperationAST(LiteralAST(NumValue(3.0)), LiteralAST(NumValue(2.0)), SUB),
+                ),
+                tree,
+            ),
+        )
+        val analyser = Analyser.Factory.getDefault(listOf(Configs.SNAKE_CASE, Configs.LIMIT_PRINTLN))
+        val messages = analyser.analyseTree(tree2)
+        assert(messages.size == 6)
+        assert(messages[0] == "Print can only be invoked with a variable or literal")
+        assert(messages[1] == "Print can only be invoked with a variable or literal")
+        assert(messages[2] == "Print can only be invoked with a variable or literal")
+        assert(messages[3] == "Print can only be invoked with a variable or literal")
+        assert(messages[4] == "Print can only be invoked with a variable or literal")
+        assert(messages[5] == "Print can only be invoked with a variable or literal")
     }
 }
