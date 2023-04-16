@@ -41,7 +41,7 @@ class LocalMemory(
         }
     }
 
-    private fun keyIsUsed(key: String): Boolean {
+    fun keyIsUsed(key: String): Boolean {
         return if (fatherMemory.isEmpty) {
             memory.containsKey(key)
         } else {
