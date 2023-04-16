@@ -108,7 +108,7 @@ class Test {
             VariableAST("someString"),
         )
         val printFunctionMock = PrintFunctionMock("")
-        val interpreter = Interpreter.Factory.createMock(printFunctionMock)
+        val interpreter = Interpreter.Factory.createMock(printFunctionMock, ReadInputFunctionImpl)
         interpreter.interpret(tree1)
         interpreter.interpret(tree2)
         assert(printFunctionMock.printedValue == "some1.0")
@@ -130,7 +130,7 @@ class Test {
             ),
         )
         val printFunctionMock = PrintManyFunctionMock(mutableListOf())
-        val interpreter = Interpreter.Factory.createMock(printFunctionMock)
+        val interpreter = Interpreter.Factory.createMock(printFunctionMock, ReadInputFunctionImpl)
         interpreter.interpret(tree)
         assert(printFunctionMock.printedValues[0] == "First if")
         assert(printFunctionMock.printedValues[1] == "Second if")
@@ -180,4 +180,105 @@ class Test {
         assert((interpreter.getMemory().getValue("someString") as StrValue).value == "newSomeString")
         assert((interpreter.getMemory().getValue("bool") as BoolValue).value == false)
     }
+
+    @Test
+    fun test7() {
+        val interpreter = Interpreter.Factory.createMock(PrintFunctionImpl, ReadStringFunctionMock)
+        val tree = AssignationAST(
+            DeclarationAST(
+                "someString",
+                STR,
+                true,
+            ),
+            UnaryOperationAST(
+                READINPUT,
+                LiteralAST(StrValue("Some input: "))
+            ),
+        )
+        interpreter.interpret(tree)
+        assert((interpreter.getMemory().getValue("someString") as StrValue).value == "Some string")
+    }
+
+    @Test
+    fun test8() {
+        val interpreter = Interpreter.Factory.createMock(PrintFunctionImpl, ReadNumFunctionMock)
+        val tree = AssignationAST(
+            DeclarationAST(
+                "someNum",
+                NUM,
+                true,
+            ),
+            UnaryOperationAST(
+                READINPUT,
+                LiteralAST(StrValue("Some input: "))
+            ),
+        )
+        interpreter.interpret(tree)
+        assert((interpreter.getMemory().getValue("someNum") as NumValue).value == 1.0)
+    }
+
+    @Test
+    fun test9() {
+        val interpreter = Interpreter.Factory.createMock(PrintFunctionImpl, ReadBoolFunctionMock)
+        val tree = AssignationAST(
+            DeclarationAST(
+                "someBool",
+                BOOL,
+                true,
+            ),
+            UnaryOperationAST(
+                READINPUT,
+                LiteralAST(StrValue("Some input: "))
+            ),
+        )
+        interpreter.interpret(tree)
+        assert((interpreter.getMemory().getValue("someBool") as BoolValue).value == true)
+    }
+
+    @Test
+    fun test10() {
+        val interpreter = Interpreter.Factory.createMock(PrintFunctionImpl, ReadStringFunctionMock)
+        val tree = AssignationAST(
+            DeclarationAST(
+                "someBool",
+                BOOL,
+                true,
+            ),
+            UnaryOperationAST(
+                READINPUT,
+                LiteralAST(StrValue("Some input: "))
+            ),
+        )
+        try {
+            interpreter.interpret(tree)
+        } catch (e: Error) {
+            assert(e.message == "Value provided is not a boolean")
+            return
+        }
+        assert(false)
+    }
+
+    @Test
+    fun test11() {
+        val interpreter = Interpreter.Factory.createMock(PrintFunctionImpl, ReadStringFunctionMock)
+        val tree = AssignationAST(
+            DeclarationAST(
+                "someNum",
+                NUM,
+                true,
+            ),
+            UnaryOperationAST(
+                READINPUT,
+                LiteralAST(StrValue("Some input: "))
+            ),
+        )
+        try {
+            interpreter.interpret(tree)
+        } catch (e: Error) {
+            assert(e.message == "Value provided is not a number")
+            return
+        }
+        assert(false)
+    }
+
 }

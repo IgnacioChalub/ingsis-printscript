@@ -6,21 +6,37 @@ import ingsis.printscript.utilities.visitor.* // ktlint-disable no-wildcard-impo
 class InterpreterVisitor(
     val memory: LocalMemory,
     private val printFunction: PrintFunction,
+    private val readInputFunction: ReadInputFunction
 ) : Visitor {
 
     private fun getCopy(): InterpreterVisitor {
-        return InterpreterVisitor(memory.getNewChildMemory(), printFunction)
+        return InterpreterVisitor(memory.getNewChildMemory(), printFunction, readInputFunction)
     }
 
     override fun visitAssignationAST(ast: AssignationAST): EmptyAST {
-        val literalAST = ast.expression.accept(this)
+        val newValueAst = ast.expression.accept(this)
         val declarationAST = ast.declaration.accept(this)
-        if (declarationAST is DeclarationAST && literalAST is LiteralAST) {
+        if (declarationAST is DeclarationAST && newValueAst is LiteralAST) {
             if (memory.keyIsUsed(declarationAST.variableName)) throw Error("Variable already declared")
-            if (isSameType(declarationAST.variableType, literalAST.value)) {
-                memory.put(declarationAST.variableName, literalAST.value, declarationAST.isMutable)
+            if (isSameType(declarationAST.variableType, newValueAst.value)) {
+                memory.put(declarationAST.variableName, newValueAst.value, declarationAST.isMutable)
             } else {
                 throw Error("Invalid type assignation")
+            }
+        } else if (declarationAST is DeclarationAST && newValueAst is InputAST) {
+            if (memory.keyIsUsed(declarationAST.variableName)) throw Error("Variable already declared")
+            when (declarationAST.variableType) {
+                is BOOL -> {
+                    val boolInput = newValueAst.input.toBooleanStrictOrNull() ?: throw java.lang.Error("Value provided is not a boolean")
+                    memory.put(declarationAST.variableName, BoolValue(boolInput), declarationAST.isMutable)
+                }
+                is NUM -> {
+                    val numInput = newValueAst.input.toDoubleOrNull() ?: throw java.lang.Error("Value provided is not a number")
+                    memory.put(declarationAST.variableName, NumValue(numInput), declarationAST.isMutable)
+                }
+                is STR -> {
+                    memory.put(declarationAST.variableName, StrValue(newValueAst.input), declarationAST.isMutable)
+                }
             }
         } else {
             throw Error("Invalid tree")
@@ -29,12 +45,30 @@ class InterpreterVisitor(
     }
 
     override fun visitReAssignationAST(ast: ReAssignationAST): VisitableAST {
-        val literalAST = ast.expression.accept(this)
+        val newValueAst = ast.expression.accept(this)
         val oldValue = memory.getValue(ast.variableName)
-        if (literalAST is LiteralAST) {
-            if (oldValue::class == literalAST.value::class) {
-                memory.replaceVariable(ast.variableName, literalAST.value)
+        when(newValueAst) {
+            is LiteralAST -> {
+                if (oldValue::class == newValueAst.value::class) {
+                    memory.replaceVariable(ast.variableName, newValueAst.value)
+                }
             }
+            is InputAST -> {
+                when (oldValue) {
+                    is BoolValue -> {
+                        val boolInput = newValueAst.input.toBooleanStrictOrNull() ?: throw java.lang.Error("Value provided is not a boolean")
+                        memory.replaceVariable(ast.variableName, BoolValue(boolInput))
+                    }
+                    is NumValue -> {
+                        val numInput = newValueAst.input.toDoubleOrNull() ?: throw java.lang.Error("Value provided is not a number")
+                        memory.replaceVariable(ast.variableName, NumValue(numInput))
+                    }
+                    is StrValue -> {
+                        memory.replaceVariable(ast.variableName, StrValue(newValueAst.input))
+                    }
+                }
+            }
+            else -> throw Error("Invalid variable assignment")
         }
         return EmptyAST()
     }
@@ -102,7 +136,7 @@ class InterpreterVisitor(
     override fun visitUnaryOperationAST(ast: UnaryOperationAST): VisitableAST {
         return when (ast.function) {
             is PRINT -> printFunctionImpl(ast.args.accept(this))
-            else -> throw Exception("Todo")
+            is READINPUT -> readInputFunctionImpl(ast.args.accept(this))
         }
     }
 
@@ -113,6 +147,17 @@ class InterpreterVisitor(
                 EmptyAST()
             }
             else -> throw Error("Can not print value")
+        }
+    }
+
+    private fun readInputFunctionImpl(ast: VisitableAST): InputAST {
+        return when (ast) {
+            is LiteralAST -> {
+                if(ast.value !is StrValue) throw Error("Read input message should be a string")
+                val value = readInputFunction.read((ast.value as StrValue).value)
+                InputAST(value)
+            }
+            else -> throw Error("Invalid message for read input")
         }
     }
 
@@ -159,4 +204,9 @@ class InterpreterVisitor(
             throw Error("Invalid if statement condition")
         }
     }
+
+    override fun visitInputAST(ast: InputAST): VisitableAST {
+        TODO("Not yet implemented")
+    }
+
 }

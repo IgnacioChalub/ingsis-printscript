@@ -12,4 +12,5 @@ interface Visitor {
     fun visitEmptyAST(ast: EmptyAST): VisitableAST
     fun visitIfAST(ast: IfAST): VisitableAST
     fun visitIfElseAST(ast: IfElseAST): VisitableAST
+    fun visitInputAST(ast: InputAST): VisitableAST
 }

@@ -58,7 +58,7 @@ class BinaryOperationAST(
 class UnaryOperationAST(
     val function: Function,
     val args: ExpressionAST,
-) : VisitableAST {
+) : ExpressionAST {
     override fun accept(visitor: Visitor) = visitor.visitUnaryOperationAST(this)
     override fun equals(other: Any?): Boolean {
         return other is UnaryOperationAST && function == other.function && args == other.args
@@ -82,6 +82,16 @@ class VariableAST(
         return other is VariableAST && variableName == other.variableName
     }
 }
+
+class InputAST(
+    val input: String
+) : VisitableAST {
+    override fun accept(visitor: Visitor) = visitor.visitInputAST(this)
+    override fun equals(other: Any?): Boolean {
+        return other is InputAST && input == other.input
+    }
+}
+
 
 class EmptyAST : ExpressionAST {
     override fun accept(visitor: Visitor) = visitor.visitEmptyAST(this)
