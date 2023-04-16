@@ -30,3 +30,16 @@ class PrintFunctionMock(
         }
     }
 }
+
+class PrintManyFunctionMock(
+    var printedValues: MutableList<String>,
+) : PrintFunction {
+    override fun print(value: Value) {
+        val printedValue = when (value) {
+            is StrValue -> value.value
+            is NumValue -> value.value.toString()
+            is BoolValue -> value.value.toString()
+        }
+        printedValues.add(printedValue)
+    }
+}

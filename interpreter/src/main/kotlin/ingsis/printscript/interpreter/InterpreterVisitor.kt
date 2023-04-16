@@ -1,16 +1,6 @@
 package ingsis.printscript.interpreter
 
-import ingsis.printscript.utilities.enums.ADD
-import ingsis.printscript.utilities.enums.DIV
-import ingsis.printscript.utilities.enums.MUL
-import ingsis.printscript.utilities.enums.NUM
-import ingsis.printscript.utilities.enums.NumValue
-import ingsis.printscript.utilities.enums.PRINT
-import ingsis.printscript.utilities.enums.STR
-import ingsis.printscript.utilities.enums.SUB
-import ingsis.printscript.utilities.enums.StrValue
-import ingsis.printscript.utilities.enums.Type
-import ingsis.printscript.utilities.enums.Value
+import ingsis.printscript.utilities.enums.* // ktlint-disable no-wildcard-imports
 import ingsis.printscript.utilities.visitor.* // ktlint-disable no-wildcard-imports
 
 class InterpreterVisitor(
@@ -18,12 +8,16 @@ class InterpreterVisitor(
     private val printFunction: PrintFunction,
 ) : Visitor {
 
+    private fun getCopy(): InterpreterVisitor {
+        return InterpreterVisitor(memory.getNewChildMemory(), printFunction)
+    }
+
     override fun visitAssignationAST(ast: AssignationAST): EmptyAST {
         val literalAST = ast.expression.accept(this)
         val declarationAST = ast.declaration.accept(this)
         if (declarationAST is DeclarationAST && literalAST is LiteralAST) {
             if (isSameType(declarationAST.variableType, literalAST.value)) {
-                memory.put(declarationAST.variableName, literalAST.value)
+                memory.put(declarationAST.variableName, literalAST.value, declarationAST.isMutable)
             } else {
                 throw Error("Invalid type assignation")
             }
@@ -38,7 +32,7 @@ class InterpreterVisitor(
         val oldValue = memory.getValue(ast.variableName)
         if (literalAST is LiteralAST) {
             if (oldValue::class == literalAST.value::class) {
-                memory.put(ast.variableName, literalAST.value)
+                memory.put(ast.variableName, literalAST.value, true)
             }
         }
         return EmptyAST()
@@ -132,10 +126,34 @@ class InterpreterVisitor(
     }
 
     override fun visitIfAST(ast: IfAST): VisitableAST {
-        TODO("Not yet implemented")
+        val value = when (val conditionAst = ast.condition) {
+            is LiteralAST -> conditionAst.value
+            is VariableAST -> this.memory.getValue(conditionAst.variableName)
+        }
+        if (value is BoolValue) {
+            if (value.value) {
+                ast.truthBlock.forEach { it.accept(getCopy()) }
+            }
+            return EmptyAST()
+        } else {
+            throw Error("Invalid if statement condition")
+        }
     }
 
     override fun visitIfElseAST(ast: IfElseAST): VisitableAST {
-        TODO("Not yet implemented")
+        val value = when (val conditionAst = ast.condition) {
+            is LiteralAST -> conditionAst.value
+            is VariableAST -> this.memory.getValue(conditionAst.variableName)
+        }
+        if (value is BoolValue) {
+            if (value.value) {
+                ast.truthBlock.forEach { it.accept(getCopy()) }
+            } else {
+                ast.truthBlock.forEach { it.accept(getCopy()) }
+            }
+            return EmptyAST()
+        } else {
+            throw Error("Invalid if statement condition")
+        }
     }
 }

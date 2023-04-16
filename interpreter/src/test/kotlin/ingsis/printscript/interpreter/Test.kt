@@ -1,18 +1,7 @@
 package ingsis.printscript.interpreter
 
-import ingsis.printscript.utilities.enums.ADD
-import ingsis.printscript.utilities.enums.MUL
-import ingsis.printscript.utilities.enums.NUM
-import ingsis.printscript.utilities.enums.NumValue
-import ingsis.printscript.utilities.enums.PRINT
-import ingsis.printscript.utilities.enums.STR
-import ingsis.printscript.utilities.enums.StrValue
-import ingsis.printscript.utilities.visitor.AssignationAST
-import ingsis.printscript.utilities.visitor.BinaryOperationAST
-import ingsis.printscript.utilities.visitor.DeclarationAST
-import ingsis.printscript.utilities.visitor.LiteralAST
-import ingsis.printscript.utilities.visitor.UnaryOperationAST
-import ingsis.printscript.utilities.visitor.VariableAST
+import ingsis.printscript.utilities.enums.* // ktlint-disable no-wildcard-imports
+import ingsis.printscript.utilities.visitor.* // ktlint-disable no-wildcard-imports
 import org.junit.jupiter.api.Test
 
 class Test {
@@ -24,6 +13,7 @@ class Test {
             DeclarationAST(
                 "someNumber",
                 NUM,
+                false,
             ),
             BinaryOperationAST(
                 BinaryOperationAST(
@@ -47,6 +37,7 @@ class Test {
             DeclarationAST(
                 "someString",
                 STR,
+                false,
             ),
             BinaryOperationAST(
                 LiteralAST(StrValue("some")),
@@ -68,6 +59,7 @@ class Test {
             DeclarationAST(
                 "someString",
                 STR,
+                false,
             ),
             BinaryOperationAST(
                 LiteralAST(StrValue("some")),
@@ -79,6 +71,7 @@ class Test {
             DeclarationAST(
                 "newSomeString",
                 STR,
+                false,
             ),
             BinaryOperationAST(
                 LiteralAST(StrValue("new ")),
@@ -102,6 +95,7 @@ class Test {
             DeclarationAST(
                 "someString",
                 STR,
+                false,
             ),
             BinaryOperationAST(
                 LiteralAST(StrValue("some")),
@@ -118,5 +112,27 @@ class Test {
         interpreter.interpret(tree1)
         interpreter.interpret(tree2)
         assert(printFunctionMock.printedValue == "some1.0")
+    }
+
+    @Test
+    fun test5() {
+        val tree = IfAST(
+            LiteralAST(BoolValue(true)),
+            listOf(
+                UnaryOperationAST(
+                    PRINT,
+                    LiteralAST(StrValue("First if")),
+                ),
+                UnaryOperationAST(
+                    PRINT,
+                    LiteralAST(StrValue("Second if")),
+                ),
+            ),
+        )
+        val printFunctionMock = PrintManyFunctionMock(mutableListOf())
+        val interpreter = Interpreter.Factory.createMock(printFunctionMock)
+        interpreter.interpret(tree)
+        assert(printFunctionMock.printedValues[0] == "First if")
+        assert(printFunctionMock.printedValues[1] == "Second if")
     }
 }
