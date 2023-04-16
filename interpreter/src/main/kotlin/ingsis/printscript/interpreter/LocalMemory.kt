@@ -9,21 +9,14 @@ class LocalMemory(
 ) {
 
     fun getValue(key: String): Value {
-        while (fatherMemory.isPresent) {
-            return if (memory.containsKey(key)) {
-                memory[key]!!.first
-            } else {
-                fatherMemory.get().getValue(key)
-            }
+        if (memory.containsKey(key)) {
+            return memory[key]!!.first
         }
-        if (fatherMemory.isEmpty) {
-            return if (memory.containsKey(key)) {
-                memory[key]!!.first
-            } else {
-                throw Error("Variable " + key + "not found")
-            }
+        if(fatherMemory.isEmpty) {
+            throw Error("Variable " + key + "not found")
+        } else {
+            return fatherMemory.get().getValue(key)
         }
-        throw Error("Variable " + key + "not found")
     }
 
     fun put(key: String, value: Value, isMutable: Boolean) {
@@ -34,37 +27,26 @@ class LocalMemory(
         }
     }
 
-    private fun replaceVariable(key: String, value: Value) {
-        while (fatherMemory.isPresent) {
-            if (memory.containsKey(key)) {
-                val isMutable = memory[key]?.second
-                if (isMutable == false) throw Error("Can not change immutable variable")
-                memory[key] = Pair(value, true)
-            } else {
-                fatherMemory.get().keyIsUsed(key)
-            }
+    fun replaceVariable(key: String, value: Value) {
+        if (memory.containsKey(key)) {
+            val isMutable = memory[key]?.second
+            if (isMutable == false) throw Error("Can not change immutable variable")
+            memory[key] = Pair(value, true)
+            return
         }
-        if (fatherMemory.isEmpty) {
-            if (memory.containsKey(key)) {
-                val isMutable = memory[key]?.second
-                if (isMutable == false) throw Error("Can not change immutable variable")
-                memory[key] = Pair(value, true)
-            }
+        if(fatherMemory.isEmpty) {
+            return
+        } else {
+            return fatherMemory.get().replaceVariable(key, value)
         }
     }
 
     private fun keyIsUsed(key: String): Boolean {
-        while (fatherMemory.isPresent) {
-            return if (memory.containsKey(key)) {
-                true
-            } else {
-                fatherMemory.get().keyIsUsed(key)
-            }
+        return if(fatherMemory.isEmpty) {
+            memory.containsKey(key)
+        } else {
+            fatherMemory.get().keyIsUsed(key)
         }
-        if (fatherMemory.isEmpty) {
-            return memory.containsKey(key)
-        }
-        return false
     }
 
     fun getNewChildMemory(): LocalMemory {

@@ -32,7 +32,7 @@ class InterpreterVisitor(
         val oldValue = memory.getValue(ast.variableName)
         if (literalAST is LiteralAST) {
             if (oldValue::class == literalAST.value::class) {
-                memory.put(ast.variableName, literalAST.value, true)
+                memory.replaceVariable(ast.variableName, literalAST.value)
             }
         }
         return EmptyAST()
@@ -41,8 +41,10 @@ class InterpreterVisitor(
     private fun isSameType(declarationType: Type, value: Value): Boolean {
         return if (declarationType is NUM && value is NumValue) {
             true
+        } else if(declarationType is STR && value is StrValue){
+            true
         } else {
-            declarationType is STR && value is StrValue
+            declarationType is BOOL && value is BoolValue
         }
     }
 
