@@ -192,7 +192,7 @@ class Test {
             ),
             UnaryOperationAST(
                 READINPUT,
-                LiteralAST(StrValue("Some input: "))
+                LiteralAST(StrValue("Some input: ")),
             ),
         )
         interpreter.interpret(tree)
@@ -210,7 +210,7 @@ class Test {
             ),
             UnaryOperationAST(
                 READINPUT,
-                LiteralAST(StrValue("Some input: "))
+                LiteralAST(StrValue("Some input: ")),
             ),
         )
         interpreter.interpret(tree)
@@ -228,7 +228,7 @@ class Test {
             ),
             UnaryOperationAST(
                 READINPUT,
-                LiteralAST(StrValue("Some input: "))
+                LiteralAST(StrValue("Some input: ")),
             ),
         )
         interpreter.interpret(tree)
@@ -246,7 +246,7 @@ class Test {
             ),
             UnaryOperationAST(
                 READINPUT,
-                LiteralAST(StrValue("Some input: "))
+                LiteralAST(StrValue("Some input: ")),
             ),
         )
         try {
@@ -269,7 +269,7 @@ class Test {
             ),
             UnaryOperationAST(
                 READINPUT,
-                LiteralAST(StrValue("Some input: "))
+                LiteralAST(StrValue("Some input: ")),
             ),
         )
         try {
@@ -280,5 +280,4 @@ class Test {
         }
         assert(false)
     }
-
 }

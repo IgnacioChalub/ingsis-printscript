@@ -84,14 +84,13 @@ class VariableAST(
 }
 
 class InputAST(
-    val input: String
+    val input: String,
 ) : VisitableAST {
     override fun accept(visitor: Visitor) = visitor.visitInputAST(this)
     override fun equals(other: Any?): Boolean {
         return other is InputAST && input == other.input
     }
 }
-
 
 class EmptyAST : ExpressionAST {
     override fun accept(visitor: Visitor) = visitor.visitEmptyAST(this)

@@ -6,7 +6,7 @@ import ingsis.printscript.utilities.visitor.* // ktlint-disable no-wildcard-impo
 class InterpreterVisitor(
     val memory: LocalMemory,
     private val printFunction: PrintFunction,
-    private val readInputFunction: ReadInputFunction
+    private val readInputFunction: ReadInputFunction,
 ) : Visitor {
 
     private fun getCopy(): InterpreterVisitor {
@@ -47,7 +47,7 @@ class InterpreterVisitor(
     override fun visitReAssignationAST(ast: ReAssignationAST): VisitableAST {
         val newValueAst = ast.expression.accept(this)
         val oldValue = memory.getValue(ast.variableName)
-        when(newValueAst) {
+        when (newValueAst) {
             is LiteralAST -> {
                 if (oldValue::class == newValueAst.value::class) {
                     memory.replaceVariable(ast.variableName, newValueAst.value)
@@ -153,7 +153,7 @@ class InterpreterVisitor(
     private fun readInputFunctionImpl(ast: VisitableAST): InputAST {
         return when (ast) {
             is LiteralAST -> {
-                if(ast.value !is StrValue) throw Error("Read input message should be a string")
+                if (ast.value !is StrValue) throw Error("Read input message should be a string")
                 val value = readInputFunction.read((ast.value as StrValue).value)
                 InputAST(value)
             }
@@ -208,5 +208,4 @@ class InterpreterVisitor(
     override fun visitInputAST(ast: InputAST): VisitableAST {
         TODO("Not yet implemented")
     }
-
 }
