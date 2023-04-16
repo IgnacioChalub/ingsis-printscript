@@ -200,4 +200,33 @@ class Main {
         )
         assertTrue { expectedTree == parser.parse(tokenList) }
     }
+
+    @Test
+    fun normalExpressionWithReadInputShouldReturnTree() {
+        val tokenList = listOf(
+            LET,
+            IDENTIFIER("name"),
+            COLON,
+            STR,
+            ASSIGNATION,
+            READINPUT,
+            LEFT_PAREN,
+            StrValue(""),
+            RIGHT_PAREN,
+            SEMICOLON,
+        )
+
+        val expectedTree = AssignationAST(
+            DeclarationAST(
+                "name",
+                STR,
+                true,
+            ),
+            UnaryOperationAST(
+                READINPUT,
+                LiteralAST(StrValue("")),
+            ),
+        )
+        assertTrue { expectedTree == parser.parse(tokenList) }
+    }
 }

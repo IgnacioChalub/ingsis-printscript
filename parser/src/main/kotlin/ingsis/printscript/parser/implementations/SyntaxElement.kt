@@ -40,16 +40,16 @@ object StatementsProvider {
         return when (version) {
             Version.VERSION_1_0 -> listOf(
                 DeclarationParser::class to listOf(),
-                AssignationParser::class to listOf(),
-                AssignationDeclarationParser::class to listOf(),
-                FunctionParser::class to listOf(),
+                AssignationParser::class to listOf(version),
+                AssignationDeclarationParser::class to listOf(version),
+                FunctionParser::class to listOf(version),
             )
 
             Version.VERSION_1_1 -> listOf(
                 DeclarationParser::class to listOf(),
-                AssignationParser::class to listOf(),
-                AssignationDeclarationParser::class to listOf(),
-                FunctionParser::class to listOf(),
+                AssignationParser::class to listOf(version),
+                AssignationDeclarationParser::class to listOf(version),
+                FunctionParser::class to listOf(version),
                 IfStatementParser(version)::class to listOf(version),
                 IfElseStatementParser(version)::class to listOf(version),
             )
@@ -58,10 +58,21 @@ object StatementsProvider {
 }
 
 object ExpressionProvider {
-    val expressions = listOf(
-        IdentifierExpression::class,
-        LiteralExpression::class,
-        OperationExpression::class,
-        ParenthesisExpression::class,
-    )
+    fun getExpressions(version: Version): List<KClass<out Expression>> {
+        return when (version) {
+            Version.VERSION_1_0 -> listOf(
+                IdentifierExpression::class,
+                LiteralExpression::class,
+                OperationExpression::class,
+                ParenthesisExpression::class,
+            )
+            Version.VERSION_1_1 -> listOf(
+                IdentifierExpression::class,
+                LiteralExpression::class,
+                OperationExpression::class,
+                ParenthesisExpression::class,
+                FunctionExpression::class,
+            )
+        }
+    }
 }

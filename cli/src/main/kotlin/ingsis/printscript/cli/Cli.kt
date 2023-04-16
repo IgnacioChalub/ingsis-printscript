@@ -42,7 +42,7 @@ fun executeProgram(input: String?, version: String) {
         content.split(";")
     }
     val tokenLists = sentences.map { lexer.tokenize("$it;") }
-    val asTrees = tokenLists.map { parser.parse(it) }
+    val asTrees = tokenLists.map { parser.parse(it.map { a -> a.first }) }
     asTrees.forEach { interpreter.interpret(it) }
 }
 
@@ -62,7 +62,7 @@ fun executeREPL(version: String) {
         content = readLine()!!
         if (content == "quit") break
         try {
-            interpreter.interpret(parser.parse(lexer.tokenize(content)))
+            interpreter.interpret(parser.parse(lexer.tokenize(content).map { it.first }))
         } catch (e: Throwable) {
             println("ERROR: " + e.message)
         }

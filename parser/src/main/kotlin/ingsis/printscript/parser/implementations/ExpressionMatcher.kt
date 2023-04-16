@@ -2,16 +2,9 @@ package ingsis.printscript.parser.implementations
 
 import ingsis.printscript.parser.interfaces.SyntaxMatcher
 import ingsis.printscript.parser.interfaces.SyntaxParser
-import ingsis.printscript.utilities.enums.IDENTIFIER
-import ingsis.printscript.utilities.enums.LEFT_PAREN
-import ingsis.printscript.utilities.enums.Operation
-import ingsis.printscript.utilities.enums.RIGHT_PAREN
-import ingsis.printscript.utilities.enums.Token
-import ingsis.printscript.utilities.enums.Value
-import ingsis.printscript.utilities.visitor.BinaryOperationAST
-import ingsis.printscript.utilities.visitor.LiteralAST
-import ingsis.printscript.utilities.visitor.VariableAST
-import ingsis.printscript.utilities.visitor.VisitableAST
+import ingsis.printscript.utilities.enums.* // ktlint-disable no-wildcard-imports
+import ingsis.printscript.utilities.enums.Function
+import ingsis.printscript.utilities.visitor.* // ktlint-disable no-wildcard-imports
 import kotlin.reflect.KClass
 import kotlin.reflect.full.primaryConstructor
 
@@ -33,8 +26,8 @@ class ExpressionMatcher(matchers: List<KClass<out Expression>>) : SyntaxMatcher 
 
     private val expressions: List<Expression> = matchers.mapNotNull { it.primaryConstructor?.call(this) }
 
-    override fun match(tokenList: List<Token>): VisitableAST? =
-        expressions.firstNotNullOfOrNull { it.parse(tokenList) }
+    override fun match(tokenList: List<Token>): VisitableAST =
+        expressions.firstNotNullOfOrNull { it.parse(tokenList) } ?: throw Exception("Expression not found!")
 }
 
 // (identifier)
@@ -76,11 +69,7 @@ class OperationExpression(matcher: ExpressionMatcher) : Expression(matcher) {
         val left = matcher.match(tokenList.subList(0, operation))
         val right = matcher.match(tokenList.subList(operation + 1, tokenList.size))
 
-        return if (left != null && right != null) {
-            BinaryOperationAST(left, right, tokenList[operation] as Operation)
-        } else {
-            null
-        }
+        return BinaryOperationAST(left, right, tokenList[operation] as Operation)
     }
 }
 
@@ -90,11 +79,27 @@ class ParenthesisExpression(matcher: ExpressionMatcher) : Expression(matcher) {
         if (tokenList.size < 3) return null
 
         val openParen = tokenList[0] is LEFT_PAREN
-        val expression = matcher.match(tokenList.subList(1, tokenList.size - 1))
         val closeParen = tokenList[tokenList.size - 1] is RIGHT_PAREN
 
-        return if (openParen && closeParen && expression != null) {
-            expression
+        return if (openParen && closeParen) {
+            matcher.match(tokenList.subList(1, tokenList.size - 1))
+        } else {
+            null
+        }
+    }
+}
+
+// readinput...
+class FunctionExpression(matcher: ExpressionMatcher) : Expression(matcher) {
+    override fun parse(tokenList: List<Token>): VisitableAST? {
+        if (tokenList.size < 4) return null
+
+        val function = tokenList[0] is Function
+        val leftParen = tokenList[1] is LEFT_PAREN
+        val args = tokenList[2] is StrValue
+        val rightParen = tokenList[3] is RIGHT_PAREN
+        return if (function && leftParen && rightParen && args) {
+            UnaryOperationAST(tokenList[0] as Function, LiteralAST(tokenList[2] as StrValue))
         } else {
             null
         }

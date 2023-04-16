@@ -15,6 +15,7 @@ class Lexer() {
         "Number" to NUM,
         "String" to STR,
         "print" to PRINT,
+        "readinput" to READINPUT,
         "Boolean" to BOOL,
     )
 

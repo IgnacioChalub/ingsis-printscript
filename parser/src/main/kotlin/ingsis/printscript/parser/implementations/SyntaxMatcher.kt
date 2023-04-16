@@ -38,7 +38,7 @@ class DeclarationParser : SyntaxParser {
 }
 
 // a = "Hola";
-class AssignationParser : SyntaxParser {
+class AssignationParser(private val version: Version) : SyntaxParser {
     override fun parse(tokenList: List<Token>): VisitableAST? {
         if (tokenList.size < 3) return null
 
@@ -49,7 +49,7 @@ class AssignationParser : SyntaxParser {
         return if (assignation != null && identifier != null && semicolon != null) {
             ReAssignationAST(
                 (identifier as IDENTIFIER).value,
-                ExpressionMatcher(ExpressionProvider.expressions).match(tokenList.slice(2 until tokenList.size - 1)) as ExpressionAST,
+                ExpressionMatcher(ExpressionProvider.getExpressions(version)).match(tokenList.slice(2 until tokenList.size - 1)) as ExpressionAST,
             )
         } else {
             null
@@ -58,7 +58,7 @@ class AssignationParser : SyntaxParser {
 }
 
 // let a: String = "Hello";
-class AssignationDeclarationParser : SyntaxParser {
+class AssignationDeclarationParser(private val version: Version) : SyntaxParser {
     override fun parse(tokenList: List<Token>): VisitableAST? {
         if (tokenList.size < 6) return null
         val variable = if (SyntaxElements.VARIABLE.contains(tokenList[0])) tokenList[0] else null
@@ -76,7 +76,7 @@ class AssignationDeclarationParser : SyntaxParser {
                     type as Type,
                     isMutable = variable is LET,
                 ),
-                ExpressionMatcher(ExpressionProvider.expressions).match(tokenList.slice(5 until tokenList.size - 1)) as ExpressionAST,
+                ExpressionMatcher(ExpressionProvider.getExpressions(version)).match(tokenList.slice(5 until tokenList.size - 1)) as ExpressionAST,
             )
         } else {
             null
@@ -85,7 +85,7 @@ class AssignationDeclarationParser : SyntaxParser {
 }
 
 // print("hello")
-class FunctionParser : SyntaxParser {
+class FunctionParser(private val version: Version) : SyntaxParser {
     override fun parse(tokenList: List<Token>): VisitableAST? {
         if (tokenList.size < 4) return null
 
@@ -98,7 +98,7 @@ class FunctionParser : SyntaxParser {
         return if (function != null && leftparen != null && rightparen != null && semicolon != null) {
             UnaryOperationAST(
                 function as Function,
-                ExpressionMatcher(ExpressionProvider.expressions).match(tokenList.slice(2 until tokenList.size - 2)) as ExpressionAST,
+                ExpressionMatcher(ExpressionProvider.getExpressions(version)).match(tokenList.slice(2 until tokenList.size - 2)) as ExpressionAST,
             )
         } else {
             null
