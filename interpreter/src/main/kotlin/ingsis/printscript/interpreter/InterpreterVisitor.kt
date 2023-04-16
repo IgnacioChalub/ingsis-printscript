@@ -51,7 +51,9 @@ class InterpreterVisitor(
             is LiteralAST -> {
                 if (oldValue::class == newValueAst.value::class) {
                     memory.replaceVariable(ast.variableName, newValueAst.value)
-                } else throw Error("New value should have the same type")
+                } else {
+                    throw Error("New value should have the same type")
+                }
             }
             is InputAST -> {
                 when (oldValue) {
@@ -206,6 +208,6 @@ class InterpreterVisitor(
     }
 
     override fun visitInputAST(ast: InputAST): VisitableAST {
-        TODO("Not yet implemented")
+        return ast
     }
 }

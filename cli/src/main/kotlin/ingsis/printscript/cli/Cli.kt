@@ -85,5 +85,5 @@ fun main(args: Array<String>) {
     val config by parser.option(ArgType.String, shortName = "c", description = "Config File")
 
     parser.parse(args)
-    runCLI(MenuOptions.REPL, input, "1.1", config)
+    runCLI(operation, input, version, config)
 }
