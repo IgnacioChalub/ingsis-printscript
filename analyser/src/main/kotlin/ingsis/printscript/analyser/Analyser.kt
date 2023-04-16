@@ -85,6 +85,9 @@ class Analyser(
             is IfElseAST -> {
                 validateRules(ast)
             }
+            is InputAST -> {
+                validateRules(ast)
+            }
         }
     }
 
