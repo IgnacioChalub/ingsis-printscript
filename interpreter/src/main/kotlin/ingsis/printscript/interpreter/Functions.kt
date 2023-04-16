@@ -1,9 +1,7 @@
 package ingsis.printscript.interpreter
 
-import ingsis.printscript.utilities.enums.BoolValue
-import ingsis.printscript.utilities.enums.NumValue
-import ingsis.printscript.utilities.enums.StrValue
-import ingsis.printscript.utilities.enums.Value
+import ingsis.printscript.utilities.enums.* // ktlint-disable no-wildcard-imports
+import java.lang.Error
 
 sealed interface PrintFunction {
     fun print(value: Value)
@@ -41,5 +39,30 @@ class PrintManyFunctionMock(
             is BoolValue -> value.value.toString()
         }
         printedValues.add(printedValue)
+    }
+}
+
+sealed interface ReadInputFunction {
+    fun read(message: String, type: Type): Value
+}
+
+object ReadInputFunctionImpl : ReadInputFunction {
+    override fun read(message: String, type: Type): Value {
+        print(message)
+        val input = readLine()
+        return when (type) {
+            BOOL -> {
+                val boolInput = input?.toBooleanStrictOrNull() ?: throw Error("Value provided is not a boolean")
+                BoolValue(boolInput)
+            }
+            NUM -> {
+                val numInput = input?.toDoubleOrNull() ?: throw Error("Value provided is not a number")
+                NumValue(numInput)
+            }
+            STR -> {
+                if (input == null) throw Error("Value provided is not a string")
+                StrValue(input)
+            }
+        }
     }
 }
