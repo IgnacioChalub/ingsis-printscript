@@ -49,6 +49,10 @@ class Analyser(
     fun analyse(input: String): List<String> {
         val tokens = lexer.tokenize(input)
         val ast = parser.parse(tokens)
+        return visit(ast)
+    }
+
+    fun analyseTree(ast: VisitableAST): List<String> {
         val msg = visit(ast)
         return msg
     }
@@ -80,10 +84,10 @@ class Analyser(
                 validateRules(ast)
             }
             is IfAST -> {
-                validateRules(ast)
+                return validateRules(ast) + ast.truthBlock.map { this.visit(it) }.flatten()
             }
             is IfElseAST -> {
-                validateRules(ast)
+                validateRules(ast) + ast.truthBlock.map { this.visit(it) }.flatten() + ast.falseBlock.map { this.visit(it) }.flatten()
             }
             is InputAST -> {
                 validateRules(ast)
