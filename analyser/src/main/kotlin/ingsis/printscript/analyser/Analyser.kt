@@ -48,7 +48,7 @@ class Analyser(
 
     fun analyse(input: String): List<String> {
         val tokens = lexer.tokenize(input)
-        val ast = parser.parse(tokens)
+        val ast = parser.parse(tokens.map { it.first })
         return visit(ast)
     }
 
