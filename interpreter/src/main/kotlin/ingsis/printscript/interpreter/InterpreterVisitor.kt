@@ -199,7 +199,7 @@ class InterpreterVisitor(
             if (value.value) {
                 ast.truthBlock.forEach { it.accept(getCopy()) }
             } else {
-                ast.truthBlock.forEach { it.accept(getCopy()) }
+                ast.falseBlock.forEach { it.accept(getCopy()) }
             }
             return EmptyAST()
         } else {

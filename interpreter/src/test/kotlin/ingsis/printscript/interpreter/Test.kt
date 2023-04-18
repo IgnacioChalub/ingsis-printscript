@@ -280,4 +280,28 @@ class Test {
         }
         assert(false)
     }
+
+    @Test
+    fun test12() {
+        val ifTree = IfElseAST(
+            LiteralAST(BoolValue(false)),
+            listOf(
+                UnaryOperationAST(
+                    PRINT,
+                    LiteralAST(StrValue("yes")),
+                ),
+            ),
+            listOf(
+                UnaryOperationAST(
+                    PRINT,
+                    LiteralAST(StrValue("no")),
+                ),
+            )
+        )
+        val printFunctionMock = PrintFunctionMock("")
+        val interpreter = Interpreter.Factory.createMock(printFunctionMock, ReadInputFunctionImpl)
+        interpreter.interpret(ifTree)
+        assert(printFunctionMock.printedValue === "no")
+    }
+
 }
