@@ -296,12 +296,11 @@ class Test {
                     PRINT,
                     LiteralAST(StrValue("no")),
                 ),
-            )
+            ),
         )
         val printFunctionMock = PrintFunctionMock("")
         val interpreter = Interpreter.Factory.createMock(printFunctionMock, ReadInputFunctionImpl)
         interpreter.interpret(ifTree)
         assert(printFunctionMock.printedValue === "no")
     }
-
 }
