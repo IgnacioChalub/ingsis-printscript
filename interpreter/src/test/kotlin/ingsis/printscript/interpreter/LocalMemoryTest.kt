@@ -44,11 +44,10 @@ class LocalMemoryTest {
             Optional.of(
                 LocalMemory(
                     mutableMapOf(Pair("used", Pair(StrValue("value"), false))),
-                    Optional.empty()
-                )
-            )
+                    Optional.empty(),
+                ),
+            ),
         )
         assert(memory.keyIsUsed("used") === true)
     }
-
 }

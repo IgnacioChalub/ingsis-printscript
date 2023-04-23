@@ -365,7 +365,7 @@ class Test {
                 STR,
                 true,
             ),
-            LiteralAST(StrValue("some value"))
+            LiteralAST(StrValue("some value")),
         )
         val tree2 = ReAssignationAST(
             "someString",
@@ -388,7 +388,7 @@ class Test {
                 BOOL,
                 true,
             ),
-            LiteralAST(BoolValue(false))
+            LiteralAST(BoolValue(false)),
         )
         val tree2 = ReAssignationAST(
             "someBool",
@@ -411,7 +411,7 @@ class Test {
                 NUM,
                 true,
             ),
-            LiteralAST(NumValue(2.0))
+            LiteralAST(NumValue(2.0)),
         )
         val tree2 = ReAssignationAST(
             "someNum",
@@ -491,7 +491,7 @@ class Test {
                 NUM,
                 true,
             ),
-            LiteralAST(NumValue(2.0))
+            LiteralAST(NumValue(2.0)),
         )
         val tree2 = ReAssignationAST(
             "someNum",
@@ -560,7 +560,7 @@ class Test {
                 BOOL,
                 true,
             ),
-            LiteralAST(BoolValue(true))
+            LiteralAST(BoolValue(true)),
         )
         val ifTree = IfElseAST(
             VariableAST("bool"),
@@ -758,7 +758,7 @@ class Test {
                 READINPUT,
                 UnaryOperationAST(
                     READINPUT,
-                    LiteralAST(StrValue("some"))
+                    LiteralAST(StrValue("some")),
                 ),
             ),
         )
@@ -777,7 +777,7 @@ class Test {
                 NUM,
                 true,
             ),
-            LiteralAST(NumValue(2.0))
+            LiteralAST(NumValue(2.0)),
         )
         val tree2 = ReAssignationAST(
             "someNum",
@@ -802,7 +802,7 @@ class Test {
                 BOOL,
                 true,
             ),
-            LiteralAST(BoolValue(true))
+            LiteralAST(BoolValue(true)),
         )
         val tree2 = ReAssignationAST(
             "someBool",
