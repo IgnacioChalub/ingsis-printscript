@@ -7,20 +7,21 @@ import ingsis.printscript.utilities.enums.Version
 import kotlinx.cli.* // ktlint-disable no-wildcard-imports
 import java.io.File
 
-object App {
-    const val appName = "Printscript CLI"
-    const val version = "0.0.1"
-}
-
 enum class MenuOptions {
+    Validation,
     Execution,
     REPL,
+    Formatting,
+    Analyzing
 }
 
 fun runCLI(operation: MenuOptions, input: String?, version: String, config: String?) {
     return when (operation) {
         MenuOptions.Execution -> executeProgram(input, version)
         MenuOptions.REPL -> executeREPL(version)
+        MenuOptions.Analyzing -> executeAnalyzer(input, config)
+        MenuOptions.Formatting -> executeFormatter(input, config)
+        MenuOptions.Validation -> executeValidation(input, version)
     }
 }
 
@@ -67,6 +68,21 @@ fun executeREPL(version: String) {
             println("ERROR: " + e.message)
         }
     }
+}
+
+fun executeValidation(input: String?, version: String) {
+    //TODO wait for interpreter line count
+    println("Valid")
+}
+
+fun executeAnalyzer(input: String?, config: String?) {
+    //TODO add analyzer
+    println("Analyzer")
+}
+
+fun executeFormatter(input: String?, config: String?) {
+    // TODO add formatter
+    println("Formatter")
 }
 
 fun main(args: Array<String>) {
