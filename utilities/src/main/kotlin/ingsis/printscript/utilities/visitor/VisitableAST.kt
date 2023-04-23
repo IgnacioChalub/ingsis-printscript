@@ -31,8 +31,8 @@ class AssignationAST(
 }
 
 class DeclarationAST(
-    val variableName: Pair<String,Int>,
-    val variableType: Pair<Type,Int>,
+    val variableName: Pair<String, Int>,
+    val variableType: Pair<Type, Int>,
     val isMutable: Boolean,
 ) : VisitableAST {
     override fun accept(visitor: Visitor) = visitor.visitDeclarationAST(this)

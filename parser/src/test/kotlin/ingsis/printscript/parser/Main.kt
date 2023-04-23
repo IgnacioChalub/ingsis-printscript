@@ -61,7 +61,7 @@ class Main {
                 ADD to 0,
             ),
         )
-        assertTrue { expectedTree == parser.parse(tokenList.map{it to 0}) }
+        assertTrue { expectedTree == parser.parse(tokenList.map { it to 0 }) }
     }
 
     @Test
