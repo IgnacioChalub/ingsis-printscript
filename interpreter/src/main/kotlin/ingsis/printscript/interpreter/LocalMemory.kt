@@ -13,7 +13,7 @@ class LocalMemory(
             return memory[key]!!.first
         }
         if (fatherMemory.isEmpty) {
-            throw Error("Variable " + key + "not found")
+            throw Error("Variable $key not found")
         } else {
             return fatherMemory.get().getValue(key)
         }
