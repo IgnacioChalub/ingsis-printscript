@@ -60,10 +60,10 @@ class Main {
             IDENTIFIER("name"),
             COLON,
             STR,
-            SEMICOLON
+            SEMICOLON,
         )
 
-        val expectedTree =  DeclarationAST(
+        val expectedTree = DeclarationAST(
             "name",
             STR,
             true,
@@ -192,6 +192,7 @@ class Main {
         )
         assertTrue { expectedTree == parser.parse(tokenList) }
     }
+
     // if(a) { print("Hello"); }
     @Test
     fun ifExpressionWithIdentifierShouldReturnTree() {
@@ -223,7 +224,6 @@ class Main {
         )
         assertTrue { expectedTree == parser.parse(tokenList) }
     }
-
 
     // if(true) { print("Hello"); }else { print("Bye");};
     @Test
