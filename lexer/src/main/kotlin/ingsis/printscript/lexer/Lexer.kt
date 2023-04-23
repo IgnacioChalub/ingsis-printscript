@@ -1,5 +1,5 @@
 package ingsis.printscript.lexer
-import ingsis.printscript.utilities.enums.* // ktlint-disable no-wildcard-imports
+import ingsis.printscript.utilities.enums.*
 
 class Lexer() {
 

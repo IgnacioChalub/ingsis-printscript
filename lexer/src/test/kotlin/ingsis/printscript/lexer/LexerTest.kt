@@ -1,6 +1,6 @@
 package ingsis.printscript.lexer
 
-import ingsis.printscript.utilities.enums.* // ktlint-disable no-wildcard-imports
+import ingsis.printscript.utilities.enums.*
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 

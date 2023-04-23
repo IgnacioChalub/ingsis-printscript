@@ -1,6 +1,6 @@
 package ingsis.printscript.interpreter
 
-import ingsis.printscript.utilities.enums.* // ktlint-disable no-wildcard-imports
+import ingsis.printscript.utilities.enums.*
 
 sealed interface PrintFunction {
     fun print(value: Value)

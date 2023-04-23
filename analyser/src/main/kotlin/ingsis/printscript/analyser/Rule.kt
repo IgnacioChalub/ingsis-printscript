@@ -2,7 +2,7 @@ package ingsis.printscript.analyser
 
 import ingsis.printscript.utilities.enums.PRINT
 import ingsis.printscript.utilities.enums.READINPUT
-import ingsis.printscript.utilities.visitor.* // ktlint-disable no-wildcard-imports
+import ingsis.printscript.utilities.visitor.*
 
 sealed interface Rule {
     fun validate(ast: VisitableAST): RuleResult

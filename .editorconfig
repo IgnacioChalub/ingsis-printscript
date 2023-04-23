@@ -1,0 +1,6 @@
+# https://editorconfig.org
+root = true
+
+[*.{kt,kts}]
+# Disable wildcard imports rule
+ktlint_standard_no-wildcard-imports = disabled

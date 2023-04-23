@@ -1,8 +1,8 @@
 package ingsis.printscript.parser
 
 import ingsis.printscript.parser.implementations.Parser
-import ingsis.printscript.utilities.enums.* // ktlint-disable no-wildcard-imports
-import ingsis.printscript.utilities.visitor.* // ktlint-disable no-wildcard-imports
+import ingsis.printscript.utilities.enums.*
+import ingsis.printscript.utilities.visitor.*
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows

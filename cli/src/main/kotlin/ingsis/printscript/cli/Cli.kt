@@ -4,7 +4,7 @@ import ingsis.printscript.interpreter.Interpreter
 import ingsis.printscript.lexer.Lexer
 import ingsis.printscript.parser.implementations.Parser
 import ingsis.printscript.utilities.enums.Version
-import kotlinx.cli.* // ktlint-disable no-wildcard-imports
+import kotlinx.cli.*
 import java.io.File
 
 enum class MenuOptions {
@@ -12,7 +12,7 @@ enum class MenuOptions {
     Execution,
     REPL,
     Formatting,
-    Analyzing
+    Analyzing,
 }
 
 fun runCLI(operation: MenuOptions, input: String?, version: String, config: String?) {
@@ -71,12 +71,12 @@ fun executeREPL(version: String) {
 }
 
 fun executeValidation(input: String?, version: String) {
-    //TODO wait for interpreter line count
+    // TODO wait for interpreter line count
     println("Valid")
 }
 
 fun executeAnalyzer(input: String?, config: String?) {
-    //TODO add analyzer
+    // TODO add analyzer
     println("Analyzer")
 }
 

@@ -2,7 +2,7 @@ package ingsis.printscript.parser.implementations
 
 import ingsis.printscript.parser.interfaces.SyntaxElement
 import ingsis.printscript.parser.interfaces.SyntaxParser
-import ingsis.printscript.utilities.enums.* // ktlint-disable no-wildcard-imports
+import ingsis.printscript.utilities.enums.*
 import kotlin.reflect.KClass
 
 enum class SyntaxElements(override val types: List<Token>) : SyntaxElement {

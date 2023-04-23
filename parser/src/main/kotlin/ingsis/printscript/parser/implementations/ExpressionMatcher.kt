@@ -2,9 +2,9 @@ package ingsis.printscript.parser.implementations
 
 import ingsis.printscript.parser.interfaces.SyntaxMatcher
 import ingsis.printscript.parser.interfaces.SyntaxParser
-import ingsis.printscript.utilities.enums.* // ktlint-disable no-wildcard-imports
+import ingsis.printscript.utilities.enums.*
 import ingsis.printscript.utilities.enums.Function
-import ingsis.printscript.utilities.visitor.* // ktlint-disable no-wildcard-imports
+import ingsis.printscript.utilities.visitor.*
 import kotlin.reflect.KClass
 import kotlin.reflect.full.primaryConstructor
 
