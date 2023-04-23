@@ -6,6 +6,4 @@ interface SyntaxElement {
     val types: List<Token>
 
     fun contains(type: Token): Boolean = types.any { it::class == type::class }
-
-    fun get(): Array<Token> = types.toTypedArray()
 }

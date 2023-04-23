@@ -5,11 +5,14 @@ import ingsis.printscript.utilities.enums.* // ktlint-disable no-wildcard-import
 import ingsis.printscript.utilities.visitor.* // ktlint-disable no-wildcard-imports
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 
 class Main {
 
     private val parser = Parser(Version.VERSION_1_1)
+    private val parser2 = Parser(Version.VERSION_1_0)
 
+    // let name: String = "Fede";
     @Test
     fun normalExpressionShouldReturnTree() {
         val tokenList = listOf(
@@ -32,9 +35,44 @@ class Main {
                 StrValue("Fede"),
             ),
         )
+        assertTrue { expectedTree == parser2.parse(tokenList) }
+    }
+
+    // let name = "Fede";
+    @Test
+    fun errorExpressionShouldReturnTree() {
+        val tokenList = listOf(
+            LET,
+            IDENTIFIER("name"),
+            ASSIGNATION,
+            StrValue("Fede"),
+            SEMICOLON,
+        )
+
+        assertThrows<Exception> { parser.parse(tokenList) }
+    }
+
+    // let name: String;
+    @Test
+    fun normalDeclarationShouldReturnTree() {
+        val tokenList = listOf(
+            LET,
+            IDENTIFIER("name"),
+            COLON,
+            STR,
+            SEMICOLON
+        )
+
+        val expectedTree =  DeclarationAST(
+            "name",
+            STR,
+            true,
+        )
+
         assertTrue { expectedTree == parser.parse(tokenList) }
     }
 
+    // const sum: Number = 1 + 3;
     @Test
     fun sumExpressionShouldReturnTree() {
         val tokenList = listOf(
@@ -64,6 +102,7 @@ class Main {
         assertTrue { expectedTree == parser.parse(tokenList) }
     }
 
+    // print((2-1) - (3-1));
     @Test
     fun functionSubtExpressionShouldReturnTree() {
         val tokenList = listOf(
@@ -103,6 +142,7 @@ class Main {
         assertTrue { expectedTree == parser.parse(tokenList) }
     }
 
+    // name = "Fede";
     @Test
     fun reassignExpressionShouldReturnTree() {
         val tokenList = listOf(
@@ -152,8 +192,40 @@ class Main {
         )
         assertTrue { expectedTree == parser.parse(tokenList) }
     }
+    // if(a) { print("Hello"); }
+    @Test
+    fun ifExpressionWithIdentifierShouldReturnTree() {
+        val tokenList = listOf(
+            IF,
+            LEFT_PAREN,
+            IDENTIFIER("a"),
+            RIGHT_PAREN,
+            LEFT_CURLY_BRACES,
+            PRINT,
+            LEFT_PAREN,
+            StrValue("Hello"),
+            RIGHT_PAREN,
+            SEMICOLON,
+            RIGHT_CURLY_BRACES,
+            SEMICOLON,
+        )
 
-    // if(true) { print("Hello"); }
+        val expectedTree = IfAST(
+            condition = VariableAST("a"),
+            truthBlock = listOf(
+                UnaryOperationAST(
+                    PRINT,
+                    LiteralAST(
+                        StrValue("Hello"),
+                    ),
+                ),
+            ),
+        )
+        assertTrue { expectedTree == parser.parse(tokenList) }
+    }
+
+
+    // if(true) { print("Hello"); }else { print("Bye");};
     @Test
     fun ifElseExpressionShouldReturnTree() {
         val tokenList = listOf(
@@ -201,6 +273,55 @@ class Main {
         assertTrue { expectedTree == parser.parse(tokenList) }
     }
 
+    // if(a) { print("Hello"); }else { print("Bye");};
+    @Test
+    fun ifElseExpressionWithIdentifierShouldReturnTree() {
+        val tokenList = listOf(
+            IF,
+            LEFT_PAREN,
+            IDENTIFIER("a"),
+            RIGHT_PAREN,
+            LEFT_CURLY_BRACES,
+            PRINT,
+            LEFT_PAREN,
+            StrValue("Hello"),
+            RIGHT_PAREN,
+            SEMICOLON,
+            RIGHT_CURLY_BRACES,
+            ELSE,
+            LEFT_CURLY_BRACES,
+            PRINT,
+            LEFT_PAREN,
+            StrValue("Bye"),
+            RIGHT_PAREN,
+            SEMICOLON,
+            RIGHT_CURLY_BRACES,
+            SEMICOLON,
+        )
+
+        val expectedTree = IfElseAST(
+            condition = VariableAST("a"),
+            truthBlock = listOf(
+                UnaryOperationAST(
+                    PRINT,
+                    LiteralAST(
+                        StrValue("Hello"),
+                    ),
+                ),
+            ),
+            falseBlock = listOf(
+                UnaryOperationAST(
+                    PRINT,
+                    LiteralAST(
+                        StrValue("Bye"),
+                    ),
+                ),
+            ),
+        )
+        assertTrue { expectedTree == parser.parse(tokenList) }
+    }
+
+    // let name: String = readinput("");
     @Test
     fun normalExpressionWithReadInputShouldReturnTree() {
         val tokenList = listOf(
