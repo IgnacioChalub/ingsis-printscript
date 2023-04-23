@@ -4,5 +4,5 @@ import ingsis.printscript.utilities.enums.Token
 import ingsis.printscript.utilities.visitor.VisitableAST
 
 interface IParser {
-    fun parse(tokenList: List<Token>): VisitableAST
+    fun parse(tokenList: List<Pair<Token, Int>>): VisitableAST
 }

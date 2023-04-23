@@ -24,15 +24,15 @@ class Main {
 
         val expectedTree = AssignationAST(
             DeclarationAST(
-                "name",
-                STR,
+                "name" to 0,
+                STR to 0,
                 true,
             ),
             LiteralAST(
-                StrValue("Fede"),
+                StrValue("Fede") to 0,
             ),
         )
-        assertTrue { expectedTree == parser.parse(tokenList) }
+        assertTrue { expectedTree == parser.parse(tokenList.map { it to 0 }) }
     }
 
     @Test
@@ -51,17 +51,17 @@ class Main {
 
         val expectedTree = AssignationAST(
             DeclarationAST(
-                "sum",
-                NUM,
+                "sum" to 0,
+                NUM to 0,
                 false,
             ),
             BinaryOperationAST(
-                LiteralAST(NumValue(1.0)),
-                LiteralAST(NumValue(3.0)),
-                ADD,
+                LiteralAST(NumValue(1.0) to 0),
+                LiteralAST(NumValue(3.0) to 0),
+                ADD to 0,
             ),
         )
-        assertTrue { expectedTree == parser.parse(tokenList) }
+        assertTrue { expectedTree == parser.parse(tokenList.map{it to 0}) }
     }
 
     @Test
@@ -85,22 +85,22 @@ class Main {
         )
 
         val expectedTree = UnaryOperationAST(
-            PRINT,
+            PRINT to 0,
             BinaryOperationAST(
                 BinaryOperationAST(
-                    LiteralAST(NumValue(2.0)),
-                    LiteralAST(NumValue(1.0)),
-                    SUB,
+                    LiteralAST(NumValue(2.0) to 0),
+                    LiteralAST(NumValue(1.0) to 0),
+                    SUB to 0,
                 ),
                 BinaryOperationAST(
-                    LiteralAST(NumValue(3.0)),
-                    LiteralAST(NumValue(1.0)),
-                    SUB,
+                    LiteralAST(NumValue(3.0) to 0),
+                    LiteralAST(NumValue(1.0) to 0),
+                    SUB to 0,
                 ),
-                SUB,
+                SUB to 0,
             ),
         )
-        assertTrue { expectedTree == parser.parse(tokenList) }
+        assertTrue { expectedTree == parser.parse(tokenList.map { it to 0 }) }
     }
 
     @Test
@@ -113,12 +113,12 @@ class Main {
         )
 
         val expectedTree = ReAssignationAST(
-            "name",
+            "name" to 0,
             LiteralAST(
-                StrValue("Fede"),
+                StrValue("Fede") to 0,
             ),
         )
-        assertTrue { expectedTree == parser.parse(tokenList) }
+        assertTrue { expectedTree == parser.parse(tokenList.map { it to 0 }) }
     }
 
     // if(true) { print("Hello"); }
@@ -140,17 +140,17 @@ class Main {
         )
 
         val expectedTree = IfAST(
-            condition = LiteralAST(BoolValue(true)),
+            condition = LiteralAST(BoolValue(true) to 0),
             truthBlock = listOf(
                 UnaryOperationAST(
-                    PRINT,
+                    PRINT to 0,
                     LiteralAST(
-                        StrValue("Hello"),
+                        StrValue("Hello") to 0,
                     ),
                 ),
             ),
         )
-        assertTrue { expectedTree == parser.parse(tokenList) }
+        assertTrue { expectedTree == parser.parse(tokenList.map { it to 0 }) }
     }
 
     // if(true) { print("Hello"); }
@@ -180,25 +180,25 @@ class Main {
         )
 
         val expectedTree = IfElseAST(
-            condition = LiteralAST(BoolValue(true)),
+            condition = LiteralAST(BoolValue(true) to 0),
             truthBlock = listOf(
                 UnaryOperationAST(
-                    PRINT,
+                    PRINT to 0,
                     LiteralAST(
-                        StrValue("Hello"),
+                        StrValue("Hello") to 0,
                     ),
                 ),
             ),
             falseBlock = listOf(
                 UnaryOperationAST(
-                    PRINT,
+                    PRINT to 0,
                     LiteralAST(
-                        StrValue("Bye"),
+                        StrValue("Bye") to 0,
                     ),
                 ),
             ),
         )
-        assertTrue { expectedTree == parser.parse(tokenList) }
+        assertTrue { expectedTree == parser.parse(tokenList.map { it to 0 }) }
     }
 
     @Test
@@ -218,15 +218,15 @@ class Main {
 
         val expectedTree = AssignationAST(
             DeclarationAST(
-                "name",
-                STR,
+                "name" to 0,
+                STR to 0,
                 true,
             ),
             UnaryOperationAST(
-                READINPUT,
-                LiteralAST(StrValue("")),
+                READINPUT to 0,
+                LiteralAST(StrValue("") to 0),
             ),
         )
-        assertTrue { expectedTree == parser.parse(tokenList) }
+        assertTrue { expectedTree == parser.parse(tokenList.map { it to 0 }) }
     }
 }

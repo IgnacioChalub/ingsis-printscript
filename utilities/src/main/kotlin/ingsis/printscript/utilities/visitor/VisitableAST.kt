@@ -11,7 +11,7 @@ sealed interface VisitableAST {
 }
 
 class ReAssignationAST(
-    val variableName: String,
+    val variableName: Pair<String, Int>,
     val expression: ExpressionAST,
 ) : VisitableAST {
     override fun accept(visitor: Visitor) = visitor.visitReAssignationAST(this)
@@ -31,8 +31,8 @@ class AssignationAST(
 }
 
 class DeclarationAST(
-    val variableName: String,
-    val variableType: Type,
+    val variableName: Pair<String,Int>,
+    val variableType: Pair<Type,Int>,
     val isMutable: Boolean,
 ) : VisitableAST {
     override fun accept(visitor: Visitor) = visitor.visitDeclarationAST(this)
@@ -47,7 +47,7 @@ sealed interface ConditionAST : VisitableAST
 class BinaryOperationAST(
     val left: VisitableAST,
     val right: VisitableAST,
-    val operation: Operation,
+    val operation: Pair<Operation, Int>,
 ) : ExpressionAST {
     override fun accept(visitor: Visitor) = visitor.visitBinaryOperationAST(this)
     override fun equals(other: Any?): Boolean {
@@ -56,7 +56,7 @@ class BinaryOperationAST(
 }
 
 class UnaryOperationAST(
-    val function: Function,
+    val function: Pair<Function, Int>,
     val args: ExpressionAST,
 ) : ExpressionAST {
     override fun accept(visitor: Visitor) = visitor.visitUnaryOperationAST(this)
@@ -66,7 +66,7 @@ class UnaryOperationAST(
 }
 
 class LiteralAST(
-    val value: Value,
+    val value: Pair<Value, Int>,
 ) : ExpressionAST, ConditionAST {
     override fun accept(visitor: Visitor) = visitor.visitLiteralAST(this)
     override fun equals(other: Any?): Boolean {
@@ -75,7 +75,7 @@ class LiteralAST(
 }
 
 class VariableAST(
-    val variableName: String,
+    val variableName: Pair<String, Int>,
 ) : ExpressionAST, ConditionAST {
     override fun accept(visitor: Visitor) = visitor.visitVariableAST(this)
     override fun equals(other: Any?): Boolean {

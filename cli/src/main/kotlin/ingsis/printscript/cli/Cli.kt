@@ -1,5 +1,7 @@
 package ingsis.printscript.cli
 
+import ingsis.printscript.analyser.Analyser
+import ingsis.printscript.analyser.Configs
 import ingsis.printscript.interpreter.Interpreter
 import ingsis.printscript.lexer.Lexer
 import ingsis.printscript.parser.implementations.Parser
@@ -15,13 +17,23 @@ object App {
 enum class MenuOptions {
     Execution,
     REPL,
+    Analyser,
+    Formatter,
 }
 
 fun runCLI(operation: MenuOptions, input: String?, version: String, config: String?) {
     return when (operation) {
         MenuOptions.Execution -> executeProgram(input, version)
         MenuOptions.REPL -> executeREPL(version)
+        MenuOptions.Analyser -> executeAnalyser(input, config)
+        MenuOptions.Formatter -> println("Formatter")
     }
+}
+
+fun executeAnalyser(input: String?, config: String?) {
+    val analyser = Analyser.Factory.getDefault(listOf(Configs.CAMEL_CASE, Configs.LIMIT_PRINTLN, Configs.LIMIT_READ_INPUT))
+    val file = File(input!!)
+    analyser.analyse(file.readText())
 }
 
 fun executeProgram(input: String?, version: String) {
@@ -42,7 +54,7 @@ fun executeProgram(input: String?, version: String) {
         content.split(";")
     }
     val tokenLists = sentences.map { lexer.tokenize("$it;") }
-    val asTrees = tokenLists.map { parser.parse(it.map { a -> a.first }) }
+    val asTrees = tokenLists.map { parser.parse(it) }
     asTrees.forEach { interpreter.interpret(it) }
 }
 
@@ -62,7 +74,7 @@ fun executeREPL(version: String) {
         content = readLine()!!
         if (content == "quit") break
         try {
-            interpreter.interpret(parser.parse(lexer.tokenize(content).map { it.first }))
+            interpreter.interpret(parser.parse(lexer.tokenize(content)))
         } catch (e: Throwable) {
             println("ERROR: " + e.message)
         }

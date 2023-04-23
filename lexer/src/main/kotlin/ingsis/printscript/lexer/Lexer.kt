@@ -23,11 +23,12 @@ class Lexer() {
         val tokens = mutableListOf<Pair<Token, Int>>()
         while (!isAtEnd(input)) {
             start = current
-            val c = advance(input)
-            when (c) {
+            when (advance(input)) {
                 '\n' -> line++
                 '(' -> tokens.add(Pair(LEFT_PAREN, line))
                 ')' -> tokens.add(Pair(RIGHT_PAREN, line))
+                '}' -> tokens.add(Pair(RIGHT_CURLY_BRACES, line))
+                '{' -> tokens.add(Pair(LEFT_CURLY_BRACES, line))
                 '+' -> tokens.add(Pair(ADD, line))
                 '-' -> tokens.add(Pair(SUB, line))
                 '*' -> tokens.add(Pair(MUL, line))

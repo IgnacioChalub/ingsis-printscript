@@ -5,7 +5,7 @@ import ingsis.printscript.utilities.interfaces.IParser
 import ingsis.printscript.utilities.visitor.VisitableAST
 
 class Parser(private val version: Version) : IParser {
-    override fun parse(tokenList: List<Token>): VisitableAST {
+    override fun parse(tokenList: List<Pair<Token, Int>>): VisitableAST {
         val ast = StatementMatcher(StatementsProvider.getStatements(version)).match(tokenList)
         return ast ?: throw Exception("Couldn't parse tree")
     }
