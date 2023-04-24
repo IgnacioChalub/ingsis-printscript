@@ -39,11 +39,13 @@ fun executeProgram(input: String?, version: String) {
     val interpreter = Interpreter.Factory.createDefault()
 
     val content = file.readText().replace("\n", "")
-    val sentences = if (content.last() == ';') { content.split(";").dropLast(1) } else {
+    val sentences = if (content.last() == ';') {
+        content.split(";").dropLast(1)
+    } else {
         content.split(";")
     }
     val tokenLists = sentences.map { lexer.tokenize("$it;") }
-    val asTrees = tokenLists.map { parser.parse(it.map { a -> a.first }) }
+    val asTrees = tokenLists.map { parser.parse(it.flatMap { tokens -> tokens.map { tokenPair -> tokenPair.first } }) }
     asTrees.forEach { interpreter.interpret(it) }
 }
 
@@ -63,7 +65,8 @@ fun executeREPL(version: String) {
         content = readLine()!!
         if (content == "quit") break
         try {
-            interpreter.interpret(parser.parse(lexer.tokenize(content).map { it.first }))
+            val tokenList = lexer.tokenize(content).flatMap { tokens -> tokens.map { tokenPair -> tokenPair.first } }
+            interpreter.interpret(parser.parse(tokenList))
         } catch (e: Throwable) {
             println("ERROR: " + e.message)
         }

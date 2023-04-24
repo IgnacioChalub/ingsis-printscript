@@ -4,7 +4,6 @@ import ingsis.printscript.utilities.enums.*
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
-
 class LexerTest {
     private val lexer = Lexer()
 
@@ -17,8 +16,8 @@ class LexerTest {
                 Pair(IDENTIFIER("x"), 1),
                 Pair(ASSIGNATION, 1),
                 Pair(NumValue(5.0), 1),
-                Pair(SEMICOLON, 1)
-            )
+                Pair(SEMICOLON, 1),
+            ),
         )
         val result = lexer.tokenize(input)
         assertEquals(expected, result)
@@ -37,14 +36,14 @@ class LexerTest {
                 Pair(IDENTIFIER("x"), 1),
                 Pair(ASSIGNATION, 1),
                 Pair(NumValue(5.0), 1),
-                Pair(SEMICOLON, 1)
+                Pair(SEMICOLON, 1),
             ),
             listOf(
                 Pair(LET, 2),
                 Pair(IDENTIFIER("y"), 2),
                 Pair(ASSIGNATION, 2),
                 Pair(NumValue(10.0), 2),
-                Pair(SEMICOLON, 2)
+                Pair(SEMICOLON, 2),
             ),
             listOf(
                 Pair(LET, 3),
@@ -53,8 +52,8 @@ class LexerTest {
                 Pair(IDENTIFIER("x"), 3),
                 Pair(ADD, 3),
                 Pair(IDENTIFIER("y"), 3),
-                Pair(SEMICOLON, 3)
-            )
+                Pair(SEMICOLON, 3),
+            ),
         )
         val result = lexer.tokenize(input)
         assertEquals(expected, result)
@@ -123,12 +122,10 @@ class LexerTest {
                 Pair(LEFT_PAREN, 1),
                 Pair(StrValue("Hello, world!"), 1),
                 Pair(RIGHT_PAREN, 1),
-                Pair(SEMICOLON, 1)
-            )
+                Pair(SEMICOLON, 1),
+            ),
         )
         val result = lexer.tokenize(input)
         assertEquals(expected, result)
     }
-
 }
-
