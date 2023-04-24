@@ -39,7 +39,7 @@ class InterpreterVisitor(
                 }
             }
         } else {
-            throw Error("Invalid tree")
+            throw Error("Invalid tree ")
         }
         return EmptyAST()
     }
