@@ -1,9 +1,5 @@
 package ingsis.printscript.analyser
 
-import ingsis.printscript.lexer.Lexer
-import ingsis.printscript.parser.implementations.Parser
-import ingsis.printscript.utilities.enums.Version
-import ingsis.printscript.utilities.interfaces.IParser
 import ingsis.printscript.utilities.visitor.*
 
 enum class Configs {

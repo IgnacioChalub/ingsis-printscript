@@ -15,8 +15,8 @@ class Test {
             BinaryOperationAST(
                 LiteralAST(NumValue(3.0)),
                 LiteralAST(NumValue(4.0)),
-                ADD
-            )
+                ADD,
+            ),
         )
         val messages = analyser.analyse(tree)
         assert(messages[0] == "Print can only be invoked with a variable or literal")
@@ -27,7 +27,7 @@ class Test {
         val analyser = Analyser.Factory.getDefault(listOf(Configs.LIMIT_PRINTLN))
         val tree = UnaryOperationAST(
             PRINT,
-            LiteralAST(NumValue(3.0))
+            LiteralAST(NumValue(3.0)),
         )
         val messages = analyser.analyse(tree)
         assert(messages.isEmpty())
@@ -40,9 +40,9 @@ class Test {
             DeclarationAST(
                 "some_number",
                 NUM,
-                true
+                true,
             ),
-            LiteralAST(NumValue(1.0))
+            LiteralAST(NumValue(1.0)),
         )
         val messages = analyser.analyse(tree)
         assert(messages[0] == "Variable name with camel case required")
@@ -55,9 +55,9 @@ class Test {
             DeclarationAST(
                 "someNumber",
                 NUM,
-                true
+                true,
             ),
-            LiteralAST(NumValue(1.0))
+            LiteralAST(NumValue(1.0)),
         )
         val messages = analyser.analyse(tree)
         assert(messages.isEmpty())
@@ -70,9 +70,9 @@ class Test {
             DeclarationAST(
                 "someNumber",
                 NUM,
-                true
+                true,
             ),
-            LiteralAST(NumValue(1.0))
+            LiteralAST(NumValue(1.0)),
         )
         val messages = analyser.analyse(tree)
         assert(messages[0] == "Variable name with snake case required")
@@ -85,9 +85,9 @@ class Test {
             DeclarationAST(
                 "some_number",
                 NUM,
-                true
+                true,
             ),
-            LiteralAST(NumValue(1.0))
+            LiteralAST(NumValue(1.0)),
         )
         val messages = analyser.analyse(tree)
         assert(messages.isEmpty())
@@ -101,16 +101,16 @@ class Test {
             BinaryOperationAST(
                 LiteralAST(NumValue(3.0)),
                 LiteralAST(NumValue(4.0)),
-                ADD
-            )
+                ADD,
+            ),
         )
         val tree2 = AssignationAST(
             DeclarationAST(
                 "someNumber",
                 NUM,
-                true
+                true,
             ),
-            LiteralAST(NumValue(1.0))
+            LiteralAST(NumValue(1.0)),
         )
         val messages = analyser.analyse(listOf(tree1, tree2))
         assert(messages.size == 2)
@@ -213,13 +213,13 @@ class Test {
             DeclarationAST(
                 "some_number",
                 NUM,
-                true
+                true,
             ),
-            LiteralAST(NumValue(1.0))
+            LiteralAST(NumValue(1.0)),
         )
         val tree2 = UnaryOperationAST(
             PRINT,
-            VariableAST("someNumber")
+            VariableAST("someNumber"),
         )
         val messages = analyser.analyse(listOf(tree1, tree2))
         assert(messages.isEmpty())
@@ -232,12 +232,12 @@ class Test {
             DeclarationAST(
                 "some_number",
                 NUM,
-                true
+                true,
             ),
             UnaryOperationAST(
                 READINPUT,
-                LiteralAST(StrValue("Some message"))
-            )
+                LiteralAST(StrValue("Some message")),
+            ),
         )
         val messages = analyser.analyse(listOf(tree1))
         assert(messages.isEmpty())
@@ -250,16 +250,16 @@ class Test {
             DeclarationAST(
                 "some_number",
                 NUM,
-                true
+                true,
             ),
             UnaryOperationAST(
                 READINPUT,
                 BinaryOperationAST(
                     LiteralAST(StrValue("Some ")),
                     LiteralAST(StrValue("value:")),
-                    ADD
-                )
-            )
+                    ADD,
+                ),
+            ),
         )
         val messages = analyser.analyse(listOf(tree1))
         assert(messages[0] === "Read input can only be invoked with a variable or literal")
@@ -267,7 +267,7 @@ class Test {
 
     @Test()
     fun shouldThrowErrorIfCreateAnalyserWithCamelCaseAndSnakeCaseRule() {
-        val err =assertThrows<Error> { Analyser.Factory.getDefault(listOf(Configs.SNAKE_CASE, Configs.CAMEL_CASE)) }
+        val err = assertThrows<Error> { Analyser.Factory.getDefault(listOf(Configs.SNAKE_CASE, Configs.CAMEL_CASE)) }
         assert(err.message === "Variable names can not be snake case and camel case")
     }
 }
