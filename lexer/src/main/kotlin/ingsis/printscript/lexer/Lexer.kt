@@ -1,4 +1,5 @@
 package ingsis.printscript.lexer
+
 import ingsis.printscript.utilities.enums.*
 
 class Lexer() {
@@ -19,8 +20,10 @@ class Lexer() {
         "Boolean" to BOOL,
     )
 
-    fun tokenize(input: String): List<Pair<Token, Int>> {
+    fun tokenize(input: String): List<List<Pair<Token, Int>>> {
         val tokens = mutableListOf<Pair<Token, Int>>()
+        val statements = mutableListOf<List<Pair<Token, Int>>>()
+
         while (!isAtEnd(input)) {
             start = current
             val c = advance(input)
@@ -32,18 +35,22 @@ class Lexer() {
                 '-' -> tokens.add(Pair(SUB, line))
                 '*' -> tokens.add(Pair(MUL, line))
                 '/' -> tokens.add(Pair(DIV, line))
-                ';' -> tokens.add(Pair(SEMICOLON, line))
                 ':' -> tokens.add(Pair(COLON, line))
                 '=' -> tokens.add(Pair(ASSIGNATION, line))
                 in '0'..'9' -> number(input, tokens)
                 in 'a'..'z', in 'A'..'Z', '_' -> identifier(input, tokens)
                 '"' -> string(input, tokens)
+                ';' -> {
+                    tokens.add(Pair(SEMICOLON, line))
+                    statements.add(tokens.toList())
+                    tokens.clear()
+                }
             }
         }
         start = 0
         current = 0
         line = 1
-        return tokens
+        return statements
     }
 
     private fun identifier(input: String, tokens: MutableList<Pair<Token, Int>>) {
