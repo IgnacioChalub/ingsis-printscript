@@ -14,16 +14,12 @@ enum class Configs {
 }
 
 class Analyser(
-    private val lexer: Lexer,
-    private val parser: IParser,
     private val rules: List<Rule>,
 ) {
 
     object Factory {
         fun getDefault(config: List<Configs>): Analyser {
             return Analyser(
-                Lexer(),
-                Parser(Version.VERSION_1_1),
                 generateRules(config),
             )
         }
@@ -42,19 +38,12 @@ class Analyser(
         }
     }
 
-    fun analyse(inputs: List<String>): List<String> {
+    fun analyse(inputs: List<VisitableAST>): List<String> {
         return inputs.fold(listOf()) { acc, input -> acc + analyse(input) }
     }
 
-    fun analyse(input: String): List<String> {
-        val tokens = lexer.tokenize(input)
-        val ast = parser.parse(tokens.map { it.first })
+    fun analyse(ast: VisitableAST): List<String> {
         return visit(ast)
-    }
-
-    fun analyseTree(ast: VisitableAST): List<String> {
-        val msg = visit(ast)
-        return msg
     }
 
     private fun visit(ast: VisitableAST): List<String> {
