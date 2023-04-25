@@ -155,7 +155,6 @@ object PRINT : Function {
 
 object READINPUT : Function
 
-
 class EmptyValue : Value {
     override fun toString(): String {
         return ""
