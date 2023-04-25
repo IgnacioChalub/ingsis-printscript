@@ -150,7 +150,7 @@ fun executeAnalyzer(input: String?, version: String) {
 
 fun executeFormatter(input: String?) {
     // TODO add formatter
-    println("Formatter")
+    println("Formattero")
 }
 
 fun main(args: Array<String>) {
