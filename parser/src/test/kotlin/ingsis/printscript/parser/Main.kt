@@ -37,6 +37,7 @@ class Main {
         )
         assertTrue { expectedTree == parser2.parse(tokenList) }
     }
+
     // let name: String = "Fede";
     @Test
     fun normalBoolExpressionShouldReturnTree() {
@@ -62,7 +63,6 @@ class Main {
         )
         assertTrue { expectedTree == parser.parse(tokenList) }
     }
-
 
     // let name = "Fede";
     @Test

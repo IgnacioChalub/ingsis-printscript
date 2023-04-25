@@ -6,7 +6,6 @@ class Lexer() {
 
     private var start = 0
     private var current = 0
-    private var line = 1
 
     private val keywords = mapOf(
         "let" to LET,
@@ -20,40 +19,36 @@ class Lexer() {
         "Boolean" to BOOL,
     )
 
-    fun tokenize(input: String): List<List<Pair<Token, Int>>> {
-        val tokens = mutableListOf<Pair<Token, Int>>()
-        val statements = mutableListOf<List<Pair<Token, Int>>>()
-
+    fun tokenize(input: String): List<Token> {
+        val tokens = mutableListOf<Token>()
         while (!isAtEnd(input)) {
             start = current
             val c = advance(input)
             when (c) {
-                '\n' -> line++
-                '(' -> tokens.add(Pair(LEFT_PAREN, line))
-                ')' -> tokens.add(Pair(RIGHT_PAREN, line))
-                '+' -> tokens.add(Pair(ADD, line))
-                '-' -> tokens.add(Pair(SUB, line))
-                '*' -> tokens.add(Pair(MUL, line))
-                '/' -> tokens.add(Pair(DIV, line))
-                ':' -> tokens.add(Pair(COLON, line))
-                '=' -> tokens.add(Pair(ASSIGNATION, line))
+                '(' -> tokens.add(LEFT_PAREN)
+                '{' -> tokens.add(LEFT_CURLY_BRACES)
+                '}' -> tokens.add(RIGHT_CURLY_BRACES)
+                ')' -> tokens.add(RIGHT_PAREN)
+                '+' -> tokens.add(ADD)
+                '-' -> tokens.add(SUB)
+                '*' -> tokens.add(MUL)
+                '/' -> tokens.add(DIV)
+                ':' -> tokens.add(COLON)
+                '=' -> tokens.add(ASSIGNATION)
                 in '0'..'9' -> number(input, tokens)
                 in 'a'..'z', in 'A'..'Z', '_' -> identifier(input, tokens)
                 '"' -> string(input, tokens)
                 ';' -> {
-                    tokens.add(Pair(SEMICOLON, line))
-                    statements.add(tokens.toList())
-                    tokens.clear()
+                    tokens.add(SEMICOLON)
                 }
             }
         }
         start = 0
         current = 0
-        line = 1
-        return statements
+        return tokens
     }
 
-    private fun identifier(input: String, tokens: MutableList<Pair<Token, Int>>) {
+    private fun identifier(input: String, tokens: MutableList<Token>) {
         while (isAlphaNumeric(peek(input))) {
             advance(input)
         }
@@ -63,14 +58,14 @@ class Lexer() {
             "false" -> BoolValue(false)
             else -> keywords[text] ?: IDENTIFIER(text)
         }
-        tokens.add(Pair(token, line))
+        tokens.add(token)
     }
 
     private fun isAlphaNumeric(c: Char): Boolean {
         return c.isLetterOrDigit() || c == '_'
     }
 
-    private fun number(input: String, tokens: MutableList<Pair<Token, Int>>) {
+    private fun number(input: String, tokens: MutableList<Token>) {
         while (peek(input).isDigit()) {
             advance(input)
         }
@@ -83,10 +78,10 @@ class Lexer() {
         }
 
         val value = input.substring(start, current).toDouble()
-        tokens.add(Pair(NumValue(value), line))
+        tokens.add(NumValue(value))
     }
 
-    private fun string(input: String, tokens: MutableList<Pair<Token, Int>>) {
+    private fun string(input: String, tokens: MutableList<Token>) {
         while (peek(input) != '"' && !isAtEnd(input)) {
             advance(input)
         }
@@ -95,7 +90,7 @@ class Lexer() {
         }
         advance(input)
         val value = input.substring(start + 1, current - 1)
-        tokens.add(Pair(StrValue(value), line))
+        tokens.add(StrValue(value))
     }
 
     private fun advance(input: String): Char {

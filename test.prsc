@@ -1,3 +1,7 @@
-let a: Number = 4*5;
-a = 5;
+let a: Boolean = true;
 print(a);
+if(a){
+    print("Hola");
+}else{
+    print("Chau");
+};

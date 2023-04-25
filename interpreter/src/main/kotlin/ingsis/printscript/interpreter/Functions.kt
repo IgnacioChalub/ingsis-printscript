@@ -2,7 +2,7 @@ package ingsis.printscript.interpreter
 
 import ingsis.printscript.utilities.enums.*
 
-sealed interface PrintFunction {
+interface PrintFunction {
     fun print(value: Value)
 }
 
@@ -41,7 +41,7 @@ class PrintManyFunctionMock(
     }
 }
 
-sealed interface ReadInputFunction {
+interface ReadInputFunction {
     fun read(message: String): String
 }
 
