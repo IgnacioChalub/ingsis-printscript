@@ -28,23 +28,63 @@ data class IDENTIFIER(val value: String) : UtilToken {
     }
 }
 
-sealed interface Operation : Token
+sealed interface Operation : Token {
+    override fun toString(): String
+}
 
-object LEFT_PAREN : Operation
-object RIGHT_PAREN : Operation
+object LEFT_PAREN : Operation {
+    override fun toString(): String = "("
+}
 
-object LEFT_CURLY_BRACES : Operation
-object RIGHT_CURLY_BRACES : Operation
-object ADD : Operation
-object SUB : Operation
-object DIV : Operation
-object MUL : Operation
+object RIGHT_PAREN : Operation {
+    override fun toString(): String = ")"
+}
 
-sealed interface Type : Token
-object NUM : Type
-object STR : Type
+object LEFT_CURLY_BRACES : Operation {
+    override fun toString(): String = "{"
+}
 
-object BOOL : Type
+object RIGHT_CURLY_BRACES : Operation {
+    override fun toString(): String = "}"
+}
+
+object ADD : Operation {
+    override fun toString(): String = "+"
+}
+
+object SUB : Operation {
+    override fun toString(): String = "-"
+}
+
+object DIV : Operation {
+    override fun toString(): String = "/"
+}
+
+object MUL : Operation {
+    override fun toString(): String = "*"
+}
+
+sealed interface Type : Token {
+    override fun toString(): String
+}
+
+object NUM : Type {
+    override fun toString(): String {
+        return "NUM"
+    }
+}
+
+object STR : Type {
+    override fun toString(): String {
+        return "STR"
+    }
+}
+
+object BOOL : Type {
+    override fun toString(): String {
+        return "BOOL"
+    }
+}
 
 sealed interface Value : Token
 data class StrValue(val value: String) : Value {
@@ -61,6 +101,10 @@ data class StrValue(val value: String) : Value {
 
     override fun hashCode(): Int {
         return value.hashCode()
+    }
+
+    override fun toString(): String {
+        return value
     }
 }
 
@@ -79,6 +123,10 @@ data class NumValue(val value: Double) : Value {
     override fun hashCode(): Int {
         return value.hashCode()
     }
+
+    override fun toString(): String {
+        return value.toString()
+    }
 }
 
 data class BoolValue(val value: Boolean) : Value {
@@ -94,9 +142,22 @@ data class BoolValue(val value: Boolean) : Value {
     override fun hashCode(): Int {
         return value.hashCode()
     }
+
+    override fun toString(): String {
+        return value.toString()
+    }
 }
 
 sealed interface Function : Token
-object PRINT : Function
+object PRINT : Function {
+    override fun toString(): String = "PRINT"
+}
 
 object READINPUT : Function
+
+
+class EmptyValue : Value {
+    override fun toString(): String {
+        return ""
+    }
+}
