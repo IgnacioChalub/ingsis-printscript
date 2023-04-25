@@ -1,6 +1,6 @@
 package ingsis.printscript.formatter
 
-import ingsis.printscript.utilities.enums.EmptyValue
+import ingsis.printscript.utilities.enums.StrValue
 import ingsis.printscript.utilities.visitor.*
 
 class FormatterVisitor(private val indentationSize: Int = 4) : Visitor {
@@ -68,7 +68,7 @@ class FormatterVisitor(private val indentationSize: Int = 4) : Visitor {
         ast.left.accept(this)
         appendWithoutIndentation(" ${ast.operation} ")
         ast.right.accept(this)
-        return LiteralAST(EmptyValue())
+        return LiteralAST(StrValue(""))
     }
 
     override fun visitUnaryOperationAST(ast: UnaryOperationAST): VisitableAST {
@@ -85,7 +85,7 @@ class FormatterVisitor(private val indentationSize: Int = 4) : Visitor {
 
     override fun visitVariableAST(ast: VariableAST): LiteralAST {
         appendWithoutIndentation(ast.variableName)
-        return LiteralAST(EmptyValue())
+        return LiteralAST(StrValue(""))
     }
 
     override fun visitEmptyAST(ast: EmptyAST): EmptyAST {

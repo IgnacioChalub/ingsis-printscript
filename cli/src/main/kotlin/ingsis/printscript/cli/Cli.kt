@@ -66,10 +66,10 @@ fun executeProgram(input: String?, version: String) {
     )
     val interpreter = Interpreter.Factory.createDefault()
 
-    try{
+    try {
         val sentences = readStatements(FileInputStream(file))
         sentences.forEach { interpreter.interpret(parser.parse(lexer.tokenize(it))) }
-    }catch (e: Throwable){
+    } catch (e: Throwable) {
         println(e.message)
     }
 }
@@ -112,7 +112,8 @@ fun executeValidation(input: String?, version: String) {
     val inter = Interpreter.Factory.createDefault()
     val interpreter = Interpreter(
         InterpreterVisitor(
-            inter.getMemory(), object : PrintFunction {
+            inter.getMemory(),
+            object : PrintFunction {
                 override fun print(value: Value) {
                     return
                 }
@@ -121,11 +122,13 @@ fun executeValidation(input: String?, version: String) {
                 override fun read(message: String): String {
                     return ""
                 }
-            }))
-    try{
+            },
+        ),
+    )
+    try {
         val sentences = readStatements(FileInputStream(file))
         sentences.forEach { interpreter.interpret(parser.parse(lexer.tokenize(it))) }
-    }catch (e: Throwable){
+    } catch (e: Throwable) {
         println(e.message)
     }
     println("Is Valid!")
@@ -135,15 +138,17 @@ fun executeAnalyzer(input: String?, version: String) {
     val file = File(input!!)
     val analyzer = Analyser.Factory.getDefault(emptyList())
     val lexer = Lexer()
-    val parser = Parser(when (version) {
-        "1.0" -> Version.VERSION_1_0
-        "1.1" -> Version.VERSION_1_1
-        else -> throw Exception("Version not found")
-    },)
+    val parser = Parser(
+        when (version) {
+            "1.0" -> Version.VERSION_1_0
+            "1.1" -> Version.VERSION_1_1
+            else -> throw Exception("Version not found")
+        },
+    )
     try {
         val sentences = readStatements(FileInputStream(file))
-        sentences.forEach { analyzer.analyse(parser.parse(lexer.tokenize(it)))}
-    }catch (e: Throwable) {
+        sentences.forEach { analyzer.analyse(parser.parse(lexer.tokenize(it))) }
+    } catch (e: Throwable) {
         println(e.message)
     }
 }
