@@ -7,7 +7,7 @@ import kotlin.reflect.KClass
 
 enum class SyntaxElements(override val types: List<Token>) : SyntaxElement {
 
-    TYPE(listOf(STR, NUM)),
+    TYPE(listOf(STR, NUM, BOOL)),
 
     VARIABLE(listOf(LET, CONST)),
 

@@ -37,6 +37,32 @@ class Main {
         )
         assertTrue { expectedTree == parser2.parse(tokenList) }
     }
+    // let name: String = "Fede";
+    @Test
+    fun normalBoolExpressionShouldReturnTree() {
+        val tokenList = listOf(
+            LET,
+            IDENTIFIER("name"),
+            COLON,
+            BOOL,
+            ASSIGNATION,
+            BoolValue(true),
+            SEMICOLON,
+        )
+
+        val expectedTree = AssignationAST(
+            DeclarationAST(
+                "name",
+                BOOL,
+                true,
+            ),
+            LiteralAST(
+                BoolValue(true),
+            ),
+        )
+        assertTrue { expectedTree == parser.parse(tokenList) }
+    }
+
 
     // let name = "Fede";
     @Test
