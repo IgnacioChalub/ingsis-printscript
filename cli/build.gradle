@@ -43,4 +43,5 @@ dependencies {
     implementation project(":formatter")
     implementation("org.jetbrains.kotlinx:kotlinx-cli:0.3.5")
 }
-version "0.0.2"
+
+version "0.0.5"

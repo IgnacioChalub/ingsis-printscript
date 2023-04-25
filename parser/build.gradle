@@ -9,3 +9,5 @@ dependencies {
     implementation project(':utilities')
     implementation "org.jetbrains.kotlin:kotlin-reflect:1.8.10"
 }
+
+version "0.0.5"
