@@ -18,6 +18,10 @@ class ReAssignationAST(
     override fun equals(other: Any?): Boolean {
         return other is ReAssignationAST && variableName == other.variableName && expression == other.expression
     }
+
+    override fun toString(): String {
+        return "$variableName = $expression"
+    }
 }
 
 class AssignationAST(
@@ -27,6 +31,10 @@ class AssignationAST(
     override fun accept(visitor: Visitor) = visitor.visitAssignationAST(this)
     override fun equals(other: Any?): Boolean {
         return other is AssignationAST && declaration == other.declaration && expression == other.expression
+    }
+
+    override fun toString(): String {
+        return "$declaration = $expression;"
     }
 }
 
@@ -38,6 +46,11 @@ class DeclarationAST(
     override fun accept(visitor: Visitor) = visitor.visitDeclarationAST(this)
     override fun equals(other: Any?): Boolean {
         return other is DeclarationAST && variableName == other.variableName && variableType == other.variableType && isMutable == other.isMutable
+    }
+
+    override fun toString(): String {
+        val mutability = if (isMutable) "var" else "val"
+        return "$variableName: $variableType = $mutability"
     }
 }
 
@@ -53,6 +66,10 @@ class BinaryOperationAST(
     override fun equals(other: Any?): Boolean {
         return other is BinaryOperationAST && left == other.left && right == other.right && operation == other.operation
     }
+
+    override fun toString(): String {
+        return "($left $operation $right)"
+    }
 }
 
 class UnaryOperationAST(
@@ -63,6 +80,10 @@ class UnaryOperationAST(
     override fun equals(other: Any?): Boolean {
         return other is UnaryOperationAST && function == other.function && args == other.args
     }
+
+    override fun toString(): String {
+        return "$function($args)"
+    }
 }
 
 class LiteralAST(
@@ -71,6 +92,10 @@ class LiteralAST(
     override fun accept(visitor: Visitor) = visitor.visitLiteralAST(this)
     override fun equals(other: Any?): Boolean {
         return other is LiteralAST && value == other.value
+    }
+
+    override fun toString(): String {
+        return value.toString()
     }
 }
 
@@ -81,6 +106,10 @@ class VariableAST(
     override fun equals(other: Any?): Boolean {
         return other is VariableAST && variableName == other.variableName
     }
+
+    override fun toString(): String {
+        return variableName
+    }
 }
 
 class InputAST(
@@ -89,6 +118,10 @@ class InputAST(
     override fun accept(visitor: Visitor) = visitor.visitInputAST(this)
     override fun equals(other: Any?): Boolean {
         return other is InputAST && input == other.input
+    }
+
+    override fun toString(): String {
+        return input
     }
 }
 
@@ -107,6 +140,10 @@ class IfAST(
     override fun equals(other: Any?): Boolean {
         return other is IfAST && other.condition == condition && other.truthBlock == truthBlock
     }
+
+    override fun toString(): String {
+        return "if ($condition) { ${truthBlock.joinToString("; ")} }"
+    }
 }
 
 class IfElseAST(
@@ -117,5 +154,9 @@ class IfElseAST(
     override fun accept(visitor: Visitor): VisitableAST = visitor.visitIfElseAST(this)
     override fun equals(other: Any?): Boolean {
         return other is IfElseAST && other.condition == condition && other.truthBlock == truthBlock && other.falseBlock == falseBlock
+    }
+
+    override fun toString(): String {
+        return "if ($condition) { ${truthBlock.joinToString("; ")} } else { ${falseBlock.joinToString("; ")} }"
     }
 }

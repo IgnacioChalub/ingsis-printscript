@@ -70,19 +70,19 @@ sealed interface Type : Token {
 
 object NUM : Type {
     override fun toString(): String {
-        return "NUM"
+        return "Number"
     }
 }
 
 object STR : Type {
     override fun toString(): String {
-        return "STR"
+        return "String"
     }
 }
 
 object BOOL : Type {
     override fun toString(): String {
-        return "BOOL"
+        return "Boolean"
     }
 }
 
@@ -104,7 +104,7 @@ data class StrValue(val value: String) : Value {
     }
 
     override fun toString(): String {
-        return value
+        return "\"value\""
     }
 }
 
@@ -150,7 +150,9 @@ data class BoolValue(val value: Boolean) : Value {
 
 sealed interface Function : Token
 object PRINT : Function {
-    override fun toString(): String = "PRINT"
+    override fun toString(): String = "print"
 }
 
-object READINPUT : Function
+object READINPUT : Function {
+    override fun toString(): String = "readinput"
+}

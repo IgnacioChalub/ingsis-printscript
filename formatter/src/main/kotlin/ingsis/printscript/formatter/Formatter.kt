@@ -1,25 +1,15 @@
 package ingsis.printscript.formatter
 
-class Formatter(private val indentationSpaces: Int = 4) {
+import ingsis.printscript.lexer.Lexer
+import ingsis.printscript.parser.implementations.Parser
+import ingsis.printscript.utilities.enums.Version
 
-    fun format(code: String): String {
-        val lines = code.lines()
-        val formattedLines = mutableListOf<String>()
-        var currentIndentation = 0
-
-        for (line in lines) {
-            val trimmedLine = line.trim()
-            if (trimmedLine.startsWith("if")) {
-                formattedLines.add(" ".repeat(currentIndentation) + trimmedLine.replace(" {", "{").replace("{", " {"))
-                currentIndentation += indentationSpaces
-            } else if (trimmedLine.startsWith("}")) {
-                currentIndentation -= indentationSpaces
-                formattedLines.add(" ".repeat(currentIndentation) + trimmedLine)
-            } else {
-                formattedLines.add(" ".repeat(currentIndentation) + trimmedLine)
-            }
-        }
-
-        return formattedLines.joinToString(separator = "\n")
+class Formatter {
+    private val lexer = Lexer()
+    private val parser = Parser(Version.VERSION_1_1)
+    fun format(input: String): String {
+        val fv = FormatterVisitor()
+        parser.parse(lexer.tokenize(input)).accept(fv)
+        return fv.toString()
     }
 }

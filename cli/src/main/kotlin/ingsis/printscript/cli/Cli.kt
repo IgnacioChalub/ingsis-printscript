@@ -1,6 +1,8 @@
 package ingsis.printscript.cli
 
 import ingsis.printscript.analyser.Analyser
+import ingsis.printscript.analyser.Configs
+import ingsis.printscript.formatter.Formatter
 import ingsis.printscript.interpreter.Interpreter
 import ingsis.printscript.interpreter.InterpreterVisitor
 import ingsis.printscript.interpreter.PrintFunction
@@ -136,7 +138,7 @@ fun executeValidation(input: String?, version: String) {
 
 fun executeAnalyzer(input: String?, version: String) {
     val file = File(input!!)
-    val analyzer = Analyser.Factory.getDefault(emptyList())
+    val analyzer = Analyser.Factory.getDefault(listOf(Configs.LIMIT_PRINTLN, Configs.CAMEL_CASE))
     val lexer = Lexer()
     val parser = Parser(
         when (version) {
@@ -145,17 +147,21 @@ fun executeAnalyzer(input: String?, version: String) {
             else -> throw Exception("Version not found")
         },
     )
-    try {
-        val sentences = readStatements(FileInputStream(file))
-        sentences.forEach { analyzer.analyse(parser.parse(lexer.tokenize(it))) }
-    } catch (e: Throwable) {
-        println(e.message)
-    }
+    val sentences = readStatements(FileInputStream(file))
+    sentences.forEach { println(analyzer.analyse(parser.parse(lexer.tokenize(it)))) }
 }
 
 fun executeFormatter(input: String?) {
-    // TODO add formatter
-    println("Formattero")
+    val file = File(input!!)
+    val formatter = Formatter()
+    try {
+        val sentences = readStatements(FileInputStream(file))
+        println(sentences)
+        println(sentences.joinToString(separator = "\n") { formatter.format(it) })
+        file.writeText(sentences.joinToString(separator = "\n") { formatter.format(it) })
+    } catch (e: Throwable) {
+        println(e.message)
+    }
 }
 
 fun main(args: Array<String>) {

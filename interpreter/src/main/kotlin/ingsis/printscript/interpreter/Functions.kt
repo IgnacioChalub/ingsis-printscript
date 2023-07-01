@@ -12,6 +12,7 @@ object PrintFunctionImpl : PrintFunction {
             is StrValue -> println(value.value)
             is NumValue -> println(value.value)
             is BoolValue -> println(value.value)
+            else -> throw Error("Invalid type")
         }
     }
 }
@@ -24,6 +25,7 @@ class PrintFunctionMock(
             is StrValue -> value.value
             is NumValue -> value.value.toString()
             is BoolValue -> value.value.toString()
+            else -> throw Error("Invalid type")
         }
     }
 }
@@ -36,6 +38,7 @@ class PrintManyFunctionMock(
             is StrValue -> value.value
             is NumValue -> value.value.toString()
             is BoolValue -> value.value.toString()
+            else -> throw Error("Invalid type")
         }
         printedValues.add(printedValue)
     }

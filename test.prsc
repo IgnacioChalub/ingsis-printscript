@@ -1,7 +1,2 @@
-let a: Boolean = true;
-print(a);
-if(a){
-    print("Hola");
-}else{
-    print("Chau");
-};
+let a_snake: String = "name";
+let a: String = readinput("Enter: ");

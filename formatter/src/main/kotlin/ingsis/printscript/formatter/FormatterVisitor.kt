@@ -20,7 +20,6 @@ class FormatterVisitor(private val indentationSize: Int = 4) : Visitor {
     }
 
     override fun visitAssignationAST(ast: AssignationAST): VisitableAST {
-        appendWithIndentation("", 1)
         ast.declaration.accept(this)
         appendWithoutIndentation(" = ")
         ast.expression.accept(this)
@@ -39,28 +38,28 @@ class FormatterVisitor(private val indentationSize: Int = 4) : Visitor {
     }
 
     override fun visitDeclarationAST(ast: DeclarationAST): DeclarationAST {
-        appendWithoutIndentation(if (ast.isMutable) "var " else "val ")
+        appendWithoutIndentation(if (ast.isMutable) "let " else "const ")
         appendWithoutIndentation("${ast.variableName}: ${ast.variableType}")
         return ast
     }
 
     override fun visitIfAST(ast: IfAST): VisitableAST {
-        appendWithIndentation("if (", 1)
+        appendWithoutIndentation("if (")
         ast.condition.accept(this)
         appendWithoutIndentation(") {")
         ast.truthBlock.forEach { it.accept(this) }
-        appendWithIndentation("}", 0) // Change the indentLevel from 1 to 0
+        appendWithoutIndentation("}") // Change the indentLevel from 1 to 0
         return EmptyAST()
     }
 
     override fun visitIfElseAST(ast: IfElseAST): VisitableAST {
-        appendWithIndentation("if (", 1)
+        appendWithoutIndentation("if (")
         ast.condition.accept(this)
         appendWithoutIndentation(") {")
         ast.truthBlock.forEach { it.accept(this) }
-        appendWithIndentation("} else {", 0) // Change the indentLevel from 1 to 0
+        appendWithoutIndentation("} else {") // Change the indentLevel from 1 to 0
         ast.falseBlock.forEach { it.accept(this) }
-        appendWithIndentation("}", 0) // Change the indentLevel from 1 to 0
+        appendWithoutIndentation("}") // Change the indentLevel from 1 to 0
         return EmptyAST()
     }
 
@@ -74,7 +73,7 @@ class FormatterVisitor(private val indentationSize: Int = 4) : Visitor {
     override fun visitUnaryOperationAST(ast: UnaryOperationAST): VisitableAST {
         appendWithoutIndentation("${ast.function}(")
         ast.args.accept(this)
-        appendWithoutIndentation(")")
+        appendWithoutIndentation(");")
         return EmptyAST()
     }
 
