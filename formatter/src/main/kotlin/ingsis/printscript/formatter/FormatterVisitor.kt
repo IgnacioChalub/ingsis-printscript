@@ -3,9 +3,10 @@ package ingsis.printscript.formatter
 import ingsis.printscript.utilities.enums.StrValue
 import ingsis.printscript.utilities.visitor.*
 
-class FormatterVisitor(private val indentationSize: Int = 4) : Visitor {
-    private val indentation: String = " ".repeat(indentationSize)
+class FormatterVisitor(private val rules: FormattingRules) : Visitor {
+    private val indentation: String = " ".repeat(rules.indentSize)
     private val output = StringBuilder()
+
 
     override fun toString(): String {
         return output.toString()
@@ -24,7 +25,7 @@ class FormatterVisitor(private val indentationSize: Int = 4) : Visitor {
         appendWithoutIndentation(" = ")
         ast.expression.accept(this)
         appendWithoutIndentation(";")
-        output.append("\n") // Add this line
+        output.append("\n")
         return EmptyAST()
     }
 
@@ -33,13 +34,13 @@ class FormatterVisitor(private val indentationSize: Int = 4) : Visitor {
         appendWithoutIndentation("${ast.variableName} = ")
         ast.expression.accept(this)
         appendWithoutIndentation(";")
-        output.append("\n") // Add this line
+        output.append("\n")
         return EmptyAST()
     }
 
     override fun visitDeclarationAST(ast: DeclarationAST): DeclarationAST {
         appendWithoutIndentation(if (ast.isMutable) "let " else "const ")
-        appendWithoutIndentation("${ast.variableName}: ${ast.variableType}")
+        appendWithoutIndentation("${ast.variableName.trim()} : ${ast.variableType}")
         return ast
     }
 
@@ -47,8 +48,8 @@ class FormatterVisitor(private val indentationSize: Int = 4) : Visitor {
         appendWithoutIndentation("if (")
         ast.condition.accept(this)
         appendWithoutIndentation(") {")
-        ast.truthBlock.forEach { it.accept(this) }
-        appendWithoutIndentation("}") // Change the indentLevel from 1 to 0
+        ast.truthBlock.forEach { appendWithIndentation("\n", 1); it.accept(this) }
+        appendWithIndentation("\n}", 0)
         return EmptyAST()
     }
 
@@ -56,10 +57,10 @@ class FormatterVisitor(private val indentationSize: Int = 4) : Visitor {
         appendWithoutIndentation("if (")
         ast.condition.accept(this)
         appendWithoutIndentation(") {")
-        ast.truthBlock.forEach { it.accept(this) }
-        appendWithoutIndentation("} else {") // Change the indentLevel from 1 to 0
-        ast.falseBlock.forEach { it.accept(this) }
-        appendWithoutIndentation("}") // Change the indentLevel from 1 to 0
+        ast.truthBlock.forEach { appendWithIndentation("\n", 1); it.accept(this) }
+        appendWithIndentation("\n} else {", 0)
+        ast.falseBlock.forEach { appendWithIndentation("\n", 1); it.accept(this) }
+        appendWithIndentation("\n}", 0)
         return EmptyAST()
     }
 
@@ -71,11 +72,12 @@ class FormatterVisitor(private val indentationSize: Int = 4) : Visitor {
     }
 
     override fun visitUnaryOperationAST(ast: UnaryOperationAST): VisitableAST {
-        appendWithoutIndentation("${ast.function}(")
+        appendWithoutIndentation("\n${ast.function}(")
         ast.args.accept(this)
         appendWithoutIndentation(");")
         return EmptyAST()
     }
+
 
     override fun visitLiteralAST(ast: LiteralAST): LiteralAST {
         appendWithoutIndentation(ast.value.toString())
