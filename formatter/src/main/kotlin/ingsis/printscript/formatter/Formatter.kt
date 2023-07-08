@@ -9,7 +9,7 @@ data class FormattingRules(
     val spaceAfterColon: Boolean = true,
     val spaceAroundEquals: Boolean = true,
     val newLineBeforePrintln: Int = 0,
-    val indentSize: Int = 4
+    val indentSize: Int = 4,
 )
 
 class Formatter(private val rules: FormattingRules) {
@@ -22,4 +22,3 @@ class Formatter(private val rules: FormattingRules) {
         return fv.toString()
     }
 }
-

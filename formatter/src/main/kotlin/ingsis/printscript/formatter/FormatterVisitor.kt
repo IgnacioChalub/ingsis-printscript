@@ -7,7 +7,6 @@ class FormatterVisitor(private val rules: FormattingRules) : Visitor {
     private val indentation: String = " ".repeat(rules.indentSize)
     private val output = StringBuilder()
 
-
     override fun toString(): String {
         return output.toString()
     }
@@ -77,7 +76,6 @@ class FormatterVisitor(private val rules: FormattingRules) : Visitor {
         appendWithoutIndentation(");")
         return EmptyAST()
     }
-
 
     override fun visitLiteralAST(ast: LiteralAST): LiteralAST {
         appendWithoutIndentation(ast.value.toString())
