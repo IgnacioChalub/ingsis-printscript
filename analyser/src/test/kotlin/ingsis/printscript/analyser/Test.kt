@@ -49,6 +49,36 @@ class Test {
     }
 
     @Test
+    fun shouldNotRequireCamelCase() {
+        val analyser = Analyser.Factory.getDefault(listOf(Configs.CAMEL_CASE))
+        val tree = AssignationAST(
+                DeclarationAST(
+                        "some",
+                        NUM,
+                        true,
+                ),
+                LiteralAST(NumValue(1.0)),
+        )
+        val messages = analyser.analyse(tree)
+        assert(messages.isEmpty())
+    }
+
+    @Test
+    fun shouldNotRequireSnakeCase() {
+        val analyser = Analyser.Factory.getDefault(listOf(Configs.SNAKE_CASE))
+        val tree = AssignationAST(
+                DeclarationAST(
+                        "some",
+                        NUM,
+                        true,
+                ),
+                LiteralAST(NumValue(1.0)),
+        )
+        val messages = analyser.analyse(tree)
+        assert(messages.isEmpty())
+    }
+
+    @Test
     fun shouldAcceptCamelCase() {
         val analyser = Analyser.Factory.getDefault(listOf(Configs.CAMEL_CASE))
         val tree = AssignationAST(

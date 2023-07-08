@@ -16,8 +16,8 @@ object CamelCaseRule : Rule {
     override fun validate(ast: VisitableAST): RuleResult {
         return when (ast) {
             is DeclarationAST -> {
-                val camelRegex = "([a-z][a-z0-9]+[A-Z])+[a-z0-9]+".toRegex()
-                if (!ast.variableName.matches(camelRegex)) {
+//                val camelRegex = "([a-z][a-z0-9]+[A-Z])+[a-z0-9]+".toRegex()
+                if (!isCamelCase(ast.variableName)) {
                     return InvalidResult("Variable name with camel case required")
                 }
                 return ValidResult
@@ -25,14 +25,18 @@ object CamelCaseRule : Rule {
             else -> ValidResult
         }
     }
+
+    fun isCamelCase(input: String): Boolean {
+        return !input.contains("_")
+    }
 }
 
 object SnakeCaseRule : Rule {
     override fun validate(ast: VisitableAST): RuleResult {
         return when (ast) {
             is DeclarationAST -> {
-                val snakeRegex = "[a-z][a-z0-9]*(_[a-z0-9]+)*".toRegex()
-                if (!ast.variableName.matches(snakeRegex)) {
+//                val snakeRegex =  Regex("^[a-zA-Z0-9]+(?:_[a-zA-Z0-9]*)*$")
+                if (!isSnakeCase(ast.variableName)) {
                     return InvalidResult("Variable name with snake case required")
                 }
                 return ValidResult
@@ -40,6 +44,15 @@ object SnakeCaseRule : Rule {
             else -> ValidResult
         }
     }
+
+    private fun isSnakeCase(input: String): Boolean {
+        val onlyLetters = input.filter { it.isLetter() }
+        val isUpperCase = onlyLetters.all { it.isUpperCase() }
+        val isLowerCase = onlyLetters.all { it.isLowerCase() }
+        return isUpperCase || isLowerCase
+    }
+
+
 }
 
 object LimitPrint : Rule {
