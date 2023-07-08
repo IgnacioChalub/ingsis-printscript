@@ -51,8 +51,6 @@ object SnakeCaseRule : Rule {
         val isLowerCase = onlyLetters.all { it.isLowerCase() }
         return isUpperCase || isLowerCase
     }
-
-
 }
 
 object LimitPrint : Rule {
