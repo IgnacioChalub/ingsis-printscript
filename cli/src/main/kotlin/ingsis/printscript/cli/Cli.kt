@@ -3,6 +3,7 @@ package ingsis.printscript.cli
 import ingsis.printscript.analyser.Analyser
 import ingsis.printscript.analyser.Configs
 import ingsis.printscript.formatter.Formatter
+import ingsis.printscript.formatter.FormattingRules
 import ingsis.printscript.interpreter.Interpreter
 import ingsis.printscript.interpreter.InterpreterVisitor
 import ingsis.printscript.interpreter.PrintFunction
@@ -153,7 +154,7 @@ fun executeAnalyzer(input: String?, version: String) {
 
 fun executeFormatter(input: String?) {
     val file = File(input!!)
-    val formatter = Formatter()
+    val formatter = Formatter(FormattingRules())
     try {
         val sentences = readStatements(FileInputStream(file))
         println(sentences)
